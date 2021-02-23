@@ -39,7 +39,7 @@ namespace ScalableRelativeImage.Nodes
         public float EndX;
         public float EndY;
         public float Size;
-
+        public Color? Foreground=null;
         public override void SetValue(string Key, string Value)
         {
             switch (Key)
@@ -59,6 +59,12 @@ namespace ScalableRelativeImage.Nodes
                 case "Size":
                     Size = float.Parse(Value);
                     break;
+                case "Color":
+                    {
+                        ColorConverter cc = new ColorConverter();
+                        Foreground=(Color)cc.ConvertFromString(Value);
+                    }
+                    break;
                 default:
                     base.SetValue(Key, Value);
                     break;
@@ -67,8 +73,7 @@ namespace ScalableRelativeImage.Nodes
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
             float RealWidth = Size / (root.RelativeArea) * profile.TargetWidth * profile.TargetHeight;
-            TargetGraphics.DrawLine(new Pen(profile.DefaultForeground, RealWidth), profile.FindTargetPoint(StartX, StartY), profile.FindTargetPoint(EndX, EndY));
-            
+            TargetGraphics.DrawLine(new Pen((Foreground==null?profile.DefaultForeground:Foreground.Value), RealWidth), profile.FindTargetPoint(StartX, StartY), profile.FindTargetPoint(EndX, EndY));
             base.Paint(ref TargetGraphics, profile);
         }
     }
