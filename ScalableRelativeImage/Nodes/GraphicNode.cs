@@ -41,7 +41,6 @@ namespace ScalableRelativeImage.Nodes
     {
         public float Size = 0;
         public Color? Foreground = null;
-        static ColorConverter cc = new ColorConverter();
         public List<INode> Points = new List<INode>();
 
         public override void SetValue(string Key, string Value)
@@ -53,7 +52,7 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "Color":
                     {
-                        Foreground = (Color)cc.ConvertFromString(Value);
+                        Foreground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
                     }
                     break;
                 default:
@@ -83,7 +82,7 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            float RealWidth = (Size / (root.RelativeArea)) * (profile.TargetWidth * profile.TargetHeight);
+            float RealWidth = profile.FindAbsoluteSize(Size);
             List<PointF> Points = new();
             foreach (var item in this.Points)
             {
@@ -128,7 +127,6 @@ namespace ScalableRelativeImage.Nodes
         public float EndY = 0;
         public float Size = 0;
         public Color? Foreground = null;
-        static ColorConverter cc = new ColorConverter();
         public override Dictionary<string, string> GetValueSet()
         {
             Dictionary<string, string> dict = new();
@@ -163,7 +161,7 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "Color":
                     {
-                        Foreground = (Color)cc.ConvertFromString(Value);
+                        Foreground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
                     }
                     break;
                 default:
@@ -173,7 +171,7 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            float RealWidth = (Size / (root.RelativeArea)) * (profile.TargetWidth * profile.TargetHeight);
+            float RealWidth = profile.FindAbsoluteSize(Size);
             TargetGraphics.DrawLine(new Pen((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), profile.FindTargetPoint(StartX, StartY), profile.FindTargetPoint(EndX, EndY));
         }
     }

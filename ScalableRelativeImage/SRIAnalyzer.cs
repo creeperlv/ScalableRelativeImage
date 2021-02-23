@@ -20,14 +20,27 @@ namespace ScalableRelativeImage
         public Color DefaultForeground;
         public Color DefaultBackground;
         internal ImageNodeRoot root;
+
         public PointF FindTargetPoint(float RX, float RY)
         {
             PointF p = new(((RX / root._RelativeWidth) * TargetWidth), ((RY / root._RelativeHeight) * TargetHeight));
             return p;
         }
+        public float FindAbsoluteSize(float RelativeSize)
+        {
+            if (RelativeSize > 0)
+            {
+                return (RelativeSize / (root.RelativeArea)) * (TargetWidth * TargetHeight);
+            }
+            else
+            {
+                return Math.Abs(RelativeSize);
+            }
+        }
     }
     public class SRIAnalyzer
     {
+        internal static ColorConverter cc = new ColorConverter();
         public static ImageNodeRoot Parse(string Content)
         {
             XmlDocument xmlDocument = new XmlDocument();
