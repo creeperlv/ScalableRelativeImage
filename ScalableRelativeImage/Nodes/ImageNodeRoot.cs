@@ -12,6 +12,7 @@ namespace ScalableRelativeImage.Nodes
         List<INode> ListNodes();
         void AddNode(INode node);
         void SetValue(string Key, string Value);
+        Dictionary<string, string> GetValueSet();
     }
     public class ImageNodeRoot : INode
     {
@@ -66,6 +67,14 @@ namespace ScalableRelativeImage.Nodes
                 default:
                     break;
             }
+        }
+
+        public Dictionary<string, string> GetValueSet()
+        {
+            Dictionary<string, string> dict = new();
+            dict.Add("RelativeWidth", _RelativeWidth.ToString());
+            dict.Add("RelativeHeight", _RelativeHeight.ToString());
+            return dict;
         }
     }
 }

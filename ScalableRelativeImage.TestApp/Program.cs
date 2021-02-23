@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+
 namespace ScalableRelativeImage.TestApp
 {
     class Program
@@ -13,6 +15,10 @@ namespace ScalableRelativeImage.TestApp
 ";
         static void Main(string[] args)
         {
+            Color c = Color.FromArgb(10, 122, 32, 244);
+            Console.WriteLine((new ColorConverter()).ConvertToString(c));
+            Console.WriteLine(c.ToArgb().ToString("X"));
+            Console.WriteLine((new ColorConverter()).ConvertFromString("#A7A20F4"));
             var image=SRIAnalyzer.Parse(ExampleXmlDocument);
             Console.WriteLine($"W={image.RelativeWidth},H={image.RelativeHeight}");
             var bitmap=image.Render(new RenderProfile() { TargetWidth = 1600, TargetHeight = 900 });
