@@ -58,10 +58,10 @@ namespace ScalableRelativeImage.Nodes
             switch (Key)
             {
                 case "RelativeWidth":
-                    _RelativeWidth = float.Parse(Value);
+                    _RelativeWidth = float.Parse(Value); RelativeArea = _RelativeHeight * _RelativeWidth;
                     break;
                 case "RelativeHeight":
-                    _RelativeHeight = float.Parse(Value);
+                    _RelativeHeight = float.Parse(Value); RelativeArea = _RelativeHeight * _RelativeWidth;
                     break;
                 default:
                     break;

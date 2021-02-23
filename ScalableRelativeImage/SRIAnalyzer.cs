@@ -20,9 +20,9 @@ namespace ScalableRelativeImage
         public Color DefaultForeground;
         public Color DefaultBackground;
         internal ImageNodeRoot root;
-        public Point FindTargetPoint(float RX,float RY)
+        public PointF FindTargetPoint(float RX, float RY)
         {
-            Point p = new Point((int)(RX / root._RelativeWidth * TargetWidth),(int)( RY / root._RelativeHeight * TargetHeight));
+            PointF p = new(((RX / root._RelativeWidth) * TargetWidth), ((RY / root._RelativeHeight) * TargetHeight));
             return p;
         }
     }
@@ -74,7 +74,7 @@ namespace ScalableRelativeImage
                 }
                 foreach (var item in GetNodes(ImageNodeRootNode))
                 {
-                    ResolveRecursively(ImageRoot, item, ref references);
+                    ResolveRecursively(ImageRoot, ImageRoot, item, ref references);
                 }
             }
             else
@@ -83,7 +83,7 @@ namespace ScalableRelativeImage
             }
             return ImageRoot;
         }
-        internal static void ResolveRecursively(INode Parent, XmlNode node,ref List<ImageReference> references)
+        internal static void ResolveRecursively(ImageNodeRoot root, INode Parent, XmlNode node, ref List<ImageReference> references)
         {
 
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
@@ -96,6 +96,10 @@ namespace ScalableRelativeImage
                     else
                     {
                         var inode = (INode)Activator.CreateInstance(t);
+                        if (inode is GraphicNode)
+                        {
+                            (inode as GraphicNode).root = root;
+                        }
                         var NodeAttr = GetAttributes(node);
                         foreach (var NodeAttrEntry in NodeAttr)
                         {
@@ -104,7 +108,7 @@ namespace ScalableRelativeImage
                         var NodeSubNode = GetNodes(node);
                         foreach (var subnode in NodeSubNode)
                         {
-                            ResolveRecursively(inode, subnode, ref references);
+                            ResolveRecursively(root, inode, subnode, ref references);
                         }
                         Parent.AddNode(inode);
                     }

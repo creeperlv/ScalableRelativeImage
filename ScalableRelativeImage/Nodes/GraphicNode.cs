@@ -34,11 +34,11 @@ namespace ScalableRelativeImage.Nodes
     }
     public class Line : GraphicNode
     {
-        public float StartX;
-        public float StartY;
-        public float EndX;
-        public float EndY;
-        public float Size;
+        public float StartX=0;
+        public float StartY=0;
+        public float EndX=0;
+        public float EndY=0;
+        public float Size=0;
         public Color? Foreground=null;
         public override void SetValue(string Key, string Value)
         {
@@ -48,7 +48,7 @@ namespace ScalableRelativeImage.Nodes
                     StartX = float.Parse(Value);
                     break;
                 case "StartY":
-                    StartX = float.Parse(Value);
+                    StartY = float.Parse(Value);
                     break;
                 case "EndX":
                     EndX = float.Parse(Value);
@@ -72,9 +72,9 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            float RealWidth = Size / (root.RelativeArea) * profile.TargetWidth * profile.TargetHeight;
+            Console.WriteLine($"Properties:SX={StartX},SY={StartY},EX={EndX},EY={EndY}");
+            float RealWidth = (Size / (root.RelativeArea)) * (profile.TargetWidth * profile.TargetHeight);
             TargetGraphics.DrawLine(new Pen((Foreground==null?profile.DefaultForeground:Foreground.Value), RealWidth), profile.FindTargetPoint(StartX, StartY), profile.FindTargetPoint(EndX, EndY));
-            base.Paint(ref TargetGraphics, profile);
         }
     }
 }
