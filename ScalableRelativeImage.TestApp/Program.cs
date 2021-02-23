@@ -10,6 +10,12 @@ namespace ScalableRelativeImage.TestApp
     <ImageNodeRoot RelativeWidth=""160"" RelativeHeight=""90"">
         <Line StartX=""1"" StartY=""0.2"" EndX=""159"" EndY=""0.2"" Size=""0.01"" Color=""#FFFFFF"">
         </Line>
+        <OutlineCloseCurve Sizr=""0.01"" Color=""#FF2288EE"">
+            <Point X=""10"" Y=""10""/>
+            <Point X=""150"" Y=""10""/>
+            <Point X=""150"" Y=""80""/>
+            <Point X=""10"" Y=""80""/>
+        </OutlineCloseCurve>
     </ImageNodeRoot>
 </ScalableRelativeImage>
 ";

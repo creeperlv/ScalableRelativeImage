@@ -37,6 +37,89 @@ namespace ScalableRelativeImage.Nodes
 #endif
         }
     }
+    public class OutlineCloseCurve : GraphicNode
+    {
+        public float Size = 0;
+        public Color? Foreground = null;
+        static ColorConverter cc = new ColorConverter();
+        public List<INode> Points = new List<INode>();
+
+        public override void SetValue(string Key, string Value)
+        {
+            switch (Key)
+            {
+                case "Size":
+                    Size = float.Parse(Value);
+                    break;
+                case "Color":
+                    {
+                        Foreground = (Color)cc.ConvertFromString(Value);
+                    }
+                    break;
+                default:
+                    base.SetValue(Key, Value);
+                    break;
+            }
+        }
+        public override Dictionary<string, string> GetValueSet()
+        {
+            Dictionary<string, string> dict = new();
+            dict.Add("Size", Size.ToString());
+            if (Foreground is not null)
+                if (Foreground.HasValue is true)
+                    dict.Add("Foreground", "#" + Foreground.Value.ToArgb().ToString("X"));
+            return dict;
+        }
+        public override void AddNode(INode node)
+        {
+            if(node is Point)
+            {
+                Points.Add(node);
+            }
+        }
+        public override List<INode> ListNodes()
+        {
+            return Points;
+        }
+        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        {
+            float RealWidth = (Size / (root.RelativeArea)) * (profile.TargetWidth * profile.TargetHeight);
+            List<PointF> Points = new();
+            foreach (var item in this.Points)
+            {
+                var P = item as Point;
+                Points.Add(profile.FindTargetPoint(P.X, P.Y));
+            }
+            TargetGraphics.DrawClosedCurve(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), Points.ToArray());
+        }
+    }
+    public class Point : GraphicNode
+    {
+        public float X;
+        public float Y;
+        public override void SetValue(string Key, string Value)
+        {
+            switch (Key)
+            {
+                case "X":
+                    X = float.Parse(Value);
+                    break;
+                case "Y":
+                    Y = float.Parse(Value);
+                    break;
+                default:
+                    base.SetValue(Key, Value);
+                    break;
+            }
+        }
+        public override Dictionary<string, string> GetValueSet()
+        {
+            Dictionary<string, string> dict = new();
+            dict.Add("X", X.ToString());
+            dict.Add("Y", Y.ToString());
+            return dict;
+        }
+    }
     public class Line : GraphicNode
     {
         public float StartX = 0;
@@ -90,7 +173,6 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            Console.WriteLine($"Properties:SX={StartX},SY={StartY},EX={EndX},EY={EndY}");
             float RealWidth = (Size / (root.RelativeArea)) * (profile.TargetWidth * profile.TargetHeight);
             TargetGraphics.DrawLine(new Pen((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), profile.FindTargetPoint(StartX, StartY), profile.FindTargetPoint(EndX, EndY));
         }
