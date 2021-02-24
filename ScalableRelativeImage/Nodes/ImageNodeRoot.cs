@@ -47,6 +47,7 @@ namespace ScalableRelativeImage.Nodes
             profile.root = this;
             Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(Bit);
+            g.FillRectangle(new SolidBrush(profile.DefaultBackground), new System.Drawing.Rectangle(0, 0, (int)profile.TargetWidth, (int)profile.TargetHeight));
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             foreach (var item in Childs)
             {

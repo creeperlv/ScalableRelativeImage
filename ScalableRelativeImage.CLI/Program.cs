@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ScalableRelativeImage.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 
 namespace ScalableRelativeImage.CLI
 {
@@ -15,18 +17,50 @@ namespace ScalableRelativeImage.CLI
         {
             Console.WriteLine($"Flavor: {SRIEngine.Flavor}");
             Console.WriteLine($"Format Version: {SRIEngine.FormatVersion}");
+            Console.WriteLine($"");
+            Console.WriteLine($"Available Shapes:");
+            Console.WriteLine($"");
+            //var asm = Assembly.GetAssembly(typeof(SRIEngine));
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var TotalTypes = asm.GetTypes();
+                foreach (var item in TotalTypes)
+                {
+                    if (item.IsAssignableTo(typeof(INode)))
+                    {
+                        if (item.Name != "ImageNodeRoot")
+                            if (item.Name != "INode")
+                            {
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write($"\t{item.Name}");
+                                Console.ResetColor();
+                                Console.WriteLine($" in {item.Namespace}");
+
+                            }
+
+                    }
+                }
+            }
         }
         static void Main(string[] args)
         {
+            Console.WriteLine("Copyright (C) 2021 Creeper Lv");
+            Console.WriteLine("All rights reserved.");
+            Console.WriteLine("");
             Console.WriteLine("Scalable Relative Image CLI Tool");
-            Console.WriteLine("Author: Creeper Lv");
-            Console.WriteLine("This tool is licensed under The MIT License.");   
-            Console.WriteLine("");   
+            Console.WriteLine("");
+            Console.WriteLine("This tool is licensed under The MIT License.");
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("This software is still in active development, every behaviors may change without notification. Please do NOT use it in production environment.");
+            Console.ResetColor();
+            Console.WriteLine("");
             string SourceFile = "";
             string OutFile = "a.png";
             float Width = -1;
             float Height = -1;
             Color Foreground = Color.White;
+            Color Background= Color.Transparent;
             ColorConverter cc = new ColorConverter();
             if (args.Length == 0)
             {
@@ -74,6 +108,16 @@ namespace ScalableRelativeImage.CLI
                         i++;
                         Foreground = (Color)cc.ConvertFromString(args[i]);
                         break;
+                    case "--B":
+                    case "-BACKGROUND":
+                        i++;
+                        Background = (Color)cc.ConvertFromString(args[i]);
+                        break;
+                    case "--E":
+                    case "-EXTENSION":
+                        i++;
+                        Assembly.LoadFile(args[i]);
+                        break;
                     default:
                         break;
                 }
@@ -103,6 +147,7 @@ namespace ScalableRelativeImage.CLI
             renderProfile.TargetWidth = Width;
             renderProfile.TargetHeight = Height;
             renderProfile.DefaultForeground = Foreground;
+            renderProfile.DefaultBackground = Background;
             Console.WriteLine("Rendering...");
             var bitmap = Img.Render(renderProfile);
             if (File.Exists(OutFile)) File.Delete(OutFile);

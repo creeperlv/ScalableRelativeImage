@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ScalableRelativeImage.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "--V"
+    }
+  }
+}

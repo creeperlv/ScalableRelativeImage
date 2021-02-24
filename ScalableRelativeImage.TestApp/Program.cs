@@ -18,22 +18,20 @@ namespace ScalableRelativeImage.TestApp
             <Point X=""150"" Y=""80""/>
             <Point X=""10"" Y=""80""/>
         </Curve>
-        
+        <Text Content=""Hello, SRI"" FontFamily=""Consolas"" FontStyle=""Bold"" Size=""0.5"" X=""10"" Y=""10"" Width=""100"" Height=""80"" Foreground=""#2288EE"" />
     </ImageNodeRoot>
 </ScalableRelativeImage>
 ";
         static void Main(string[] args)
         {
 
-            var image=SRIAnalyzer.Parse(ExampleXmlDocument,out _);
-            Type t = image.GetType();
-            
+            var image = SRIAnalyzer.Parse(ExampleXmlDocument, out _);
             Console.WriteLine($"W={image.RelativeWidth},H={image.RelativeHeight}");
-            Console.WriteLine($"T.Name={t.Name},T.FullName={t.FullName},T.Namespace={t.Namespace}");
 
-            var bitmap=image.Render(new RenderProfile() { TargetWidth = 1600, TargetHeight = 900 });
+            var bitmap = image.Render(new RenderProfile() { TargetWidth = 1600, TargetHeight = 900 });
             bitmap.Save("Test.png");
             Console.WriteLine(SRICompositor.ToXMLString(image));
+            Console.WriteLine("Done.");
         }
     }
 }
