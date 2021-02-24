@@ -36,16 +36,17 @@ namespace ScalableRelativeImage
         public static ImageNodeRoot Deserialize(Stream stream, out List<ExecutionWarning> warnings)
         {
             StreamReader streamReader = new StreamReader(stream);
-            return Deserialize(streamReader.ReadToEnd(),out warnings);
+            return Deserialize(streamReader.ReadToEnd(), out warnings);
         }
         public static string SerializeToString(ImageNodeRoot imageRoot)
         {
             return SRICompositor.ToXMLString(imageRoot);
         }
-        public static void SerializeToFile(ImageNodeRoot imageRoot,FileInfo file)
+        public static void SerializeToFile(ImageNodeRoot imageRoot, FileInfo file)
         {
             string content = SRICompositor.ToXMLString(imageRoot);
-            File.Delete(file.FullName);
+            if (file.Exists)
+                File.Delete(file.FullName);
             File.Create(file.FullName).Close();
             File.WriteAllText(file.FullName, content);
         }
