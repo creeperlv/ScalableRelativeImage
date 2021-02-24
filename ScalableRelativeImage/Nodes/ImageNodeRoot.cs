@@ -22,7 +22,7 @@ namespace ScalableRelativeImage.Nodes
         internal float _RelativeHeight = 0;
         internal float RelativeArea;
         public List<GraphicNode> Childs = new();
-        internal ImageNodeRoot()
+        public ImageNodeRoot()
         {
 
         }

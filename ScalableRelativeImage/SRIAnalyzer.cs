@@ -17,7 +17,7 @@ namespace ScalableRelativeImage
     {
         public float TargetWidth;
         public float TargetHeight;
-        public Color DefaultForeground;
+        public Color DefaultForeground=Color.White;
         public Color DefaultBackground=Color.Transparent;
         internal ImageNodeRoot root;
 
