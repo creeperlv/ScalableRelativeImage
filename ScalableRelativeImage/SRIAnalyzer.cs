@@ -38,16 +38,51 @@ namespace ScalableRelativeImage
             }
         }
     }
+    public record ExecutionWarning
+    {
+        public string ID;
+        public string Message;
+        public ExecutionWarning(string ID,string Message)
+        {
+            this.ID = ID;
+            this.Message = Message;
+        }
+    }
     public class SRIAnalyzer
     {
         internal static ColorConverter cc = new ColorConverter();
-        public static ImageNodeRoot Parse(string Content)
+        public static ImageNodeRoot Parse(string Content,out List<ExecutionWarning> executionWarnings)
         {
+            List<ExecutionWarning> ExecutionWarnings = new List<ExecutionWarning>();
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(Content);
+            {
+                //Check File Attributes;
+                var attr= GetAttributes(xmlDocument.ChildNodes[0]);
+                foreach (var item in attr)
+                {
+                    switch (item.Key)
+                    {
+                        case "Flavor":
+                            if (item.Value != SRIEngine.Flavor)
+                            {
+                                ExecutionWarnings.Add(new ExecutionWarning("SRI000", "File flavor does not match the flavor that this engine uses, result may vary."));
+                            }
+                            break;
+                        case "FormatVersion":
+                            if (Version.Parse(item.Value)>SRIEngine.FormatVersion)
+                            {
+                                ExecutionWarnings.Add(new ExecutionWarning("SRI001", "File format version is higher than the version that engine supports, result may broken."));
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             var l = xmlDocument.ChildNodes[0].ChildNodes;
             XmlNode ImageNodeRootNode = null;
-            ImageNodeRoot ImageRoot = null;
+            ImageNodeRoot ImageRoot;
             List<ImageReference> references = new List<ImageReference>();
             for (int i = 0; i < l.Count; i++)
             {
@@ -87,16 +122,17 @@ namespace ScalableRelativeImage
                 }
                 foreach (var item in GetNodes(ImageNodeRootNode))
                 {
-                    ResolveRecursively(ImageRoot, ImageRoot, item, ref references);
+                    ResolveRecursively(ImageRoot, ImageRoot, item, ref references,ref ExecutionWarnings);
                 }
             }
             else
             {
                 throw new InvalidDataException();
             }
+            executionWarnings = ExecutionWarnings;
             return ImageRoot;
         }
-        internal static void ResolveRecursively(ImageNodeRoot root, INode Parent, XmlNode node, ref List<ImageReference> references)
+        internal static void ResolveRecursively(ImageNodeRoot root, INode Parent, XmlNode node, ref List<ImageReference> references,ref List<ExecutionWarning> executionWarnings)
         {
 
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
@@ -121,7 +157,7 @@ namespace ScalableRelativeImage
                         var NodeSubNode = GetNodes(node);
                         foreach (var subnode in NodeSubNode)
                         {
-                            ResolveRecursively(root, inode, subnode, ref references);
+                            ResolveRecursively(root, inode, subnode, ref references,ref executionWarnings);
                         }
                         Parent.AddNode(inode);
                     }

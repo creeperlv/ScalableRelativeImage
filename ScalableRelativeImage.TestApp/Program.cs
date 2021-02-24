@@ -24,10 +24,16 @@ namespace ScalableRelativeImage.TestApp
 ";
         static void Main(string[] args)
         {
-            var image=SRIAnalyzer.Parse(ExampleXmlDocument);
+
+            var image=SRIAnalyzer.Parse(ExampleXmlDocument,out _);
+            Type t = image.GetType();
+            
             Console.WriteLine($"W={image.RelativeWidth},H={image.RelativeHeight}");
+            Console.WriteLine($"T.Name={t.Name},T.FullName={t.FullName},T.Namespace={t.Namespace}");
+
             var bitmap=image.Render(new RenderProfile() { TargetWidth = 1600, TargetHeight = 900 });
             bitmap.Save("Test.png");
+            Console.WriteLine(SRICompositor.ToXMLString(image));
         }
     }
 }
