@@ -37,10 +37,11 @@ namespace ScalableRelativeImage.Nodes
 #endif
         }
     }
-    public class OutlineCloseCurve : GraphicNode
+    public class CloseCurve : GraphicNode
     {
         public float Size = 0;
         public Color? Foreground = null;
+        public bool Fill = false;
         public List<INode> Points = new List<INode>();
 
         public override void SetValue(string Key, string Value)
@@ -49,6 +50,9 @@ namespace ScalableRelativeImage.Nodes
             {
                 case "Size":
                     Size = float.Parse(Value);
+                    break;
+                case "Fill":
+                    Fill = bool.Parse(Value);
                     break;
                 case "Color":
                     {
@@ -64,6 +68,7 @@ namespace ScalableRelativeImage.Nodes
         {
             Dictionary<string, string> dict = new();
             dict.Add("Size", Size.ToString());
+            dict.Add("Fill", Fill.ToString());
             if (Foreground is not null)
                 if (Foreground.HasValue is true)
                     dict.Add("Foreground", "#" + Foreground.Value.ToArgb().ToString("X"));
@@ -71,7 +76,7 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void AddNode(INode node)
         {
-            if(node is Point)
+            if (node is Point)
             {
                 Points.Add(node);
             }
@@ -89,7 +94,10 @@ namespace ScalableRelativeImage.Nodes
                 var P = item as Point;
                 Points.Add(profile.FindTargetPoint(P.X, P.Y));
             }
-            TargetGraphics.DrawClosedCurve(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), Points.ToArray());
+            if (Fill is false)
+                TargetGraphics.DrawClosedCurve(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), Points.ToArray());
+            else
+                TargetGraphics.FillClosedCurve(new SolidBrush((Foreground == null ? profile.DefaultForeground : Foreground.Value)), Points.ToArray());
         }
     }
     public class Point : GraphicNode

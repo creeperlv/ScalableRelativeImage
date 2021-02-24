@@ -1,13 +1,15 @@
-﻿using System;
+﻿using ScalableRelativeImage.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
-    public class Curve : GraphicNode
+    public class Lines:GraphicNode
     {
         public float Size = 0;
         public Color? Foreground = null;
@@ -59,7 +61,7 @@ namespace ScalableRelativeImage.Nodes
                 var P = item as Point;
                 Points.Add(profile.FindTargetPoint(P.X, P.Y));
             }
-            TargetGraphics.DrawCurve(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), Points.ToArray());
+            TargetGraphics.DrawLines(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), Points.ToArray());
 
         }
     }
