@@ -27,7 +27,7 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("Fill", Fill.ToString());
             if (Foreground is not null)
                 if (Foreground.HasValue is true)
-                    dict.Add("Foreground", "#" + Foreground.Value.ToArgb().ToString("X"));
+                    dict.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
             return dict;
         }
         public override void SetValue(string Key, string Value)

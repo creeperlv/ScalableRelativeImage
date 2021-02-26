@@ -63,7 +63,7 @@ namespace ScalableRelativeImage.Nodes
                         Height = float.Parse(Value);
                     }
                     break;
-                case "Foreground":
+                case "Color":
                     {
                         Foreground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
                     }
@@ -85,7 +85,7 @@ namespace ScalableRelativeImage.Nodes
             result.Add("Height", Height.ToString());
             if (Foreground is not null)
                 if (Foreground.HasValue is true)
-                    result.Add("Foreground", "#" + Foreground.Value.ToArgb().ToString("X"));
+                    result.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
             return result;
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)

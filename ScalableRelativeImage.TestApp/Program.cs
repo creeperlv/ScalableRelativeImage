@@ -22,7 +22,13 @@ namespace ScalableRelativeImage.TestApp
             <Point X=""150"" Y=""80""/>
             <Point X=""10"" Y=""80""/>
         </Curve>
-        <Text Content=""Hello, SRI"" FontFamily=""Consolas"" FontStyle=""Bold"" Size=""0.5"" X=""10"" Y=""10"" Width=""100"" Height=""80"" Foreground=""#2288EE"" />
+        <Path Foreground=""Pink"" Fill=""True"">
+            <PathNode X=""5"" Y=""5""/>
+            <PathNode X=""10"" Y=""5""/>
+            <PathNode X=""10"" Y=""10""/>
+            <PathNode X=""16"" Y=""18""/>
+        </Path>
+        <Text Content=""Hello, SRI"" FontFamily=""Consolas"" FontStyle=""Bold"" Size=""0.5"" X=""10"" Y=""10"" Width=""100"" Height=""80"" Color=""#2288EE"" />
     </ImageNodeRoot>
 </ScalableRelativeImage>
 ";
