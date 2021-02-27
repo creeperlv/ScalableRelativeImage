@@ -17,8 +17,8 @@ namespace ScalableRelativeImage
     {
         public float TargetWidth;
         public float TargetHeight;
-        public Color DefaultForeground=Color.White;
-        public Color DefaultBackground=Color.Transparent;
+        public Color DefaultForeground = Color.White;
+        public Color DefaultBackground = Color.Transparent;
         internal ImageNodeRoot root;
 
         public PointF FindTargetPoint(float RX, float RY)
@@ -42,7 +42,7 @@ namespace ScalableRelativeImage
     {
         public string ID;
         public string Message;
-        public ExecutionWarning(string ID,string Message)
+        public ExecutionWarning(string ID, string Message)
         {
             this.ID = ID;
             this.Message = Message;
@@ -51,14 +51,23 @@ namespace ScalableRelativeImage
     public class SRIAnalyzer
     {
         internal static ColorConverter cc = new ColorConverter();
-        public static ImageNodeRoot Parse(string Content,out List<ExecutionWarning> executionWarnings)
+        public static ImageNodeRoot Parse(string Content, out List<ExecutionWarning> executionWarnings)
         {
             List<ExecutionWarning> ExecutionWarnings = new List<ExecutionWarning>();
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(Content);
+
+            XmlNode RealRoot = null;
+            for (int i = 0; i < xmlDocument.ChildNodes.Count; i++)
+            {
+                if (xmlDocument.ChildNodes[i].Name == "ScalableRelativeImage")
+                {
+                    RealRoot = xmlDocument.ChildNodes[i]; break;
+                }
+            }
             {
                 //Check File Attributes;
-                var attr= GetAttributes(xmlDocument.ChildNodes[0]);
+                var attr = GetAttributes(RealRoot);
                 foreach (var item in attr)
                 {
                     switch (item.Key)
@@ -70,7 +79,7 @@ namespace ScalableRelativeImage
                             }
                             break;
                         case "FormatVersion":
-                            if (Version.Parse(item.Value)>SRIEngine.FormatVersion)
+                            if (Version.Parse(item.Value) > SRIEngine.FormatVersion)
                             {
                                 ExecutionWarnings.Add(new ExecutionWarning("SRI001", "File format version is higher than the version that engine supports, result may broken."));
                             }
@@ -80,7 +89,7 @@ namespace ScalableRelativeImage
                     }
                 }
             }
-            var l = xmlDocument.ChildNodes[0].ChildNodes;
+            var l = RealRoot.ChildNodes;
             XmlNode ImageNodeRootNode = null;
             ImageNodeRoot ImageRoot;
             List<ImageReference> references = new List<ImageReference>();
@@ -122,7 +131,7 @@ namespace ScalableRelativeImage
                 }
                 foreach (var item in GetNodes(ImageNodeRootNode))
                 {
-                    ResolveRecursively(ImageRoot, ImageRoot, item, ref references,ref ExecutionWarnings);
+                    ResolveRecursively(ImageRoot, ImageRoot, item, ref references, ref ExecutionWarnings);
                 }
             }
             else
@@ -132,7 +141,7 @@ namespace ScalableRelativeImage
             executionWarnings = ExecutionWarnings;
             return ImageRoot;
         }
-        internal static void ResolveRecursively(ImageNodeRoot root, INode Parent, XmlNode node, ref List<ImageReference> references,ref List<ExecutionWarning> executionWarnings)
+        internal static void ResolveRecursively(ImageNodeRoot root, INode Parent, XmlNode node, ref List<ImageReference> references, ref List<ExecutionWarning> executionWarnings)
         {
 
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
@@ -157,7 +166,7 @@ namespace ScalableRelativeImage
                         var NodeSubNode = GetNodes(node);
                         foreach (var subnode in NodeSubNode)
                         {
-                            ResolveRecursively(root, inode, subnode, ref references,ref executionWarnings);
+                            ResolveRecursively(root, inode, subnode, ref references, ref executionWarnings);
                         }
                         Parent.AddNode(inode);
                     }

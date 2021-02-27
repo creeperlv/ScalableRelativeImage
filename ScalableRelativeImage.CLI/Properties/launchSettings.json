@@ -2,7 +2,7 @@
   "profiles": {
     "ScalableRelativeImage.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "--V"
+      "commandLineArgs": " --s .\\TestPic.sri --w 1920 --h 1080"
     }
   }
 }

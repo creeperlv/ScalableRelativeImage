@@ -62,14 +62,6 @@ namespace ScalableRelativeImage.CLI
             Color Foreground = Color.White;
             Color Background= Color.Transparent;
             ColorConverter cc = new ColorConverter();
-            if (args.Length == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("FATAL ERROR:");
-                Console.ResetColor();
-                Console.WriteLine("Please specify a source file!");
-                return;
-            }
             for (int i = 0; i < args.Length; i++)
             {
                 var item = args[i];
@@ -123,6 +115,14 @@ namespace ScalableRelativeImage.CLI
                 }
             }
             List<ExecutionWarning> warnings;
+            if (SourceFile == "")
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("FATAL ERROR:");
+                Console.ResetColor();
+                Console.WriteLine("Please specify a source file!");
+                return;
+            }
             Console.WriteLine("Resolving...");
             var Img = SRIEngine.Deserialize(new FileInfo(SourceFile), out warnings);
             if (warnings.Count == 0)
