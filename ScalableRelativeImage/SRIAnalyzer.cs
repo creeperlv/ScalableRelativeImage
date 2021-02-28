@@ -30,7 +30,7 @@ namespace ScalableRelativeImage
         {
             if (RelativeSize > 0)
             {
-                return (RelativeSize / (root.RelativeArea)) * (TargetWidth * TargetHeight);
+                return (RelativeSize / MathF.Sqrt(root.RelativeArea)) * MathF.Sqrt(TargetWidth * TargetHeight);
             }
             else
             {

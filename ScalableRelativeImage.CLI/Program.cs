@@ -68,7 +68,9 @@ namespace ScalableRelativeImage.CLI
                 switch (item.ToUpper())
                 {
                     case "-H":
+                    case "-HELP":
                     case "-?":
+                    case "--?":
                         PrintHelp();
                         return;
                     case "--V":
