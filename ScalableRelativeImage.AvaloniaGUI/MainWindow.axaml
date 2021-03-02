@@ -1,0 +1,57 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+        xmlns:AvalonEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ScalableRelativeImage.AvaloniaGUI.MainWindow"
+        Title="ScalableRelativeImage.AvaloniaGUI">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="auto"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <ScrollViewer Width="200" Background="#2AAA" HorizontalContentAlignment="Stretch">
+      <StackPanel HorizontalAlignment="Stretch">
+        <ToggleButton HorizontalAlignment="Stretch" Content="Files" Name="FilesTab"/>
+        <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #FilesTab.IsChecked}" Margin="5,0">
+          <Button HorizontalAlignment="Stretch" Content="Open"/>
+          <Button HorizontalAlignment="Stretch" Content="Save"/>
+          <Button HorizontalAlignment="Stretch" Content="Save As"/>
+          <Button HorizontalAlignment="Stretch" Content="New"/>
+        </StackPanel>
+        <ToggleButton HorizontalAlignment="Stretch" Content="Help" Name="HelpTab"/>
+        <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #HelpTab.IsChecked}" Margin="5,0">
+          <Button HorizontalAlignment="Stretch" Content="Github Repository"/>
+          <Button HorizontalAlignment="Stretch" Content="About"/>
+        </StackPanel>
+        <StackPanel></StackPanel>
+      </StackPanel>
+    </ScrollViewer>
+    <Grid Grid.Column="1" HorizontalAlignment="Stretch" Background="#1AAA">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <StackPanel Orientation="Horizontal">
+        <Button>
+          <i:Icon Value="fas fa-sync" />
+        </Button>
+      </StackPanel>
+      <AvalonEdit:TextEditor Grid.Row="1" Name="Editor" Background="#1AAA"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             Margin="0" FontFamily="Sarasa Mono CL"
+                             Foreground="White" WordWrap="True"
+                             SyntaxHighlighting="XML"
+                             HorizontalScrollBarVisibility="Auto"
+                             VerticalScrollBarVisibility="Visible" IsVisible="True" IsEnabled="True"
+                             TextBlock.FontSize="12" />
+    </Grid>
+    <Grid Grid.Column="2">
+      <Image Name="Preview"/>
+    </Grid>
+  </Grid>
+</Window>
