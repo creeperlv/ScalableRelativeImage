@@ -12,6 +12,7 @@ namespace ScalableRelativeImage
     public class ImageReference
     {
         public string Namespace;
+        public string DLLFile = null;
     }
     public class RenderProfile
     {
@@ -51,7 +52,7 @@ namespace ScalableRelativeImage
     public class SRIAnalyzer
     {
         internal static ColorConverter cc = new ColorConverter();
-        public static ImageNodeRoot Parse(string Content, out List<ExecutionWarning> executionWarnings)
+        public static ImageNodeRoot Parse(string Content, out List<ExecutionWarning> executionWarnings,DirectoryInfo[] DllPaths=null)
         {
             List<ExecutionWarning> ExecutionWarnings = new List<ExecutionWarning>();
             XmlDocument xmlDocument = new XmlDocument();
@@ -110,7 +111,10 @@ namespace ScalableRelativeImage
                         {
                             reference.Namespace = attr.Value;
                             references.Add(reference);
-                            break;
+                        }
+                        else if (attr.Key == "DLLFile")
+                        {
+                            reference.DLLFile = attr.Value;
                         }
                     }
                     //var NS= item.Attributes["Namespace"];
@@ -121,6 +125,63 @@ namespace ScalableRelativeImage
             foreach (var item in references)
             {
                 Trace.WriteLine("R:" + item.Namespace);
+                if (item.DLLFile is not null or "")
+                {
+                    FileInfo file = new (item.DLLFile);
+                    bool v = false;
+                    foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                    {
+
+                        try
+                        {
+                            FileInfo fi = new(asm.FullName);
+                            if (fi.Name == file.Name)
+                            {
+                                v = true;
+                                break;
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                    if (v == true)
+                    {
+                        if (file.Exists)
+                        {
+                            Assembly.LoadFrom(file.FullName);
+                        }
+                        else
+                        {
+                            if (DllPaths != null)
+                            {
+                                bool isMatch = false;
+                                foreach (var libPath in DllPaths)
+                                {
+
+                                    foreach (var libFile in libPath.EnumerateFiles())
+                                    {
+                                        if (libFile.Name == file.Name)
+                                        {
+                                            isMatch = true;
+                                            Assembly.LoadFrom(file.FullName);
+                                            break;
+                                        }
+                                    }
+                                    if (isMatch == true) break;
+                                }
+                                if(isMatch is false)
+                                {
+                                    ExecutionWarnings.Add(new ExecutionWarning("SRI002", $"Cannot find load target DLL file:{item.DLLFile}"));
+                                }
+                            }
+                        }
+                    }
+                }
             }
             if (ImageNodeRootNode is not null)
             {
@@ -143,7 +204,7 @@ namespace ScalableRelativeImage
         }
         internal static void ResolveRecursively(ImageNodeRoot root, INode Parent, XmlNode node, ref List<ImageReference> references, ref List<ExecutionWarning> executionWarnings)
         {
-
+            bool v = false;
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var reference in references)
@@ -169,8 +230,11 @@ namespace ScalableRelativeImage
                             ResolveRecursively(root, inode, subnode, ref references, ref executionWarnings);
                         }
                         Parent.AddNode(inode);
+                        v = true;
+                        break;
                     }
                 }
+                if (v is true) break;
             }
         }
         internal static List<XmlNode> GetNodes(XmlNode node)

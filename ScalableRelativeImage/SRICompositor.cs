@@ -31,6 +31,10 @@ namespace ScalableRelativeImage
             {
                 var imgref = xmlDocument.CreateNode(XmlNodeType.Element, "ImageReference", null);
                 imgref.Attributes.Append(CreateAttribute(ref xmlDocument,"Namespace",item.Namespace));
+                if(item.DLLFile is not null)
+                {
+                    imgref.Attributes.Append(CreateAttribute(ref xmlDocument, "DLLFile", item.DLLFile));
+                }
                 rootN.PrependChild(imgref);
             }
             xmlDocument.AppendChild(rootN);
