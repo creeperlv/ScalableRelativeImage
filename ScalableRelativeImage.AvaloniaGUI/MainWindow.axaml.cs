@@ -10,14 +10,15 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.AvaloniaGUI
 {
     public class MainWindow : Window
     {
-        public static readonly string Template = @"<ScalableRelativeImage Flavor=""CreeperLv.SRI"" FormatVersion=""1.0.0.0"">
+        public static readonly string SRIContentTemplate = @"<ScalableRelativeImage Flavor=""CreeperLv.SRI"" FormatVersion=""1.0.0.0"">
   <ImageNodeRoot RelativeWidth=""1920"" RelativeHeight=""1080"">
-   <!-Shapes Here...-->
+   <!--Shapes Here...-->
   </ImageNodeRoot>
 </ScalableRelativeImage>";
         public MainWindow()
@@ -39,9 +40,10 @@ namespace ScalableRelativeImage.AvaloniaGUI
             void NewDocument()
             {
                 if (CentralEditor is not null)
-                    CentralEditor.Text = Template;
+                    CentralEditor.Text = SRIContentTemplate;
+                CurrentFile = null;
             };
-            if(CloseWarningsViewButton is not null)
+            if (CloseWarningsViewButton is not null)
             {
                 CloseWarningsViewButton.Click += (_, _) =>
                 {
@@ -60,13 +62,80 @@ namespace ScalableRelativeImage.AvaloniaGUI
                          if (filePick.Length > 0)
                          {
                              var content = File.ReadAllText(filePick[0]);
+                             CurrentFile = filePick[0];
                              CentralEditor.Text = content;
                          }
                      }
                  };
             }
-        }
+            if (SaveButton is not null)
+            {
+                SaveButton.Click += async (_, _) =>
+                 {
+                     if (CurrentFile is null) await SaveAs(); else Save();
+                 };
+            }
+            if (SaveAsButton is not null)
+            {
+                SaveAsButton.Click += async (_, _) =>
+                {
+                    await SaveAs();
+                };
+            }
+            if(RenderImageButton is not null)
+            {
+                RenderImageButton.Click +=async (_, _) => {
 
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    var result = await sfd.ShowAsync(this);
+                    if (result is not null)
+                    {
+                        var VI = Compile();
+                        if (WidthBox is not null && HeightBox is not null && VI is not null)
+                        {
+
+                            RenderProfile profile = new RenderProfile();
+                            try
+                            {
+                                profile.TargetWidth = float.Parse(WidthBox.Text);
+
+                            }
+                            catch (System.Exception)
+                            {
+                                profile.TargetWidth = VI.RelativeWidth;
+                            }
+                            try
+                            {
+                                profile.TargetHeight = float.Parse(HeightBox.Text);
+                            }
+                            catch (System.Exception)
+                            {
+                                profile.TargetHeight = VI.RelativeHeight;
+                            }
+                            var img = VI.Render(profile);
+                            img.Save(result);
+                        }
+                    }
+                };
+            }
+            async Task SaveAs()
+            {
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                var result = await sfd.ShowAsync(this);
+                if (result is not null)
+                {
+                    CurrentFile = result;
+                    Save();
+                }
+            }
+            void Save()
+            {
+                if (CentralEditor is not null && CurrentFile is not null)
+                    File.WriteAllText(CurrentFile, CentralEditor.Text);
+            }
+        }
+        string? CurrentFile = null;
         private void RefreshButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Trace.WriteLine("Try Refresh");
@@ -79,6 +148,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                                 try
                                 {
                                     var vectorimg = Compile();
+                                    if (vectorimg is null) return;
                                     RenderProfile profile = new RenderProfile();
                                     float Scale = 1.0f;
                                     try
@@ -113,10 +183,13 @@ namespace ScalableRelativeImage.AvaloniaGUI
                                     memoryStream.Position = 0;
                                     Bitmap b = new Bitmap(memoryStream);
                                     ImagePreview.Source = b;
+                                    ImagePreview.Width = profile.TargetWidth;
+                                    ImagePreview.Height = profile.TargetHeight;
                                     return;
                                 }
                                 catch (System.Exception exception)
                                 {
+
                                     Trace.WriteLine(exception);
                                 }
 
@@ -133,8 +206,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 WarningsStackPanel.Children.Clear();
                 if (Warnings.Count is not 0)
                 {
-                    if(WarningsView is not null)
-                    WarningsView.IsVisible = true;
+                    if (WarningsView is not null)
+                        WarningsView.IsVisible = true;
                     foreach (var item in Warnings)
                     {
 
@@ -154,6 +227,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Button? SaveAsButton;
         Button? NewButton;
         Button? RefreshButton;
+        Button? RenderImageButton;
         TextEditor? CentralEditor;
         Image? ImagePreview;
         TextBox? WidthBox;
@@ -166,6 +240,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
             AvaloniaXamlLoader.Load(this);
             OpenButton = this.FindControl<Button>("OpenButton");
             CloseWarningsViewButton = this.FindControl<Button>("CloseWarningsViewButton");
+            RenderImageButton = this.FindControl<Button>("RenderImageButton");
             SaveButton = this.FindControl<Button>("SaveButton");
             SaveAsButton = this.FindControl<Button>("SaveAsButton");
             NewButton = this.FindControl<Button>("NewButton");

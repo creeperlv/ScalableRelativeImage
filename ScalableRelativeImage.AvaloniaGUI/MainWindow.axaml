@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
         xmlns:AvalonEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" MinWidth="800" MinHeight="400"
         x:Class="ScalableRelativeImage.AvaloniaGUI.MainWindow"
         Title="ScalableRelativeImage.AvaloniaGUI">
   <Grid>
@@ -13,7 +13,7 @@
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
-    <ScrollViewer Width="200" Background="#3AAA" HorizontalContentAlignment="Stretch">
+    <ScrollViewer Width="210" HorizontalScrollBarVisibility="Disabled" Background="#3AAA" HorizontalContentAlignment="Stretch">
       <StackPanel HorizontalAlignment="Stretch" Margin="5,0">
         <TextBlock Text="SRI GUI Tool" FontSize="24" Margin="5" TextWrapping="Wrap"/>
         <ToggleButton HorizontalAlignment="Stretch" Content="Files" Name="FilesTab"/>
@@ -22,11 +22,13 @@
           <Button HorizontalAlignment="Stretch" Content="Save" Name="SaveButton"/>
           <Button HorizontalAlignment="Stretch" Content="Save As" Name="SaveAsButton"/>
           <Button HorizontalAlignment="Stretch" Content="New" Name="NewButton"/>
+          <Line Height="1" Margin="2" Stroke="#AAA" StartPoint="0,0" EndPoint="180,1" Fill="#AAA"/>
+          <Button HorizontalAlignment="Stretch" Content="Close" Name="CloseButton"/>
         </StackPanel>
 
         <ToggleButton HorizontalAlignment="Stretch" Content="Tools" Name="ToolTab"/>
         <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #ToolTab.IsChecked}" Margin="5,0">
-          <Button HorizontalAlignment="Stretch" Content="Render To Image"/>
+          <Button HorizontalAlignment="Stretch" Content="Render To Image" Name="RenderImageButton"/>
           <Button HorizontalAlignment="Stretch" Content="View Extensions"/>
           <Button HorizontalAlignment="Stretch" Content="Add Extension"/>
           <Button HorizontalAlignment="Stretch" Content="Remove Extension"/>
@@ -68,7 +70,9 @@
                              SyntaxHighlighting="XML" ShowLineNumbers="True"
                              HorizontalScrollBarVisibility="Auto"
                              VerticalScrollBarVisibility="Visible" IsVisible="True" IsEnabled="True"
-                             TextBlock.FontSize="12" x:Name="CentralEditor"/>
+                             TextBlock.FontSize="12" x:Name="CentralEditor">
+
+      </AvalonEdit:TextEditor>
       <Grid Grid.Row="2"  Name="WarningsView" IsVisible="False">
         <Grid.RowDefinitions>
           <RowDefinition/>
@@ -80,15 +84,16 @@
         </Grid>
         <ScrollViewer Grid.Row="1">
           <StackPanel Name="WarningsStackPanel"/>
-        </ScrollViewer>  
+        </ScrollViewer>
       </Grid>
-      
+
     </Grid>
     <Grid Grid.Column="2">
       <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Viewbox Name="PreviewPresenter">
           <Image Name="ImagePreview"/>
-        </Viewbox>
+        <!--<Viewbox Name="PreviewPresenter">
+          <Image Name="ImagePreview"/>
+        </Viewbox>-->
       </ScrollViewer>
     </Grid>
   </Grid>
