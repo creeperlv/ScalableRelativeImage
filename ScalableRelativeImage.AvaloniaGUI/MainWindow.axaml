@@ -13,45 +13,68 @@
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
-    <ScrollViewer Width="200" Background="#2AAA" HorizontalContentAlignment="Stretch">
-      <StackPanel HorizontalAlignment="Stretch">
+    <ScrollViewer Width="200" Background="#3AAA" HorizontalContentAlignment="Stretch">
+      <StackPanel HorizontalAlignment="Stretch" Margin="5,0">
+        <TextBlock Text="SRI GUI Tool" FontSize="24" Margin="5" TextWrapping="Wrap"/>
         <ToggleButton HorizontalAlignment="Stretch" Content="Files" Name="FilesTab"/>
         <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #FilesTab.IsChecked}" Margin="5,0">
-          <Button HorizontalAlignment="Stretch" Content="Open"/>
-          <Button HorizontalAlignment="Stretch" Content="Save"/>
-          <Button HorizontalAlignment="Stretch" Content="Save As"/>
-          <Button HorizontalAlignment="Stretch" Content="New"/>
+          <Button HorizontalAlignment="Stretch" Content="Open" Name="OpenButton"/>
+          <Button HorizontalAlignment="Stretch" Content="Save" Name="SaveButton"/>
+          <Button HorizontalAlignment="Stretch" Content="Save As" Name="SaveAsButton"/>
+          <Button HorizontalAlignment="Stretch" Content="New" Name="NewButton"/>
         </StackPanel>
+
+        <ToggleButton HorizontalAlignment="Stretch" Content="Tools" Name="ToolTab"/>
+        <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #ToolTab.IsChecked}" Margin="5,0">
+          <Button HorizontalAlignment="Stretch" Content="Render To Image"/>
+          <Button HorizontalAlignment="Stretch" Content="View Extensions"/>
+          <Button HorizontalAlignment="Stretch" Content="Add Extension"/>
+          <Button HorizontalAlignment="Stretch" Content="Remove Extension"/>
+        </StackPanel>
+
         <ToggleButton HorizontalAlignment="Stretch" Content="Help" Name="HelpTab"/>
         <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #HelpTab.IsChecked}" Margin="5,0">
           <Button HorizontalAlignment="Stretch" Content="Github Repository"/>
           <Button HorizontalAlignment="Stretch" Content="About"/>
         </StackPanel>
+        <ToggleButton HorizontalAlignment="Stretch" Content="Settings" Name="SettingsTab" IsChecked="True"/>
+        <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #SettingsTab.IsChecked}" Margin="5,0">
+          <TextBlock Text="Image Width" Margin="0,5"/>
+          <TextBox Name="ImageWidthBox" Watermark="Pure Number"/>
+          <TextBlock Text="Image Height" Margin="0,5"/>
+          <TextBox Name="ImageHeightBox" Watermark="Pure Number"/>
+          <TextBlock Text="Preview Image Scale" Margin="0,5"/>
+          <TextBox Name="PreviewImageScaleBox" Text="1.0" Watermark="Pure Number"/>
+        </StackPanel>
         <StackPanel></StackPanel>
       </StackPanel>
     </ScrollViewer>
-    <Grid Grid.Column="1" HorizontalAlignment="Stretch" Background="#1AAA">
+    <Grid Grid.Column="1" HorizontalAlignment="Stretch" Background="#2AAA">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition/>
       </Grid.RowDefinitions>
       <StackPanel Orientation="Horizontal">
-        <Button>
+        <Button Name="RefreshButton">
           <i:Icon Value="fas fa-sync" />
         </Button>
       </StackPanel>
-      <AvalonEdit:TextEditor Grid.Row="1" Name="Editor" Background="#1AAA"
+      <AvalonEdit:TextEditor Grid.Row="1" Name="CentralEditor" Background="#0AAA"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
-                             Margin="0" FontFamily="Sarasa Mono CL"
+                             Margin="5" FontFamily="Sarasa Mono CL"
                              Foreground="White" WordWrap="True"
-                             SyntaxHighlighting="XML"
+                             SyntaxHighlighting="XML" ShowLineNumbers="True"
                              HorizontalScrollBarVisibility="Auto"
                              VerticalScrollBarVisibility="Visible" IsVisible="True" IsEnabled="True"
-                             TextBlock.FontSize="12" />
+                             TextBlock.FontSize="12" x:Name="CentralEditor"/>
     </Grid>
     <Grid Grid.Column="2">
-      <Image Name="Preview"/>
+      <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Viewbox Name="PreviewPresenter">
+          <Image Name="ImagePreview"/>
+        </Viewbox>
+      </ScrollViewer>
     </Grid>
   </Grid>
 </Window>
