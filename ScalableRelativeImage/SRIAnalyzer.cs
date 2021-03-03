@@ -39,6 +39,18 @@ namespace ScalableRelativeImage
             }
         }
     }
+    public record ShapeDisposedWarning : ExecutionWarning
+    {
+        public ShapeDisposedWarning(INode node) : base("SRI005", $"Shape \"{node.GetType().Name}\" has been disposed.") { }
+    }
+    public record ShapeMismatchWarning : ExecutionWarning
+    {
+        public ShapeMismatchWarning(object receieved, Type Target) : base("SRI004", $"Shape {receieved.GetType().Name} does not match required shape \"{Target.Name}\"") { }
+    }
+    public record DataDisposedWarning : ExecutionWarning
+    {
+        public DataDisposedWarning(string Key, string Value) : base("SRI003", $"Data \"{Value}\"(\"{Key}\") has been disposed.") { }
+    }
     public record ExecutionWarning
     {
         public string ID;
@@ -52,7 +64,7 @@ namespace ScalableRelativeImage
     public class SRIAnalyzer
     {
         internal static ColorConverter cc = new ColorConverter();
-        public static ImageNodeRoot Parse(string Content, out List<ExecutionWarning> executionWarnings,DirectoryInfo[] DllPaths=null)
+        public static ImageNodeRoot Parse(string Content, out List<ExecutionWarning> executionWarnings, DirectoryInfo[] DllPaths = null)
         {
             List<ExecutionWarning> ExecutionWarnings = new List<ExecutionWarning>();
             XmlDocument xmlDocument = new XmlDocument();
@@ -127,7 +139,7 @@ namespace ScalableRelativeImage
                 Trace.WriteLine("R:" + item.Namespace);
                 if (item.DLLFile is not null or "")
                 {
-                    FileInfo file = new (item.DLLFile);
+                    FileInfo file = new(item.DLLFile);
                     bool v = false;
                     foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
                     {
@@ -174,7 +186,7 @@ namespace ScalableRelativeImage
                                     }
                                     if (isMatch == true) break;
                                 }
-                                if(isMatch is false)
+                                if (isMatch is false)
                                 {
                                     ExecutionWarnings.Add(new ExecutionWarning("SRI002", $"Cannot find load target DLL file:{item.DLLFile}"));
                                 }
@@ -188,7 +200,7 @@ namespace ScalableRelativeImage
                 ImageRoot = new();
                 foreach (var attribute in GetAttributes(ImageNodeRootNode))
                 {
-                    ImageRoot.SetValue(attribute.Key, attribute.Value);
+                    ImageRoot.SetValue(attribute.Key, attribute.Value, ref ExecutionWarnings);
                 }
                 foreach (var item in GetNodes(ImageNodeRootNode))
                 {
@@ -222,14 +234,14 @@ namespace ScalableRelativeImage
                         var NodeAttr = GetAttributes(node);
                         foreach (var NodeAttrEntry in NodeAttr)
                         {
-                            inode.SetValue(NodeAttrEntry.Key, NodeAttrEntry.Value);
+                            inode.SetValue(NodeAttrEntry.Key, NodeAttrEntry.Value, ref executionWarnings);
                         }
                         var NodeSubNode = GetNodes(node);
                         foreach (var subnode in NodeSubNode)
                         {
                             ResolveRecursively(root, inode, subnode, ref references, ref executionWarnings);
                         }
-                        Parent.AddNode(inode);
+                        Parent.AddNode(inode, ref executionWarnings);
                         v = true;
                         break;
                     }

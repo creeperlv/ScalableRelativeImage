@@ -10,8 +10,8 @@ namespace ScalableRelativeImage.Nodes
     public interface INode
     {
         List<INode> ListNodes();
-        void AddNode(INode node);
-        void SetValue(string Key, string Value);
+        void AddNode(INode node, ref List<ExecutionWarning> executionWarnings);
+        void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings);
         Dictionary<string, string> GetValueSet();
     }
     public class ImageNodeRoot : INode
@@ -27,7 +27,7 @@ namespace ScalableRelativeImage.Nodes
 
         }
 
-        public void AddNode(INode node)
+        public void AddNode(INode node, ref List<ExecutionWarning> executionWarnings)
         {
             Childs.Add(node as GraphicNode);
         }
@@ -56,7 +56,7 @@ namespace ScalableRelativeImage.Nodes
 
             return Bit;
         }
-        public void SetValue(string Key, string Value)
+        public void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {

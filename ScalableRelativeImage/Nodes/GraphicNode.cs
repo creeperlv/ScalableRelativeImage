@@ -8,8 +8,9 @@ namespace ScalableRelativeImage.Nodes
     public class GraphicNode : INode
     {
         public ImageNodeRoot root;
-        public virtual void AddNode(INode node)
+        public virtual void AddNode(INode node,ref List<ExecutionWarning> executionWarnings)
         {
+            executionWarnings.Add(new ShapeDisposedWarning(node));
 #if DEBUG
             Trace.WriteLine($"Node has been disposed.");
 #endif
@@ -30,8 +31,9 @@ namespace ScalableRelativeImage.Nodes
 
         }
 
-        public virtual void SetValue(string Key, string Value)
+        public virtual void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
+            executionWarnings.Add(new DataDisposedWarning(Key, Value));
 #if DEBUG
             Trace.WriteLine($"Value with key \"{Key}\" has been disposed.");
 #endif
@@ -44,7 +46,7 @@ namespace ScalableRelativeImage.Nodes
         public bool Fill = false;
         public List<INode> Points = new List<INode>();
 
-        public override void SetValue(string Key, string Value)
+        public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
@@ -60,7 +62,7 @@ namespace ScalableRelativeImage.Nodes
                     }
                     break;
                 default:
-                    base.SetValue(Key, Value);
+                    base.SetValue(Key, Value,ref executionWarnings);
                     break;
             }
         }
@@ -74,11 +76,15 @@ namespace ScalableRelativeImage.Nodes
                     dict.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
             return dict;
         }
-        public override void AddNode(INode node)
+        public override void AddNode(INode node, ref List<ExecutionWarning> executionWarnings)
         {
             if (node is Point)
             {
                 Points.Add(node);
+            }
+            else
+            {
+                executionWarnings.Add(new ShapeMismatchWarning(node, typeof(Point)));
             }
         }
         public override List<INode> ListNodes()
@@ -104,7 +110,7 @@ namespace ScalableRelativeImage.Nodes
     {
         public float X;
         public float Y;
-        public override void SetValue(string Key, string Value)
+        public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
@@ -115,7 +121,7 @@ namespace ScalableRelativeImage.Nodes
                     Y = float.Parse(Value);
                     break;
                 default:
-                    base.SetValue(Key, Value);
+                    base.SetValue(Key, Value,ref executionWarnings);
                     break;
             }
         }
@@ -148,7 +154,7 @@ namespace ScalableRelativeImage.Nodes
                     dict.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
             return dict;
         }
-        public override void SetValue(string Key, string Value)
+        public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
@@ -173,7 +179,7 @@ namespace ScalableRelativeImage.Nodes
                     }
                     break;
                 default:
-                    base.SetValue(Key, Value);
+                    base.SetValue(Key, Value,ref executionWarnings);
                     break;
             }
         }

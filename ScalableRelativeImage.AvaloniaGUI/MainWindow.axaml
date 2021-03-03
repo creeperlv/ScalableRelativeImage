@@ -53,6 +53,7 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition/>
+        <RowDefinition Height="Auto" MaxHeight="200"/>
       </Grid.RowDefinitions>
       <StackPanel Orientation="Horizontal">
         <Button Name="RefreshButton">
@@ -68,6 +69,20 @@
                              HorizontalScrollBarVisibility="Auto"
                              VerticalScrollBarVisibility="Visible" IsVisible="True" IsEnabled="True"
                              TextBlock.FontSize="12" x:Name="CentralEditor"/>
+      <Grid Grid.Row="2"  Name="WarningsView" IsVisible="False">
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Background="#2288EE">
+          <TextBlock HorizontalAlignment="Left" Text="Warnings"/>
+          <Button Name="CloseWarningsViewButton" HorizontalAlignment="Right" Height="20" Padding="0" Width="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">X</Button>
+        </Grid>
+        <ScrollViewer Grid.Row="1">
+          <StackPanel Name="WarningsStackPanel"/>
+        </ScrollViewer>  
+      </Grid>
+      
     </Grid>
     <Grid Grid.Column="2">
       <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

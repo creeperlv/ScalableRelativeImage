@@ -19,7 +19,7 @@ namespace ScalableRelativeImage.Nodes
         public float Y;
         public float Width;
         public float Height;
-        public override void SetValue(string Key, string Value)
+        public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
@@ -69,6 +69,7 @@ namespace ScalableRelativeImage.Nodes
                     }
                     break;
                 default:
+                    base.SetValue(Key, Value, ref executionWarnings);
                     break;
             }
         }

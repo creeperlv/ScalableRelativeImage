@@ -30,7 +30,7 @@ namespace ScalableRelativeImage.Nodes
                     dict.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
             return dict;
         }
-        public override void SetValue(string Key, string Value)
+        public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
@@ -58,7 +58,7 @@ namespace ScalableRelativeImage.Nodes
                     }
                     break;
                 default:
-                    base.SetValue(Key, Value);
+                    base.SetValue(Key, Value, ref executionWarnings);
                     break;
             }
         }

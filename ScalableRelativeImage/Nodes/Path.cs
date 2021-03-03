@@ -11,16 +11,13 @@ namespace ScalableRelativeImage.Nodes
     {
         Bezier = 3, Bezier3 = 3, CloseSubpath = 128, DashMode = 16, Line = 1, PathMarker = 32, PathTypeMask = 7, Start = 0
     }
-    public class PathNode : INode
+    public class PathNode : GraphicNode
     {
         public float X;
         public float Y;
         public PathNodeType NodeType = PathNodeType.Line;
-        public void AddNode(INode node)
-        {
-        }
 
-        public Dictionary<string, string> GetValueSet()
+        public override Dictionary<string, string> GetValueSet()
         {
             Dictionary<string, string> _result = new();
             _result.Add("X", X.ToString());
@@ -29,12 +26,12 @@ namespace ScalableRelativeImage.Nodes
             return _result;
         }
 
-        public List<INode> ListNodes()
+        public override List<INode> ListNodes()
         {
             return null;
         }
 
-        public void SetValue(string Key, string Value)
+        public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
@@ -50,6 +47,7 @@ namespace ScalableRelativeImage.Nodes
                     }
                     break;
                 default:
+                    base.SetValue(Key, Value, ref executionWarnings);
                     break;
             }
         }
@@ -62,7 +60,7 @@ namespace ScalableRelativeImage.Nodes
         public bool Fill = false;
         public List<INode> Points = new List<INode>();
 
-        public override void SetValue(string Key, string Value)
+        public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
@@ -78,7 +76,7 @@ namespace ScalableRelativeImage.Nodes
                     }
                     break;
                 default:
-                    base.SetValue(Key, Value);
+                    base.SetValue(Key, Value, ref executionWarnings);
                     break;
             }
         }
@@ -92,12 +90,13 @@ namespace ScalableRelativeImage.Nodes
                     dict.Add("Foreground", "#" + Foreground.Value.ToArgb().ToString("X"));
             return dict;
         }
-        public override void AddNode(INode node)
+        public override void AddNode(INode node, ref List<ExecutionWarning> executionWarnings)
         {
             if (node is PathNode)
             {
                 Points.Add(node);
             }
+            else executionWarnings.Add(new ShapeMismatchWarning(node, typeof(PathNode)));
         }
         public override List<INode> ListNodes()
         {

@@ -22,7 +22,7 @@ namespace ScalableRelativeImage.Nodes
         {
             return Children;
         }
-        public override void AddNode(INode node)
+        public override void AddNode(INode node, ref List<ExecutionWarning> executionWarnings)
         {
             Children.Add(node);
         }
