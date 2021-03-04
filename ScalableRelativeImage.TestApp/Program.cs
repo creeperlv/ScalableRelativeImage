@@ -1,5 +1,6 @@
 ﻿using ScalableRelativeImage.Nodes;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace ScalableRelativeImage.TestApp
@@ -38,6 +39,7 @@ namespace ScalableRelativeImage.TestApp
                 ImageNodeRoot image = new ImageNodeRoot();
                 image.RelativeWidth = 192;
                 image.RelativeHeight = 108;
+                List<ExecutionWarning> warnings = new();
                 {
                     Text text = new Text();
                     text.X = 1;
@@ -47,7 +49,7 @@ namespace ScalableRelativeImage.TestApp
                     text.Content = "Hello, world!";
                     text.FontFamily = "Arial";
                     text.RelativeFontSize=0.2f;
-                    image.AddNode(text);
+                    image.AddNode(text,ref warnings);
                 }
                 var XMLOutcome=SRIEngine.SerializeToString(image);
                 Console.WriteLine(XMLOutcome);

@@ -101,9 +101,9 @@ namespace ScalableRelativeImage.Nodes
                 Points.Add(profile.FindTargetPoint(P.X, P.Y));
             }
             if (Fill is false)
-                TargetGraphics.DrawClosedCurve(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), Points.ToArray());
+                TargetGraphics.DrawClosedCurve(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), Points.ToArray());
             else
-                TargetGraphics.FillClosedCurve(new SolidBrush((Foreground == null ? profile.DefaultForeground : Foreground.Value)), Points.ToArray());
+                TargetGraphics.FillClosedCurve(new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), Points.ToArray());
         }
     }
     public class Point : GraphicNode
@@ -186,7 +186,7 @@ namespace ScalableRelativeImage.Nodes
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
             float RealWidth = profile.FindAbsoluteSize(Size);
-            TargetGraphics.DrawLine(new Pen((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), profile.FindTargetPoint(StartX, StartY), profile.FindTargetPoint(EndX, EndY));
+            TargetGraphics.DrawLine(new Pen((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), profile.FindTargetPoint(StartX, StartY), profile.FindTargetPoint(EndX, EndY));
         }
     }
 }

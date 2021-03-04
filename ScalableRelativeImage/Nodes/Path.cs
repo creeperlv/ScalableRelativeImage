@@ -114,9 +114,9 @@ namespace ScalableRelativeImage.Nodes
                 Types.Add((byte)(int)P.NodeType);
             }
             if (Fill is false)
-                TargetGraphics.DrawPath(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), new(Points.ToArray(), Types.ToArray()));
+                TargetGraphics.DrawPath(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), new(Points.ToArray(), Types.ToArray()));
             else
-                TargetGraphics.FillPath(new SolidBrush((Foreground == null ? profile.DefaultForeground : Foreground.Value)), new(Points.ToArray(), Types.ToArray()));
+                TargetGraphics.FillPath(new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), new(Points.ToArray(), Types.ToArray()));
         }
     }
 }

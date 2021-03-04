@@ -18,8 +18,8 @@ namespace ScalableRelativeImage
     {
         public float TargetWidth;
         public float TargetHeight;
-        public Color DefaultForeground = Color.White;
-        public Color DefaultBackground = Color.Transparent;
+        public Color? DefaultForeground = null;
+        public Color? DefaultBackground = null;
         internal ImageNodeRoot root;
 
         public PointF FindTargetPoint(float RX, float RY)

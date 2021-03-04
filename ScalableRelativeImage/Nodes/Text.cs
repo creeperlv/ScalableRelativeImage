@@ -96,7 +96,7 @@ namespace ScalableRelativeImage.Nodes
             var AH = Height / profile.root._RelativeHeight * profile.TargetHeight;
             TargetGraphics.DrawString(Content,
                 new Font(FontFamily, RelativeFontSize * (profile.TargetHeight / profile.root._RelativeHeight), (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle))
-                , new SolidBrush((Foreground == null ? profile.DefaultForeground : Foreground.Value)), new RectangleF(p0, new SizeF(AW, AH)));
+                , new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), new RectangleF(p0, new SizeF(AW, AH)));
         }
     }
 }

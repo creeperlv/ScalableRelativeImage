@@ -60,7 +60,7 @@ namespace ScalableRelativeImage.Nodes
                 var P = item as Point;
                 Points.Add(profile.FindTargetPoint(P.X, P.Y));
             }
-            TargetGraphics.DrawCurve(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), Points.ToArray());
+            TargetGraphics.DrawCurve(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), Points.ToArray());
 
         }
     }

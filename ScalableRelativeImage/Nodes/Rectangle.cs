@@ -67,10 +67,10 @@ namespace ScalableRelativeImage.Nodes
             float RealWidth = profile.FindAbsoluteSize(Size);
             var LT=profile.FindTargetPoint(X, Y);
             if(Fill is not true)
-            TargetGraphics.DrawRectangle(new((Foreground == null ? profile.DefaultForeground : Foreground.Value), RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),new Size(
+            TargetGraphics.DrawRectangle(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),new Size(
                 (int)(Width / profile.root._RelativeWidth * profile.TargetWidth), (int)(Height / profile.root._RelativeHeight* profile.TargetHeight))));
             else
-                TargetGraphics.FillRectangle(new SolidBrush((Foreground == null ? profile.DefaultForeground : Foreground.Value)), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
+                TargetGraphics.FillRectangle(new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
     (int)(Width / profile.root._RelativeWidth * profile.TargetWidth), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight))));
 
         }
