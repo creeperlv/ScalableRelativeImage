@@ -82,9 +82,63 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     await SaveAs();
                 };
             }
-            if(RenderImageButton is not null)
+            if (ViewPortZoomBox is not null)
             {
-                RenderImageButton.Click +=async (_, _) => {
+                ViewPortZoomBox.KeyDown += (a, b) =>
+                {
+                    if (b.Key == Avalonia.Input.Key.Enter) ApplyZoomBox();
+                };
+            }
+            if (ViewPortZoomIn is not null)
+            {
+                ViewPortZoomIn.Click += (_, _) =>
+                {
+                    if (ViewPortZoomBox is not null)
+                    {
+                        float v = float.Parse(ViewPortZoomBox.Text);
+                        v += 10;
+                        ViewPortZoomBox.Text = "" + v;
+                        ApplyZoomBox();
+                    }
+                };
+            }
+            if (ViewPortZoomOut is not null)
+            {
+                ViewPortZoomOut.Click += (_, _) =>
+                {
+                    if (ViewPortZoomBox is not null)
+                    {
+                        float v = float.Parse(ViewPortZoomBox.Text);
+                        if(v-10>0)
+                        v -= 10;
+                        ViewPortZoomBox.Text = "" + v;
+                        ApplyZoomBox();
+                    }
+                };
+            }
+            if(ViewPortZoomApply is not null)
+            {
+                ViewPortZoomApply.Click += (_, _) => {
+                    ApplyZoomBox();
+                };
+            }
+            void ApplyZoomBox()
+            {
+                if (ViewPortZoomBox is not null)
+                    try
+                    {
+                        float v = float.Parse(ViewPortZoomBox.Text);
+                        PreviewScale = v / 100f;
+                        ApplyPreviewZoom();
+                    }
+                    catch (System.Exception)
+                    {
+                    }
+            }
+            if (RenderImageButton is not null)
+            {
+                RenderImageButton.Click += async (_, _) =>
+                {
 
                     SaveFileDialog sfd = new SaveFileDialog();
                     var result = await sfd.ShowAsync(this);
@@ -136,6 +190,17 @@ namespace ScalableRelativeImage.AvaloniaGUI
             }
         }
         string? CurrentFile = null;
+        float PreviewOriginWidth = 10;
+        float PreviewOriginHeight = 10;
+        float PreviewScale = 1f;
+        public void ApplyPreviewZoom()
+        {
+            if (ImagePreview is not null)
+            {
+                ImagePreview.Width = PreviewOriginWidth * PreviewScale;
+                ImagePreview.Height = PreviewOriginHeight * PreviewScale;
+            }
+        }
         private void RefreshButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Trace.WriteLine("Try Refresh");
@@ -183,6 +248,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
                                     memoryStream.Position = 0;
                                     Bitmap b = new Bitmap(memoryStream);
                                     ImagePreview.Source = b;
+                                    PreviewOriginWidth = profile.TargetWidth;
+                                    PreviewOriginHeight = profile.TargetHeight;
                                     ImagePreview.Width = profile.TargetWidth;
                                     ImagePreview.Height = profile.TargetHeight;
                                     return;
@@ -227,12 +294,16 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Button? SaveAsButton;
         Button? NewButton;
         Button? RefreshButton;
+        Button? ViewPortZoomIn;
+        Button? ViewPortZoomOut;
+        Button? ViewPortZoomApply;
         Button? RenderImageButton;
         TextEditor? CentralEditor;
         Image? ImagePreview;
         TextBox? WidthBox;
         TextBox? HeightBox;
         TextBox? ScaleBox;
+        TextBox? ViewPortZoomBox;
         StackPanel? WarningsStackPanel;
         Grid? WarningsView;
         private void InitializeComponent()
@@ -245,11 +316,15 @@ namespace ScalableRelativeImage.AvaloniaGUI
             SaveAsButton = this.FindControl<Button>("SaveAsButton");
             NewButton = this.FindControl<Button>("NewButton");
             RefreshButton = this.FindControl<Button>("RefreshButton");
+            ViewPortZoomIn = this.FindControl<Button>("ViewPortZoomIn");
+            ViewPortZoomOut = this.FindControl<Button>("ViewPortZoomOut");
+            ViewPortZoomApply = this.FindControl<Button>("ViewPortZoomApply");
             CentralEditor = this.FindControl<TextEditor>("CentralEditor");
             ImagePreview = this.FindControl<Image>("ImagePreview");
             WidthBox = this.FindControl<TextBox>("ImageWidthBox");
             HeightBox = this.FindControl<TextBox>("ImageHeightBox");
             ScaleBox = this.FindControl<TextBox>("PreviewImageScaleBox");
+            ViewPortZoomBox = this.FindControl<TextBox>("ViewPortZoomBox");
             WarningsStackPanel = this.FindControl<StackPanel>("WarningsStackPanel");
             WarningsView = this.FindControl<Grid>("WarningsView");
         }

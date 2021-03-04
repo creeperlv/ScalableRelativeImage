@@ -66,7 +66,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              Margin="5" FontFamily="Sarasa Mono CL"
-                             Foreground="White" WordWrap="True"
+                             Foreground="White"
                              SyntaxHighlighting="XML" ShowLineNumbers="True"
                              HorizontalScrollBarVisibility="Auto"
                              VerticalScrollBarVisibility="Visible" IsVisible="True" IsEnabled="True"
@@ -90,11 +90,21 @@
     </Grid>
     <Grid Grid.Column="2">
       <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-          <Image Name="ImagePreview"/>
+        <Image Name="ImagePreview"/>
         <!--<Viewbox Name="PreviewPresenter">
           <Image Name="ImagePreview"/>
         </Viewbox>-->
       </ScrollViewer>
+      <Border Background="#4AAA" Margin="0,0,25,25" HorizontalAlignment="Right" VerticalAlignment="Bottom" ClipToBounds="True" CornerRadius="5">
+
+        <StackPanel Margin="5" Orientation="Horizontal">
+          <TextBox Text="100" Name="ViewPortZoomBox"/>
+          <TextBlock Text="%" VerticalAlignment="Center" Margin="5,0"/>
+          <Button Content="+" VerticalContentAlignment="Center" Name="ViewPortZoomIn" Width="35" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+          <Button Content="-" VerticalContentAlignment="Center" Name="ViewPortZoomOut" Width="35" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+          <Button Content="✔" VerticalContentAlignment="Center" Name="ViewPortZoomApply" Width="45" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+        </StackPanel>
+      </Border>
     </Grid>
   </Grid>
 </Window>
