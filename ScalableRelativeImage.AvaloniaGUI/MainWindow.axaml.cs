@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit;
 using ScalableRelativeImage.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
@@ -109,17 +110,47 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     if (ViewPortZoomBox is not null)
                     {
                         float v = float.Parse(ViewPortZoomBox.Text);
-                        if(v-10>0)
-                        v -= 10;
+                        if (v - 10 > 0)
+                            v -= 10;
                         ViewPortZoomBox.Text = "" + v;
                         ApplyZoomBox();
                     }
                 };
             }
-            if(ViewPortZoomApply is not null)
+            if (ViewPortZoomApply is not null)
             {
-                ViewPortZoomApply.Click += (_, _) => {
+                ViewPortZoomApply.Click += (_, _) =>
+                {
                     ApplyZoomBox();
+                };
+            }
+            if (ViewShapeButton is not null)
+            {
+                ViewShapeButton.Click += (_, _) =>
+                {
+                    if (ShapesViewPort is not null && ShapeList is not null && CentralEditor is not null)
+                    {
+                        ShapesViewPort.IsVisible = true;
+                        ShapeList.Children.Clear();
+
+                        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                        {
+                            var TotalTypes = asm.GetTypes();
+                            foreach (var item in TotalTypes)
+                            {
+                                if (item.IsAssignableTo(typeof(INode)))
+                                {
+                                    if (item.Name != "ImageNodeRoot")
+                                        if (item.Name != "INode")
+                                        {
+                                            ShapeButton shapeButton = new(item, CentralEditor);
+                                            ShapeList.Children.Add(shapeButton);
+                                        }
+
+                                }
+                            }
+                        }
+                    }
                 };
             }
             void ApplyZoomBox()
@@ -297,6 +328,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Button? ViewPortZoomIn;
         Button? ViewPortZoomOut;
         Button? ViewPortZoomApply;
+        Button? ViewShapeButton;
         Button? RenderImageButton;
         TextEditor? CentralEditor;
         Image? ImagePreview;
@@ -305,7 +337,9 @@ namespace ScalableRelativeImage.AvaloniaGUI
         TextBox? ScaleBox;
         TextBox? ViewPortZoomBox;
         StackPanel? WarningsStackPanel;
+        StackPanel? ShapeList;
         Grid? WarningsView;
+        Grid? ShapesViewPort;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -319,6 +353,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
             ViewPortZoomIn = this.FindControl<Button>("ViewPortZoomIn");
             ViewPortZoomOut = this.FindControl<Button>("ViewPortZoomOut");
             ViewPortZoomApply = this.FindControl<Button>("ViewPortZoomApply");
+            ViewShapeButton = this.FindControl<Button>("ViewShapeButton");
             CentralEditor = this.FindControl<TextEditor>("CentralEditor");
             ImagePreview = this.FindControl<Image>("ImagePreview");
             WidthBox = this.FindControl<TextBox>("ImageWidthBox");
@@ -326,7 +361,9 @@ namespace ScalableRelativeImage.AvaloniaGUI
             ScaleBox = this.FindControl<TextBox>("PreviewImageScaleBox");
             ViewPortZoomBox = this.FindControl<TextBox>("ViewPortZoomBox");
             WarningsStackPanel = this.FindControl<StackPanel>("WarningsStackPanel");
+            ShapeList = this.FindControl<StackPanel>("ShapeList");
             WarningsView = this.FindControl<Grid>("WarningsView");
+            ShapesViewPort = this.FindControl<Grid>("ShapesViewPort");
         }
     }
 }

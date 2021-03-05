@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cc="clr-namespace:AvaloniaEdit.CodeCompletion;assembly=AvaloniaEdit"
              x:Class="ScalableRelativeImage.AvaloniaGUI.App">
-    <Application.Styles>
-      <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
-        <FluentTheme Mode="Dark"/>
-    </Application.Styles>
+  <Application.Styles>
+    <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
+    <FluentTheme Mode="Dark"/>
+  </Application.Styles>
 </Application>

@@ -10,8 +10,9 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="auto"/>
+      <ColumnDefinition Width="auto"/>
       <ColumnDefinition Width="1*"/>
-      <ColumnDefinition/>
+      <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
     <ScrollViewer Width="210" HorizontalScrollBarVisibility="Disabled" Background="#3AAA" HorizontalContentAlignment="Stretch">
       <StackPanel HorizontalAlignment="Stretch" Margin="5,0">
@@ -29,7 +30,7 @@
         <ToggleButton HorizontalAlignment="Stretch" Content="Tools" Name="ToolTab"/>
         <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #ToolTab.IsChecked}" Margin="5,0">
           <Button HorizontalAlignment="Stretch" Content="Render To Image" Name="RenderImageButton"/>
-          <Button HorizontalAlignment="Stretch" Content="View Extensions"/>
+          <Button HorizontalAlignment="Stretch" Content="View Shapes" Name="ViewShapeButton"/>
           <Button HorizontalAlignment="Stretch" Content="Add Extension"/>
           <Button HorizontalAlignment="Stretch" Content="Remove Extension"/>
         </StackPanel>
@@ -51,7 +52,18 @@
         <StackPanel></StackPanel>
       </StackPanel>
     </ScrollViewer>
-    <Grid Grid.Column="1" HorizontalAlignment="Stretch" Background="#2AAA">
+    <Grid Width="200" Grid.Column="1" Name="ShapesViewPort" IsVisible="False" Background="#1AAA">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <TextBlock Text="Shapes" VerticalAlignment="Center" FontSize="24"/>
+      <Button HorizontalAlignment="Right" Content="X" Width="40" HorizontalContentAlignment="Center"/>
+    <ScrollViewer Grid.Row="1">
+      <StackPanel Name="ShapeList" Margin="5"/>
+    </ScrollViewer>
+    </Grid>
+    <Grid Grid.Column="2" HorizontalAlignment="Stretch" Background="#2AAA">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition/>
@@ -88,7 +100,7 @@
       </Grid>
 
     </Grid>
-    <Grid Grid.Column="2">
+    <Grid Grid.Column="3">
       <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Image Name="ImagePreview"/>
         <!--<Viewbox Name="PreviewPresenter">
