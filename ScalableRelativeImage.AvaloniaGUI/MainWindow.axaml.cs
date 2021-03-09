@@ -103,6 +103,10 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                 };
             }
+            if (CloseShapeViewPort is not null)
+            {
+                CloseShapeViewPort.Click += (_, _) => { if (ShapesViewPort is not null) { ShapesViewPort.IsVisible = false; } };
+            }
             if (ViewPortZoomOut is not null)
             {
                 ViewPortZoomOut.Click += (_, _) =>
@@ -329,6 +333,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Button? ViewPortZoomOut;
         Button? ViewPortZoomApply;
         Button? ViewShapeButton;
+        Button? CloseShapeViewPort;
         Button? RenderImageButton;
         TextEditor? CentralEditor;
         Image? ImagePreview;
@@ -354,6 +359,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
             ViewPortZoomOut = this.FindControl<Button>("ViewPortZoomOut");
             ViewPortZoomApply = this.FindControl<Button>("ViewPortZoomApply");
             ViewShapeButton = this.FindControl<Button>("ViewShapeButton");
+            CloseShapeViewPort = this.FindControl<Button>("CloseShapeViewPort");
             CentralEditor = this.FindControl<TextEditor>("CentralEditor");
             ImagePreview = this.FindControl<Image>("ImagePreview");
             WidthBox = this.FindControl<TextBox>("ImageWidthBox");

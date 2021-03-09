@@ -9,7 +9,29 @@ namespace ScalableRelativeImage.Nodes
 {
     public class Group : GraphicNode
     {
-        public List<INode> Children=new();
+        public List<INode> Children = new();
+        public bool? Visible = null;
+        public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
+        {
+            switch (Key)
+            {
+                case "Visible":
+                    Visible = bool.Parse(Value);
+                    break;
+                default:
+                    base.SetValue(Key, Value, ref executionWarnings);
+                    break;
+            }
+        }
+        public override Dictionary<string, string> GetValueSet()
+        {
+            Dictionary<string, string> dict = new();
+            if(Visible is not null)
+            {
+                dict.Add("Visible", Visible.ToString());
+            }
+            return dict;
+        }
         public void RemoveChildAt(int i)
         {
             Children.RemoveAt(i);
@@ -28,13 +50,14 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            foreach (var item in Children)
-            {
-                if(item is GraphicNode)
+            if (Visible == true || Visible == null)
+                foreach (var item in Children)
                 {
-                    ((GraphicNode)item).Paint(ref TargetGraphics, profile);
+                    if (item is GraphicNode)
+                    {
+                        ((GraphicNode)item).Paint(ref TargetGraphics, profile);
+                    }
                 }
-            }
         }
     }
 }

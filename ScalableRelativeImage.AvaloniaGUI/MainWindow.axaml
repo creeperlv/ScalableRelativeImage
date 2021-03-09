@@ -46,7 +46,7 @@
           <TextBox Name="ImageWidthBox" Watermark="Pure Number"/>
           <TextBlock Text="Image Height" Margin="0,5"/>
           <TextBox Name="ImageHeightBox" Watermark="Pure Number"/>
-          <TextBlock Text="Preview Image Scale" Margin="0,5"/>
+          <TextBlock Text="Render Image Scale" Margin="0,5"/>
           <TextBox Name="PreviewImageScaleBox" Text="1.0" Watermark="Pure Number"/>
         </StackPanel>
         <StackPanel></StackPanel>
@@ -58,7 +58,7 @@
         <RowDefinition/>
       </Grid.RowDefinitions>
       <TextBlock Text="Shapes" VerticalAlignment="Center" FontSize="24"/>
-      <Button HorizontalAlignment="Right" Content="X" Width="40" HorizontalContentAlignment="Center"/>
+      <Button HorizontalAlignment="Right" Name="CloseShapeViewPort" Content="X" Width="40" HorizontalContentAlignment="Center"/>
     <ScrollViewer Grid.Row="1">
       <StackPanel Name="ShapeList" Margin="5"/>
     </ScrollViewer>
