@@ -12,11 +12,13 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ScalableRelativeImage.AvaloniaGUI
 {
     public class MainWindow : Window
     {
+        public static XmlDocument GlobalXmlDocument = new XmlDocument();
         public static readonly string SRIContentTemplate = @"<ScalableRelativeImage Flavor=""CreeperLv.SRI"" FormatVersion=""1.0.0.0"">
   <ImageNodeRoot RelativeWidth=""1920"" RelativeHeight=""1080"">
    <!--Shapes Here...-->
@@ -146,6 +148,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                                 {
                                     if (item.Name != "ImageNodeRoot")
                                         if (item.Name != "INode")
+                                        if (item.Name != "GraphicNode")
                                         {
                                             ShapeButton shapeButton = new(item, CentralEditor);
                                             ShapeList.Children.Add(shapeButton);
