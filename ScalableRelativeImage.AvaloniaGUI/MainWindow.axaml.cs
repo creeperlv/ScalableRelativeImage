@@ -148,11 +148,11 @@ namespace ScalableRelativeImage.AvaloniaGUI
                                 {
                                     if (item.Name != "ImageNodeRoot")
                                         if (item.Name != "INode")
-                                        if (item.Name != "GraphicNode")
-                                        {
-                                            ShapeButton shapeButton = new(item, CentralEditor);
-                                            ShapeList.Children.Add(shapeButton);
-                                        }
+                                            if (item.Name != "GraphicNode")
+                                            {
+                                                ShapeButton shapeButton = new(item, CentralEditor);
+                                                ShapeList.Children.Add(shapeButton);
+                                            }
 
                                 }
                             }
@@ -172,6 +172,14 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     catch (System.Exception)
                     {
                     }
+            }
+            if (AboutPageButton is not null &&  CentralEditorView is not null && AboutView is not null)
+            {
+                AboutPageButton.Click += (_, _) => { CentralEditorView.IsVisible = false; AboutView.IsVisible = true; };
+            }
+            if ( CloseAboutPageButton is not null && CentralEditorView is not null && AboutView is not null)
+            {
+                CloseAboutPageButton.Click += (_, _) => { CentralEditorView.IsVisible = true; AboutView.IsVisible = false; };
             }
             if (RenderImageButton is not null)
             {
@@ -338,6 +346,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Button? ViewShapeButton;
         Button? CloseShapeViewPort;
         Button? RenderImageButton;
+        Button? AboutPageButton;
+        Button? CloseAboutPageButton;
         TextEditor? CentralEditor;
         Image? ImagePreview;
         TextBox? WidthBox;
@@ -348,6 +358,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
         StackPanel? ShapeList;
         Grid? WarningsView;
         Grid? ShapesViewPort;
+        Grid? CentralEditorView;
+        Grid? AboutView;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -363,6 +375,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             ViewPortZoomApply = this.FindControl<Button>("ViewPortZoomApply");
             ViewShapeButton = this.FindControl<Button>("ViewShapeButton");
             CloseShapeViewPort = this.FindControl<Button>("CloseShapeViewPort");
+            AboutPageButton = this.FindControl<Button>("AboutPageButton");
+            CloseAboutPageButton = this.FindControl<Button>("CloseAboutPageButton");
             CentralEditor = this.FindControl<TextEditor>("CentralEditor");
             ImagePreview = this.FindControl<Image>("ImagePreview");
             WidthBox = this.FindControl<TextBox>("ImageWidthBox");
@@ -373,6 +387,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             ShapeList = this.FindControl<StackPanel>("ShapeList");
             WarningsView = this.FindControl<Grid>("WarningsView");
             ShapesViewPort = this.FindControl<Grid>("ShapesViewPort");
+            CentralEditorView = this.FindControl<Grid>("CentralEditorView");
+            AboutView = this.FindControl<Grid>("AboutView");
         }
     }
 }
