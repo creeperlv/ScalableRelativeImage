@@ -21,7 +21,15 @@ namespace ScalableRelativeImage
         public Color? DefaultForeground = null;
         public Color? DefaultBackground = null;
         internal ImageNodeRoot root;
-
+        public RenderProfile Copy(INode Root)
+        {
+            RenderProfile renderProfile = new RenderProfile();
+            renderProfile.DefaultBackground = DefaultBackground;
+            renderProfile.DefaultForeground= DefaultForeground;
+            renderProfile.TargetHeight = TargetHeight;
+            renderProfile.TargetWidth = TargetWidth;
+            return renderProfile;
+        }
         public PointF FindTargetPoint(float RX, float RY)
         {
             PointF p = new(((RX / root._RelativeWidth) * TargetWidth), ((RY / root._RelativeHeight) * TargetHeight));

@@ -25,7 +25,7 @@ namespace ScalableRelativeImage.Nodes
         internal Color _PreferredBackground = Color.White;
         internal Color _PreferredForeground = Color.Transparent;
         internal float RelativeArea;
-        public List<GraphicNode> Childs = new();
+        public List<GraphicNode> Children = new();
         public ImageNodeRoot()
         {
 
@@ -33,13 +33,13 @@ namespace ScalableRelativeImage.Nodes
 
         public void AddNode(INode node, ref List<ExecutionWarning> executionWarnings)
         {
-            Childs.Add(node as GraphicNode);
+            Children.Add(node as GraphicNode);
         }
 
         public List<INode> ListNodes()
         {
             List<INode> nodes = new List<INode>();
-            foreach (var item in Childs)
+            foreach (var item in Children)
             {
                 nodes.Add(item);
             }
@@ -63,7 +63,7 @@ namespace ScalableRelativeImage.Nodes
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            foreach (var item in Childs)
+            foreach (var item in Children)
             {
                 item.Paint(ref g, profile);
             }
