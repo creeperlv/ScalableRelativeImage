@@ -126,7 +126,8 @@ namespace ScalableRelativeImage.CLI
                 return;
             }
             Console.WriteLine("Resolving...");
-            var Img = SRIEngine.Deserialize(new FileInfo(SourceFile), out warnings);
+            var source = new FileInfo(SourceFile);
+            var Img = SRIEngine.Deserialize(source, out warnings);
             if (warnings.Count == 0)
                 Console.WriteLine("Completed.");
             else
@@ -150,6 +151,7 @@ namespace ScalableRelativeImage.CLI
             renderProfile.TargetHeight = Height;
             renderProfile.DefaultForeground = Foreground;
             renderProfile.DefaultBackground = Background;
+            renderProfile.WorkingDirectory = source.Directory.FullName;
             Console.WriteLine("Rendering...");
             var bitmap = Img.Render(renderProfile);
             if (File.Exists(OutFile)) File.Delete(OutFile);

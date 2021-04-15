@@ -21,6 +21,7 @@ namespace ScalableRelativeImage
         public Color? DefaultForeground = null;
         public Color? DefaultBackground = null;
         internal ImageNodeRoot root;
+        public string WorkingDirectory = Environment.CurrentDirectory;
         public RenderProfile Copy(INode Root)
         {
             RenderProfile renderProfile = new RenderProfile();
@@ -28,7 +29,13 @@ namespace ScalableRelativeImage
             renderProfile.DefaultForeground= DefaultForeground;
             renderProfile.TargetHeight = TargetHeight;
             renderProfile.TargetWidth = TargetWidth;
+            renderProfile.WorkingDirectory = Environment.CurrentDirectory;
             return renderProfile;
+        }
+        public FileInfo FindFile(string FileName)
+        {
+            var path0 = System.IO.Path.Combine(WorkingDirectory, FileName);
+            if (File.Exists(path0)) return new FileInfo(path0); else if (File.Exists(FileName)) return new FileInfo(FileName); else return null;
         }
         public PointF FindTargetPoint(float RX, float RY)
         {
