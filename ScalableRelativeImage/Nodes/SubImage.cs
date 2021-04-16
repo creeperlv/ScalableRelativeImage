@@ -14,10 +14,11 @@ namespace ScalableRelativeImage.Nodes
         public float Y;
         public float Width;
         public float Height;
-        public float ScaledWidthRatio=1f;
-        public float ScaledHeightRatio=1f;
+        public float ScaledWidthRatio = 1f;
+        public float ScaledHeightRatio = 1f;
         public Color? Background;
         public string Source = "";
+        public string Name = null;
         public override Dictionary<string, string> GetValueSet()
         {
             Dictionary<string, string> dict = new();
@@ -28,6 +29,10 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("ScaledHeightRatio", ScaledHeightRatio.ToString());
             dict.Add("Height", Height.ToString());
             dict.Add("Source", Source.ToString());
+            if (Name is not null)
+            {
+                dict.Add("Name",Name);
+            }
             if (Background is not null)
                 if (Background.HasValue is true)
                     dict.Add("Background", "#" + Background.Value.ToArgb().ToString("X"));
@@ -88,6 +93,11 @@ namespace ScalableRelativeImage.Nodes
                         Source = Value;
                     }
                     break;
+                case "Name":
+                    {
+                        Name = Value;
+                    }
+                    break;
                 default:
                     base.SetValue(Key, Value, ref executionWarnings);
                     break;
@@ -99,7 +109,7 @@ namespace ScalableRelativeImage.Nodes
             var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
                     (int)(Width / profile.root._RelativeWidth * profile.TargetWidth), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight)));
             var _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-                    (int)(Width / profile.root._RelativeWidth * profile.TargetWidth*ScaledWidthRatio), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
+                    (int)(Width / profile.root._RelativeWidth * profile.TargetWidth * ScaledWidthRatio), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
             //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var img = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var subProfile = profile.Copy(this);
@@ -113,7 +123,7 @@ namespace ScalableRelativeImage.Nodes
             {
                 item.Paint(ref g, profile);
             }
-            if(Background is not null)
+            if (Background is not null)
             {
                 TargetGraphics.FillRectangle(new SolidBrush(Background.Value), _rect);
             }

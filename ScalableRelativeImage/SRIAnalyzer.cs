@@ -22,11 +22,42 @@ namespace ScalableRelativeImage
         public Color? DefaultBackground = null;
         internal ImageNodeRoot root;
         public string WorkingDirectory = Environment.CurrentDirectory;
+        public SubImage Ref(string Name)
+        {
+            return Ref(root, Name);
+        }
+        SubImage Ref(INode node, string Name)
+        {
+            var l = node.ListNodes();
+            if (l is not null)
+            {
+                foreach (var item in l)
+                {
+                    var d =
+                    item.GetValueSet();
+                    if(item is SubImage)
+                    {
+
+                        if (d.ContainsKey("Name"))
+                        {
+                            if (d["Name"] == Name)
+                            {
+                                return item as SubImage;
+                            }
+                        }
+                    }else if(item is Group)
+                    {
+                        return Ref(item, Name);
+                    }
+                }
+            }
+            return null;
+        }
         public RenderProfile Copy(INode Root)
         {
             RenderProfile renderProfile = new RenderProfile();
             renderProfile.DefaultBackground = DefaultBackground;
-            renderProfile.DefaultForeground= DefaultForeground;
+            renderProfile.DefaultForeground = DefaultForeground;
             renderProfile.TargetHeight = TargetHeight;
             renderProfile.TargetWidth = TargetWidth;
             renderProfile.WorkingDirectory = Environment.CurrentDirectory;
