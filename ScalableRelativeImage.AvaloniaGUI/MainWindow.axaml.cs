@@ -4,6 +4,8 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit;
+using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Highlighting.Xshd;
 using ScalableRelativeImage.Nodes;
 using System;
 using System.Collections.Generic;
@@ -43,7 +45,16 @@ namespace ScalableRelativeImage.AvaloniaGUI
             void NewDocument()
             {
                 if (CentralEditor is not null)
+                {
+                    XshdSyntaxDefinition xshd;
+                    using (XmlTextReader reader = new XmlTextReader("Resources/Theme.xml"))
+                    {
+                        xshd = HighlightingLoader.LoadXshd(reader);
+                        CentralEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
+                    }
                     CentralEditor.Text = SRIContentTemplate;
+
+                }
                 CurrentFile = null;
             };
             if (CloseWarningsViewButton is not null)
@@ -173,11 +184,11 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     {
                     }
             }
-            if (AboutPageButton is not null &&  CentralEditorView is not null && AboutView is not null)
+            if (AboutPageButton is not null && CentralEditorView is not null && AboutView is not null)
             {
                 AboutPageButton.Click += (_, _) => { CentralEditorView.IsVisible = false; AboutView.IsVisible = true; };
             }
-            if ( CloseAboutPageButton is not null && CentralEditorView is not null && AboutView is not null)
+            if (CloseAboutPageButton is not null && CentralEditorView is not null && AboutView is not null)
             {
                 CloseAboutPageButton.Click += (_, _) => { CentralEditorView.IsVisible = true; AboutView.IsVisible = false; };
             }
@@ -250,63 +261,60 @@ namespace ScalableRelativeImage.AvaloniaGUI
         private void RefreshButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Trace.WriteLine("Try Refresh");
-            if (CentralEditor is not null)
-                if (ImagePreview is not null)
-                    if (WidthBox is not null)
-                        if (HeightBox is not null)
-                            if (ScaleBox is not null)
-                            {
-                                try
-                                {
-                                    var vectorimg = Compile();
-                                    if (vectorimg is null) return;
-                                    RenderProfile profile = new RenderProfile();
-                                    float Scale = 1.0f;
-                                    try
-                                    {
-                                        Scale = float.Parse(ScaleBox.Text);
-                                    }
-                                    catch (System.Exception)
-                                    {
-                                    }
-                                    try
-                                    {
-                                        profile.TargetWidth = float.Parse(WidthBox.Text);
+            if (CentralEditor is not null && ImagePreview is not null && WidthBox is not null && HeightBox is not null && ScaleBox is not null)
+            {
+                try
+                {
+                    var vectorimg = Compile();
+                    if (vectorimg is null) return;
+                    RenderProfile profile = new RenderProfile();
+                    float Scale = 1.0f;
+                    try
+                    {
+                        Scale = float.Parse(ScaleBox.Text);
+                    }
+                    catch (System.Exception)
+                    {
+                    }
+                    try
+                    {
+                        profile.TargetWidth = float.Parse(WidthBox.Text);
 
-                                    }
-                                    catch (System.Exception)
-                                    {
-                                        profile.TargetWidth = vectorimg.RelativeWidth;
-                                    }
-                                    try
-                                    {
-                                        profile.TargetHeight = float.Parse(HeightBox.Text);
-                                    }
-                                    catch (System.Exception)
-                                    {
-                                        profile.TargetHeight = vectorimg.RelativeHeight;
-                                    }
-                                    profile.TargetWidth *= Scale;
-                                    profile.TargetHeight *= Scale;
-                                    var img = vectorimg.Render(profile);
-                                    MemoryStream memoryStream = new MemoryStream();
-                                    img.Save(memoryStream, ImageFormat.Png);
-                                    memoryStream.Position = 0;
-                                    Bitmap b = new Bitmap(memoryStream);
-                                    ImagePreview.Source = b;
-                                    PreviewOriginWidth = profile.TargetWidth;
-                                    PreviewOriginHeight = profile.TargetHeight;
-                                    ImagePreview.Width = profile.TargetWidth;
-                                    ImagePreview.Height = profile.TargetHeight;
-                                    return;
-                                }
-                                catch (System.Exception exception)
-                                {
+                    }
+                    catch (System.Exception)
+                    {
+                        profile.TargetWidth = vectorimg.RelativeWidth;
+                    }
+                    try
+                    {
+                        profile.TargetHeight = float.Parse(HeightBox.Text);
+                    }
+                    catch (System.Exception)
+                    {
+                        profile.TargetHeight = vectorimg.RelativeHeight;
+                    }
+                    profile.TargetWidth *= Scale;
+                    profile.TargetHeight *= Scale;
+                    var img = vectorimg.Render(profile);
+                    MemoryStream memoryStream = new MemoryStream();
+                    img.Save(memoryStream, ImageFormat.Png);
+                    memoryStream.Position = 0;
+                    Bitmap b = new Bitmap(memoryStream);
+                    ImagePreview.Source = b;
+                    PreviewOriginWidth = profile.TargetWidth;
+                    PreviewOriginHeight = profile.TargetHeight;
+                    ImagePreview.Width = profile.TargetWidth;
+                    ImagePreview.Height = profile.TargetHeight;
+                    ApplyPreviewZoom();
+                    return;
+                }
+                catch (System.Exception exception)
+                {
 
-                                    Trace.WriteLine(exception);
-                                }
+                    Trace.WriteLine(exception);
+                }
 
-                            }
+            }
             Trace.WriteLine("Something went wrong...");
         }
         public ImageNodeRoot? Compile()

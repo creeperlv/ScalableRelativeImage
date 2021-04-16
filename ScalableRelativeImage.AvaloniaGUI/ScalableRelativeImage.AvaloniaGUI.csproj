@@ -15,4 +15,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ScalableRelativeImage\ScalableRelativeImage.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Resources\Theme.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
