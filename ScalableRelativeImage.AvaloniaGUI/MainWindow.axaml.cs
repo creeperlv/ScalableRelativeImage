@@ -229,6 +229,31 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                 };
             }
+            if (ColumnButton is not null && RowButton is not null && EditorGrid is not null && ViewerGrid is not null)
+            {
+                ColumnButton.Click += (_, _) =>
+                {
+                    Grid.SetColumn(EditorGrid, 0);
+                    Grid.SetColumn(ViewerGrid, 1);
+                    Grid.SetRow(EditorGrid, 0);
+                    Grid.SetRow(ViewerGrid, 0);
+                    Grid.SetRowSpan(EditorGrid, 2);
+                    Grid.SetRowSpan(ViewerGrid, 2);
+                    Grid.SetColumnSpan(EditorGrid, 1);
+                    Grid.SetColumnSpan(ViewerGrid, 1);
+                };
+                RowButton.Click += (_, _) =>
+                {
+                    Grid.SetRow(EditorGrid, 1);
+                    Grid.SetRow(ViewerGrid, 0);
+                    Grid.SetColumn(EditorGrid, 0);
+                    Grid.SetColumn(ViewerGrid, 0);
+                    Grid.SetRowSpan(EditorGrid, 1);
+                    Grid.SetRowSpan(ViewerGrid, 1);
+                    Grid.SetColumnSpan(EditorGrid, 2);
+                    Grid.SetColumnSpan(ViewerGrid, 2);
+                };
+            }
             async Task SaveAs()
             {
 
@@ -356,6 +381,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Button? RenderImageButton;
         Button? AboutPageButton;
         Button? CloseAboutPageButton;
+        Button? ColumnButton;
+        Button? RowButton;
         TextEditor? CentralEditor;
         Image? ImagePreview;
         TextBox? WidthBox;
@@ -368,6 +395,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Grid? ShapesViewPort;
         Grid? CentralEditorView;
         Grid? AboutView;
+        Grid? EditorGrid;
+        Grid? ViewerGrid;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -385,6 +414,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             CloseShapeViewPort = this.FindControl<Button>("CloseShapeViewPort");
             AboutPageButton = this.FindControl<Button>("AboutPageButton");
             CloseAboutPageButton = this.FindControl<Button>("CloseAboutPageButton");
+            RowButton = this.FindControl<Button>("RowButton");
+            ColumnButton = this.FindControl<Button>("ColumnButton");
             CentralEditor = this.FindControl<TextEditor>("CentralEditor");
             ImagePreview = this.FindControl<Image>("ImagePreview");
             WidthBox = this.FindControl<TextBox>("ImageWidthBox");
@@ -397,6 +428,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             ShapesViewPort = this.FindControl<Grid>("ShapesViewPort");
             CentralEditorView = this.FindControl<Grid>("CentralEditorView");
             AboutView = this.FindControl<Grid>("AboutView");
+            EditorGrid = this.FindControl<Grid>("EditorGrid");
+            ViewerGrid = this.FindControl<Grid>("ViewerGrid");
         }
     }
 }

@@ -56,7 +56,7 @@
           <ColumnDefinition Width="auto"/>
           <ColumnDefinition Width="auto"/>
           <ColumnDefinition Width="1*"/>
-          <ColumnDefinition Width="1*"/>
+          <!--<ColumnDefinition Width="1*"/>-->
         </Grid.ColumnDefinitions>
 
         <Grid Width="200" Grid.Column="1" Name="ShapesViewPort" IsVisible="False" Background="#1AAA">
@@ -70,60 +70,98 @@
             <StackPanel Name="ShapeList" Margin="5"/>
           </ScrollViewer>
         </Grid>
-        <Grid Grid.Column="2" HorizontalAlignment="Stretch" Background="#2AAA">
+        <Grid Grid.Column="2">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="Auto" MaxHeight="200"/>
+            <RowDefinition Height="1*"/>
           </Grid.RowDefinitions>
-          <StackPanel Orientation="Horizontal">
+          <StackPanel Orientation="Horizontal" Background="#202020">
             <Button Name="RefreshButton">
               <i:Icon Value="fas fa-sync" />
             </Button>
+            <Button Name="ColumnButton">
+              <Grid Width="14" Height="14">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="1*"/>
+                  <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderBrush="White" BorderThickness="1"></Border>
+                <Border BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Grid.Column="1"></Border>
+              </Grid>
+            </Button>
+            <Button Name="RowButton">
+              <Grid Width="14" Height="14">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="1*"/>
+                  <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="White" BorderThickness="1"></Border>
+                <Border BorderBrush="White" BorderThickness="1" Margin="0,-1,0,0" Grid.Row="1"></Border>
+              </Grid>
+            </Button>
           </StackPanel>
-          <AvalonEdit:TextEditor Grid.Row="1" Name="CentralEditor" Background="#0AAA"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Stretch"
-                                 Margin="5" FontFamily="Sarasa Mono CL"
-                                 Foreground="White"
-                                 SyntaxHighlighting="XML" ShowLineNumbers="True"
-                                 HorizontalScrollBarVisibility="Auto"
-                                 VerticalScrollBarVisibility="Visible" IsVisible="True" IsEnabled="True"
-                                 TextBlock.FontSize="12" x:Name="CentralEditor">
-
-          </AvalonEdit:TextEditor>
-          <Grid Grid.Row="2"  Name="WarningsView" IsVisible="False">
+          <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-              <RowDefinition/>
-              <RowDefinition/>
+              <RowDefinition Height="1*"/>
+              <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Grid Background="#2288EE">
-              <TextBlock HorizontalAlignment="Left" Text="Warnings"/>
-              <Button Name="CloseWarningsViewButton" HorizontalAlignment="Right" Height="20" Padding="0" Width="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">X</Button>
-            </Grid>
-            <ScrollViewer Grid.Row="1">
-              <StackPanel Name="WarningsStackPanel"/>
-            </ScrollViewer>
-          </Grid>
 
-        </Grid>
-        <Grid Grid.Column="3">
-          <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Image Name="ImagePreview"/>
-            <!--<Viewbox Name="PreviewPresenter">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1*"/>
+              <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" Background="#2AAA" Name="EditorGrid">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto" MaxHeight="200"/>
+              </Grid.RowDefinitions>
+
+              <AvalonEdit:TextEditor Grid.Row="1" Name="CentralEditor" Background="#0AAA"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     Margin="5" FontFamily="Sarasa Mono CL"
+                                     Foreground="White"
+                                     SyntaxHighlighting="XML" ShowLineNumbers="True"
+                                     HorizontalScrollBarVisibility="Auto"
+                                     VerticalScrollBarVisibility="Visible" IsVisible="True" IsEnabled="True"
+                                     TextBlock.FontSize="12" x:Name="CentralEditor">
+
+              </AvalonEdit:TextEditor>
+              <Grid Grid.Row="2"  Name="WarningsView" IsVisible="False">
+                <Grid.RowDefinitions>
+                  <RowDefinition/>
+                  <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Background="#2288EE">
+                  <TextBlock HorizontalAlignment="Left" Text="Warnings"/>
+                  <Button Name="CloseWarningsViewButton" HorizontalAlignment="Right" Height="20" Padding="0" Width="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">X</Button>
+                </Grid>
+                <ScrollViewer Grid.Row="1">
+                  <StackPanel Name="WarningsStackPanel"/>
+                </ScrollViewer>
+              </Grid>
+
+            </Grid>
+            <Grid Grid.Column="1" Grid.RowSpan="2" Name="ViewerGrid">
+              <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Image Name="ImagePreview"/>
+                <!--<Viewbox Name="PreviewPresenter">
           <Image Name="ImagePreview"/>
         </Viewbox>-->
-          </ScrollViewer>
-          <Border Background="#4AAA" Margin="0,0,25,25" HorizontalAlignment="Right" VerticalAlignment="Bottom" ClipToBounds="True" CornerRadius="5">
+              </ScrollViewer>
+              <Border Background="#4AAA" Margin="0,0,25,25" HorizontalAlignment="Right" VerticalAlignment="Bottom" ClipToBounds="True" CornerRadius="5">
 
-            <StackPanel Margin="5" Orientation="Horizontal">
-              <TextBox Text="100" Name="ViewPortZoomBox"/>
-              <TextBlock Text="%" VerticalAlignment="Center" Margin="5,0"/>
-              <Button Content="+" VerticalContentAlignment="Center" Name="ViewPortZoomIn" Width="35" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
-              <Button Content="-" VerticalContentAlignment="Center" Name="ViewPortZoomOut" Width="35" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
-              <Button Content="✔" VerticalContentAlignment="Center" Name="ViewPortZoomApply" Width="45" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
-            </StackPanel>
-          </Border>
+                <StackPanel Margin="5" Orientation="Horizontal">
+                  <TextBox Text="100" Name="ViewPortZoomBox"/>
+                  <TextBlock Text="%" VerticalAlignment="Center" Margin="5,0"/>
+                  <Button Content="+" VerticalContentAlignment="Center" Name="ViewPortZoomIn" Width="35" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+                  <Button Content="-" VerticalContentAlignment="Center" Name="ViewPortZoomOut" Width="35" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+                  <Button Content="✔" VerticalContentAlignment="Center" Name="ViewPortZoomApply" Width="45" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+                </StackPanel>
+              </Border>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
       <Grid Name="AboutView" HorizontalAlignment="Stretch" IsVisible="False">
@@ -137,6 +175,7 @@
             <TextBlock Text="Thrid-Party Libs" FontSize="28" Margin="5"/>
             <TextBlock Text="AvaloniaUI (github.com/AvaloniaUI/Avalonia) - The MIT License"/>
             <TextBlock Text="AvaloniaEdit (github.com/AvaloniaUI/AvaloniaEdit) - The MIT License"/>
+            <TextBlock Text="Icons.Avalonia (github.com/Projektanker/Icons.Avalonia) - The MIT License"/>
           </StackPanel>
         </ScrollViewer>
       </Grid>

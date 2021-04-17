@@ -5,8 +5,8 @@
   <Color foreground="LightBlue" name="CData" exampleText="&lt;![CDATA[data]]&gt;" />
   <Color foreground="LightBlue" name="DocType" exampleText="&lt;!DOCTYPE rootElement&gt;" />
   <Color foreground="LightBlue" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
-  <Color foreground="#2288EE" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
-  <Color foreground="#3399FF" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
+  <Color foreground="#43A9FF" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
+  <Color foreground="#93D9FF" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
   <Color foreground="White" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
   <Color foreground="Teal" name="Entity" exampleText="index.aspx?a=1&amp;amp;b=2" />
   <Color foreground="Olive" name="BrokenEntity" exampleText="index.aspx?a=1&amp;b=2" />
