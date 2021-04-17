@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
-    public class SubImage : GraphicNode
+    public class SubImage : GraphicNode,Container
     {
         public List<GraphicNode> Children = new();
         public float X;
@@ -17,8 +17,13 @@ namespace ScalableRelativeImage.Nodes
         public float ScaledWidthRatio = 1f;
         public float ScaledHeightRatio = 1f;
         public Color? Background;
-        public string Source = "";
         public string Name = null;
+
+        public float RelativeWidth { get => Width; set => throw new NotImplementedException(); }
+        public float RelativeHeight { get => Height; set => throw new NotImplementedException(); }
+
+        public float RelativeArea => Width*Height;
+
         public override Dictionary<string, string> GetValueSet()
         {
             Dictionary<string, string> dict = new();
@@ -28,7 +33,6 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("ScaledWidthRatio", ScaledWidthRatio.ToString());
             dict.Add("ScaledHeightRatio", ScaledHeightRatio.ToString());
             dict.Add("Height", Height.ToString());
-            dict.Add("Source", Source.ToString());
             if (Name is not null)
             {
                 dict.Add("Name",Name);
@@ -88,11 +92,6 @@ namespace ScalableRelativeImage.Nodes
                         Background = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
                     }
                     break;
-                case "Source":
-                    {
-                        Source = Value;
-                    }
-                    break;
                 case "Name":
                     {
                         Name = Value;
@@ -107,9 +106,9 @@ namespace ScalableRelativeImage.Nodes
         {
             var LT = profile.FindTargetPoint(X, Y);
             var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-                    (int)(Width / profile.root._RelativeWidth * profile.TargetWidth), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight)));
+                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight)));
             var _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-                    (int)(Width / profile.root._RelativeWidth * profile.TargetWidth * ScaledWidthRatio), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
+                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
             //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var img = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var subProfile = profile.Copy(this);
@@ -128,7 +127,8 @@ namespace ScalableRelativeImage.Nodes
                 TargetGraphics.FillRectangle(new SolidBrush(Background.Value), _rect);
             }
             TargetGraphics.DrawImage(img, _rect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
-
+            g.Dispose();
+            img.Dispose();
         }
     }
 }

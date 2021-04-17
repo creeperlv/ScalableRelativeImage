@@ -14,7 +14,13 @@ namespace ScalableRelativeImage.Nodes
         void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings);
         Dictionary<string, string> GetValueSet();
     }
-    public class ImageNodeRoot : INode
+    public interface Container:INode
+    {
+        float RelativeWidth { get; set; }
+        float RelativeHeight { get; set; }
+        float RelativeArea { get; }
+    }
+    public class ImageNodeRoot : Container
     {
         public float RelativeWidth { get => _RelativeWidth; set { _RelativeWidth = value; RelativeArea = _RelativeHeight * _RelativeWidth; } }
         public float RelativeHeight { get => _RelativeHeight; set { _RelativeHeight = value; RelativeArea = _RelativeHeight * _RelativeWidth; } }
@@ -24,7 +30,7 @@ namespace ScalableRelativeImage.Nodes
         internal float _RelativeHeight = 0;
         internal Color _PreferredBackground = Color.White;
         internal Color _PreferredForeground = Color.Transparent;
-        internal float RelativeArea;
+        public float RelativeArea { get; internal set; }
         public List<GraphicNode> Children = new();
         public ImageNodeRoot()
         {

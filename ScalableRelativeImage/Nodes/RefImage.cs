@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -69,32 +70,82 @@ namespace ScalableRelativeImage.Nodes
                     break;
             }
         }
+        class PresudoRoot : Container
+        {
+            public float RelativeWidth { get; set; } = 1;
+            public float RelativeHeight { get; set; } = 1;
+
+            public float RelativeArea => RelativeWidth * RelativeHeight;
+            List<INode> Children = new();
+            public void AddNode(INode node, ref List<ExecutionWarning> executionWarnings)
+            {
+                Children.Add(node);
+            }
+
+            public Dictionary<string, string> GetValueSet()
+            {
+                return null;
+            }
+
+            public List<INode> ListNodes()
+            {
+                return Children;
+            }
+
+            public void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
+            {
+            }
+        }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
             var LT = profile.FindTargetPoint(X, Y);
             var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-                    (int)(Width / profile.root._RelativeWidth * profile.TargetWidth), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight)));
+                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight)));
             var _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-                    (int)(Width / profile.root._RelativeWidth * profile.TargetWidth * ScaledWidthRatio), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
+                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
             if (Source.StartsWith("Ref:"))
             {
                 var Name = Source.Substring(4);
                 var sub = profile.Ref(Name);
-                var p = profile.Copy(profile.root);
-                p.TargetWidth = rect.Width;
-                p.TargetHeight = rect.Height;
+                var __LT = profile.FindTargetPoint(sub.X, sub.Y);
+                var ___rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)__LT.X, (int)__LT.Y), new Size(
+                        (int)(sub.Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(sub.Height / profile.root.RelativeHeight * profile.TargetHeight)));
+                var wR = ((float)_rect.Width) / (float)___rect.Width;
+                var hR = ((float)_rect.Height) / (float)___rect.Height;
+                var pR = new PresudoRoot() { };
+                {
+                    //var sR = wR / hR;
+                    pR.RelativeWidth = profile.root.RelativeWidth; 
+                    pR.RelativeHeight = profile.root.RelativeHeight;
+                    //if (sR > 1)
+                    //{
+                    //    pR.RelativeWidth *= sR;
+                    //}
+                    //else
+                    //{
+
+                    //    pR.RelativeHeight*= 1/sR;
+                    //}
+                }
+                var p = profile.Copy(pR);
+                p.TargetWidth = profile.TargetWidth * wR;
+                p.TargetHeight = profile.TargetHeight * hR;
                 var _LT = p.FindTargetPoint(sub.X, sub.Y);
                 var __rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)_LT.X, (int)_LT.Y), new Size(
-                        (int)(sub.Width / p.root._RelativeWidth * p.TargetWidth), (int)(sub.Height / p.root._RelativeHeight * p.TargetHeight)));
-                Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                        (int)(sub.Width / p.root.RelativeWidth * p.TargetWidth), (int)(sub.Height / p.root.RelativeHeight * p.TargetHeight)));
+                Bitmap Bit = new Bitmap((int)p.TargetWidth, (int)p.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
                 Graphics g = Graphics.FromImage(Bit);
-                g.FillRectangle(new SolidBrush(profile.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)profile.TargetWidth, (int)profile.TargetHeight));
+                g.FillRectangle(new SolidBrush(profile.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
                 g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 sub.Paint(ref g, p);
                 TargetGraphics.DrawImage(Bit, _rect, __rect, GraphicsUnit.Pixel);
+                g.Dispose();
+                Bit.Dispose();
+                
             }
+            else
             {
 
                 var sri = SRIEngine.Deserialize(profile.FindFile(Source));
@@ -103,7 +154,7 @@ namespace ScalableRelativeImage.Nodes
                 p.TargetHeight = rect.Height;
                 var img = sri.Render(p);
                 TargetGraphics.DrawImage(img, rect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
-
+                img.Dispose();
             }
         }
     }

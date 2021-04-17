@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
-    public class Rectangle:GraphicNode
+    public class Rectangle : GraphicNode
     {
         public float X;
         public float Y;
@@ -65,13 +65,13 @@ namespace ScalableRelativeImage.Nodes
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
             float RealWidth = profile.FindAbsoluteSize(Size);
-            var LT=profile.FindTargetPoint(X, Y);
-            if(Fill is not true)
-            TargetGraphics.DrawRectangle(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),new Size(
-                (int)(Width / profile.root._RelativeWidth * profile.TargetWidth), (int)(Height / profile.root._RelativeHeight* profile.TargetHeight))));
+            var LT = profile.FindTargetPoint(X, Y);
+            if (Fill is not true)
+                TargetGraphics.DrawRectangle(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
+                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight))));
             else
                 TargetGraphics.FillRectangle(new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-    (int)(Width / profile.root._RelativeWidth * profile.TargetWidth), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight))));
+    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight))));
 
         }
     }

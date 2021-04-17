@@ -20,7 +20,7 @@ namespace ScalableRelativeImage
         public float TargetHeight;
         public Color? DefaultForeground = null;
         public Color? DefaultBackground = null;
-        internal ImageNodeRoot root;
+        internal Container root;
         public string WorkingDirectory = Environment.CurrentDirectory;
         public SubImage Ref(string Name)
         {
@@ -53,13 +53,14 @@ namespace ScalableRelativeImage
             }
             return null;
         }
-        public RenderProfile Copy(INode Root)
+        public RenderProfile Copy(Container Root)
         {
             RenderProfile renderProfile = new RenderProfile();
             renderProfile.DefaultBackground = DefaultBackground;
             renderProfile.DefaultForeground = DefaultForeground;
             renderProfile.TargetHeight = TargetHeight;
             renderProfile.TargetWidth = TargetWidth;
+            renderProfile.root = Root;
             renderProfile.WorkingDirectory = Environment.CurrentDirectory;
             return renderProfile;
         }
@@ -70,7 +71,7 @@ namespace ScalableRelativeImage
         }
         public PointF FindTargetPoint(float RX, float RY)
         {
-            PointF p = new(((RX / root._RelativeWidth) * TargetWidth), ((RY / root._RelativeHeight) * TargetHeight));
+            PointF p = new(((RX / root.RelativeWidth) * TargetWidth), ((RY / root.RelativeWidth) * TargetHeight));
             return p;
         }
         public float FindAbsoluteSize(float RelativeSize)

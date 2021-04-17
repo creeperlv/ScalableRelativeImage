@@ -331,6 +331,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     ImagePreview.Width = profile.TargetWidth;
                     ImagePreview.Height = profile.TargetHeight;
                     ApplyPreviewZoom();
+                    System.GC.Collect();
                     return;
                 }
                 catch (System.Exception exception)

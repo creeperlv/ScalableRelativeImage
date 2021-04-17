@@ -55,7 +55,7 @@ namespace ScalableRelativeImage.Nodes
             var img = Bitmap.FromFile(profile.FindFile(Source).FullName);
             var LT = profile.FindTargetPoint(X, Y);
             var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-                    (int)(Width / profile.root._RelativeWidth * profile.TargetWidth), (int)(Height / profile.root._RelativeHeight * profile.TargetHeight)));
+                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight)));
             TargetGraphics.DrawImage(img, rect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
 
         }
