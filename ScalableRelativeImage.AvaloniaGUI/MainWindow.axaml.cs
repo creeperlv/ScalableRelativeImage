@@ -159,11 +159,18 @@ namespace ScalableRelativeImage.AvaloniaGUI
                                 {
                                     if (item.Name != "ImageNodeRoot")
                                         if (item.Name != "INode")
-                                            if (item.Name != "GraphicNode")
-                                            {
-                                                ShapeButton shapeButton = new(item, CentralEditor);
-                                                ShapeList.Children.Add(shapeButton);
-                                            }
+                                            if (item.Name != "Container")
+                                                if (item.Name != "GraphicNode")
+                                                {
+                                                    try
+                                                    {
+                                                        ShapeButton shapeButton = new(item, CentralEditor);
+                                                        ShapeList.Children.Add(shapeButton);
+                                                    }
+                                                    catch (Exception)
+                                                    {
+                                                    }
+                                                }
 
                                 }
                             }
