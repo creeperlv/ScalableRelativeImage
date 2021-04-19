@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
-    public class SubImage : GraphicNode,Container
+    public class SubImage : GraphicNode,IContainer
     {
         public List<GraphicNode> Children = new();
         public float X;

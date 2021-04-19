@@ -20,7 +20,7 @@ namespace ScalableRelativeImage
         public float TargetHeight;
         public Color? DefaultForeground = null;
         public Color? DefaultBackground = null;
-        internal Container root;
+        internal IContainer root;
         public string WorkingDirectory = Environment.CurrentDirectory;
         public SubImage Ref(string Name)
         {
@@ -45,15 +45,16 @@ namespace ScalableRelativeImage
                                 return item as SubImage;
                             }
                         }
-                    }else if(item is Group)
+                    }else if(item is IContainer || item is Group)
                     {
-                        return Ref(item, Name);
+                        var a=Ref(item, Name);
+                        if (a is not null) return a;
                     }
                 }
             }
             return null;
         }
-        public RenderProfile Copy(Container Root)
+        public RenderProfile Copy(IContainer Root)
         {
             RenderProfile renderProfile = new RenderProfile();
             renderProfile.DefaultBackground = DefaultBackground;

@@ -21,11 +21,11 @@ namespace ScalableRelativeImage.AvaloniaGUI
     public class MainWindow : Window
     {
         public static XmlDocument GlobalXmlDocument = new XmlDocument();
-        public static readonly string SRIContentTemplate = @"<ScalableRelativeImage Flavor=""CreeperLv.SRI"" FormatVersion=""1.0.0.0"">
-  <ImageNodeRoot RelativeWidth=""1920"" RelativeHeight=""1080"">
-   <!--Shapes Here...-->
-  </ImageNodeRoot>
-</ScalableRelativeImage>";
+        public static readonly string SRIContentTemplate = "<ScalableRelativeImage Flavor=\"CreeperLv.SRI\" FormatVersion=\"1.0.0.0\">" + "\n" +
+"\t<ImageNodeRoot RelativeWidth=\"1920\" RelativeHeight=\"1080\">" + "\n" +
+"\t\t<!--Shapes Here...-->" + "\n" +
+"\t</ImageNodeRoot>" + "\n" +
+"</ScalableRelativeImage>";
         public MainWindow()
         {
             InitializeComponent();
@@ -159,7 +159,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                                 {
                                     if (item.Name != "ImageNodeRoot")
                                         if (item.Name != "INode")
-                                            if (item.Name != "Container")
+                                            if (item.Name != "IContainer")
                                                 if (item.Name != "GraphicNode")
                                                 {
                                                     try
@@ -338,7 +338,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     ImagePreview.Width = profile.TargetWidth;
                     ImagePreview.Height = profile.TargetHeight;
                     ApplyPreviewZoom();
-                    System.GC.Collect();
+                    GC.Collect();
                     return;
                 }
                 catch (System.Exception exception)

@@ -5,6 +5,9 @@ using System.Drawing;
 
 namespace ScalableRelativeImage.Nodes
 {
+    /// <summary>
+    /// Basic Node, implemented INode.
+    /// </summary>
     public class GraphicNode : INode
     {
         public ImageNodeRoot root;

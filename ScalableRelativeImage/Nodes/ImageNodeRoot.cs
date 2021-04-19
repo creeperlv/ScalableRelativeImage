@@ -7,20 +7,40 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
+    /// <summary>
+    /// Node interface, contains all methods that requires to serialize/deserialize SRI Image.
+    /// </summary>
     public interface INode
     {
         List<INode> ListNodes();
+        /// <summary>
+        /// If the node is unable to hold children, the node should dispose all passed nodes and add a "ShapeDisposedWarning" warning.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="executionWarnings"></param>
         void AddNode(INode node, ref List<ExecutionWarning> executionWarnings);
+        /// <summary>
+        /// If certain key is not applicable to the node, the node should dispose the data and add a "DataDisposedWarning" warning.
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <param name="executionWarnings"></param>
         void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings);
         Dictionary<string, string> GetValueSet();
     }
-    public interface Container:INode
+    /// <summary>
+    /// Relative Container interface.
+    /// </summary>
+    public interface IContainer:INode
     {
         float RelativeWidth { get; set; }
         float RelativeHeight { get; set; }
         float RelativeArea { get; }
     }
-    public class ImageNodeRoot : Container
+    /// <summary>
+    /// Image Node Root, root node of all real nodes. Contains some basic infromation of the image.
+    /// </summary>
+    public class ImageNodeRoot : IContainer
     {
         public float RelativeWidth { get => _RelativeWidth; set { _RelativeWidth = value; RelativeArea = _RelativeHeight * _RelativeWidth; } }
         public float RelativeHeight { get => _RelativeHeight; set { _RelativeHeight = value; RelativeArea = _RelativeHeight * _RelativeWidth; } }
