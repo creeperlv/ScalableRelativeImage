@@ -12,7 +12,7 @@
       <ColumnDefinition Width="auto"/>
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
-    <ScrollViewer Width="210" HorizontalScrollBarVisibility="Disabled" Background="#3AAA" HorizontalContentAlignment="Stretch">
+    <ScrollViewer Width="210" Name="MenuArea" HorizontalScrollBarVisibility="Disabled" Background="#3AAA" HorizontalContentAlignment="Stretch">
       <StackPanel HorizontalAlignment="Stretch" Margin="5,0">
         <TextBlock Text="SRI GUI Tool" FontSize="24" Margin="5" TextWrapping="Wrap"/>
         <ToggleButton HorizontalAlignment="Stretch" Content="Files" Name="FilesTab"/>
@@ -35,7 +35,7 @@
 
         <ToggleButton HorizontalAlignment="Stretch" Content="Help" Name="HelpTab"/>
         <StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #HelpTab.IsChecked}" Margin="5,0">
-          <Button HorizontalAlignment="Stretch" Content="Github Repository"/>
+          <Button HorizontalAlignment="Stretch" Content="Github Repository" Name="GithubPageButton"/>
           <Button HorizontalAlignment="Stretch" Content="About" Name="AboutPageButton"/>
         </StackPanel>
         <ToggleButton HorizontalAlignment="Stretch" Content="Settings" Name="SettingsTab" IsChecked="True"/>
@@ -178,6 +178,27 @@
             <TextBlock Text="Icons.Avalonia (github.com/Projektanker/Icons.Avalonia) - The MIT License"/>
           </StackPanel>
         </ScrollViewer>
+      </Grid>
+
+    </Grid>
+    <Grid Name="Dialogs" Grid.ColumnSpan="2" Background="#40000000" HorizontalAlignment="Stretch" IsVisible="True">
+      <Grid MaxWidth="600" MinWidth="300" MaxHeight="300" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Border CornerRadius="5" Background="#404040">
+          <Grid Margin="10">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition />
+              <RowDefinition  Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Name="DialogTitle" Text="Title" FontSize="24"/>
+            <TextBlock Name="DialogContent" Text="Contents" Grid.Row="1"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+              <Button Name="DialogButton0" Content="Button1"/>
+              <Button Name="DialogButton1" Content="Button2"/>
+              <Button Name="DialogButton2" Content="Button3"/>
+            </StackPanel>
+          </Grid>
+        </Border>
       </Grid>
     </Grid>
   </Grid>

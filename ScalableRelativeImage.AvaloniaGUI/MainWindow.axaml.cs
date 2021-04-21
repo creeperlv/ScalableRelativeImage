@@ -21,6 +21,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
     public class MainWindow : Window
     {
         public static XmlDocument GlobalXmlDocument = new XmlDocument();
+        string LastContent = "";
         public static readonly string SRIContentTemplate = "<ScalableRelativeImage Flavor=\"CreeperLv.SRI\" FormatVersion=\"1.0.0.0\">" + "\n" +
 "\t<ImageNodeRoot RelativeWidth=\"1920\" RelativeHeight=\"1080\">" + "\n" +
 "\t\t<!--Shapes Here...-->" + "\n" +
@@ -32,19 +33,23 @@ namespace ScalableRelativeImage.AvaloniaGUI
 #if DEBUG
             this.AttachDevTools();
 #endif
-            if (RefreshButton is not null)
-                RefreshButton.Click += RefreshButton_Click;
-            if (NewButton is not null)
+            RefreshButton.Click += RefreshButton_Click;
             {
                 NewButton.Click += (_, _) =>
                 {
                     NewDocument();
                 };
             }
-            if (CentralEditor is not null) NewDocument();
+            this.Closing += (a, b) =>
+            {
+                Closing(null,()=> {
+                    b.Cancel = true;
+                });
+            };
+            DialogGrid.IsVisible = false;
+            NewDocument();
             void NewDocument()
             {
-                if (CentralEditor is not null)
                 {
                     XshdSyntaxDefinition xshd;
                     using (XmlTextReader reader = new XmlTextReader("Resources/Theme.xml"))
@@ -57,18 +62,15 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 }
                 CurrentFile = null;
             };
-            if (CloseWarningsViewButton is not null)
             {
                 CloseWarningsViewButton.Click += (_, _) =>
                 {
-                    if (WarningsView is not null) WarningsView.IsVisible = false;
+                    WarningsView.IsVisible = false;
                 };
             }
-            if (OpenButton is not null)
             {
                 OpenButton.Click += async (a, b) =>
                  {
-                     if (CentralEditor is not null)
                      {
                          OpenFileDialog openFileDialog = new OpenFileDialog();
                          openFileDialog.AllowMultiple = false;
@@ -77,37 +79,33 @@ namespace ScalableRelativeImage.AvaloniaGUI
                          {
                              var content = File.ReadAllText(filePick[0]);
                              CurrentFile = filePick[0];
+                             LastContent = content;
                              CentralEditor.Text = content;
                          }
                      }
                  };
             }
-            if (SaveButton is not null)
             {
                 SaveButton.Click += async (_, _) =>
                  {
                      if (CurrentFile is null) await SaveAs(); else Save();
                  };
             }
-            if (SaveAsButton is not null)
             {
                 SaveAsButton.Click += async (_, _) =>
                 {
                     await SaveAs();
                 };
             }
-            if (ViewPortZoomBox is not null)
             {
                 ViewPortZoomBox.KeyDown += (a, b) =>
                 {
                     if (b.Key == Avalonia.Input.Key.Enter) ApplyZoomBox();
                 };
             }
-            if (ViewPortZoomIn is not null)
             {
                 ViewPortZoomIn.Click += (_, _) =>
                 {
-                    if (ViewPortZoomBox is not null)
                     {
                         float v = float.Parse(ViewPortZoomBox.Text);
                         v += 10;
@@ -116,15 +114,12 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                 };
             }
-            if (CloseShapeViewPort is not null)
             {
-                CloseShapeViewPort.Click += (_, _) => { if (ShapesViewPort is not null) { ShapesViewPort.IsVisible = false; } };
+                CloseShapeViewPort.Click += (_, _) => { { ShapesViewPort.IsVisible = false; } };
             }
-            if (ViewPortZoomOut is not null)
             {
                 ViewPortZoomOut.Click += (_, _) =>
                 {
-                    if (ViewPortZoomBox is not null)
                     {
                         float v = float.Parse(ViewPortZoomBox.Text);
                         if (v - 10 > 0)
@@ -134,18 +129,25 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                 };
             }
-            if (ViewPortZoomApply is not null)
             {
                 ViewPortZoomApply.Click += (_, _) =>
                 {
                     ApplyZoomBox();
                 };
             }
-            if (ViewShapeButton is not null)
+            {
+                this.FindControl<Button>("GithubPageButton").Click += (_, _) =>
+                {
+                    Process.Start("https://github.com/creeperlv/ScalableRelativeImage/");
+                };
+                this.FindControl<Button>("CloseButton").Click += (_, _) =>
+                {
+                    Closing();
+                };
+            }
             {
                 ViewShapeButton.Click += (_, _) =>
                 {
-                    if (ShapesViewPort is not null && ShapeList is not null && CentralEditor is not null)
                     {
                         ShapesViewPort.IsVisible = true;
                         ShapeList.Children.Clear();
@@ -178,28 +180,40 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                 };
             }
+            void Closing(Action Def = null, Action Addition = null)
+            {
+
+                if (CentralEditor.Text != SRIContentTemplate)
+                {
+                    if (LastContent != CentralEditor.Text)
+                    {
+                        //
+                        Addition();
+                        Show3ButtonDialog("File Changed", "File has changed since last save/load, do you want to save before you close?",
+                            new CommandableButton("Save", Save), new CommandableButton("No", () => { Environment.Exit(0); }), new CommandableButton("Cancel", null));
+                    }
+                    else if (Def is not null) Def();
+                }
+                else if (Def is not null) Def();
+            }
             void ApplyZoomBox()
             {
-                if (ViewPortZoomBox is not null)
-                    try
-                    {
-                        float v = float.Parse(ViewPortZoomBox.Text);
-                        PreviewScale = v / 100f;
-                        ApplyPreviewZoom();
-                    }
-                    catch (System.Exception)
-                    {
-                    }
+                try
+                {
+                    float v = float.Parse(ViewPortZoomBox.Text);
+                    PreviewScale = v / 100f;
+                    ApplyPreviewZoom();
+                }
+                catch (Exception)
+                {
+                }
             }
-            if (AboutPageButton is not null && CentralEditorView is not null && AboutView is not null)
             {
                 AboutPageButton.Click += (_, _) => { CentralEditorView.IsVisible = false; AboutView.IsVisible = true; };
             }
-            if (CloseAboutPageButton is not null && CentralEditorView is not null && AboutView is not null)
             {
                 CloseAboutPageButton.Click += (_, _) => { CentralEditorView.IsVisible = true; AboutView.IsVisible = false; };
             }
-            if (RenderImageButton is not null)
             {
                 RenderImageButton.Click += async (_, _) =>
                 {
@@ -209,7 +223,6 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     if (result is not null)
                     {
                         var VI = Compile();
-                        if (WidthBox is not null && HeightBox is not null && VI is not null)
                         {
 
                             RenderProfile profile = new RenderProfile();
@@ -236,7 +249,6 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                 };
             }
-            if (ColumnButton is not null && RowButton is not null && EditorGrid is not null && ViewerGrid is not null)
             {
                 ColumnButton.Click += (_, _) =>
                 {
@@ -266,7 +278,6 @@ namespace ScalableRelativeImage.AvaloniaGUI
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 var result = await sfd.ShowAsync(this);
-                if (result is not null)
                 {
                     CurrentFile = result;
                     Save();
@@ -274,26 +285,26 @@ namespace ScalableRelativeImage.AvaloniaGUI
             }
             void Save()
             {
-                if (CentralEditor is not null && CurrentFile is not null)
+                {
+                    LastContent = CentralEditor.Text;
                     File.WriteAllText(CurrentFile, CentralEditor.Text);
+                }
             }
         }
-        string? CurrentFile = null;
+        string CurrentFile = null;
         float PreviewOriginWidth = 10;
         float PreviewOriginHeight = 10;
         float PreviewScale = 1f;
         public void ApplyPreviewZoom()
         {
-            if (ImagePreview is not null)
             {
                 ImagePreview.Width = PreviewOriginWidth * PreviewScale;
                 ImagePreview.Height = PreviewOriginHeight * PreviewScale;
             }
         }
-        private void RefreshButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void RefreshButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Trace.WriteLine("Try Refresh");
-            if (CentralEditor is not null && ImagePreview is not null && WidthBox is not null && HeightBox is not null && ScaleBox is not null)
             {
                 try
                 {
@@ -350,18 +361,16 @@ namespace ScalableRelativeImage.AvaloniaGUI
             }
             Trace.WriteLine("Something went wrong...");
         }
-        public ImageNodeRoot? Compile()
+        public ImageNodeRoot Compile()
         {
             if (CentralEditor is null) return null;
             List<ExecutionWarning> Warnings = new List<ExecutionWarning>();
             var vectorimg = SRIEngine.Deserialize(CentralEditor.Text, out Warnings);
-            if (WarningsStackPanel is not null)
             {
                 WarningsStackPanel.Children.Clear();
                 if (Warnings.Count is not 0)
                 {
-                    if (WarningsView is not null)
-                        WarningsView.IsVisible = true;
+                    WarningsView.IsVisible = true;
                     foreach (var item in Warnings)
                     {
 
@@ -375,36 +384,103 @@ namespace ScalableRelativeImage.AvaloniaGUI
             return vectorimg;
         }
 
-        Button? OpenButton;
-        Button? CloseWarningsViewButton;
-        Button? SaveButton;
-        Button? SaveAsButton;
-        Button? NewButton;
-        Button? RefreshButton;
-        Button? ViewPortZoomIn;
-        Button? ViewPortZoomOut;
-        Button? ViewPortZoomApply;
-        Button? ViewShapeButton;
-        Button? CloseShapeViewPort;
-        Button? RenderImageButton;
-        Button? AboutPageButton;
-        Button? CloseAboutPageButton;
-        Button? ColumnButton;
-        Button? RowButton;
-        TextEditor? CentralEditor;
-        Image? ImagePreview;
-        TextBox? WidthBox;
-        TextBox? HeightBox;
-        TextBox? ScaleBox;
-        TextBox? ViewPortZoomBox;
-        StackPanel? WarningsStackPanel;
-        StackPanel? ShapeList;
-        Grid? WarningsView;
-        Grid? ShapesViewPort;
-        Grid? CentralEditorView;
-        Grid? AboutView;
-        Grid? EditorGrid;
-        Grid? ViewerGrid;
+        Button OpenButton;
+        Button CloseWarningsViewButton;
+        Button SaveButton;
+        Button SaveAsButton;
+        Button NewButton;
+        Button RefreshButton;
+        Button ViewPortZoomIn;
+        Button ViewPortZoomOut;
+        Button ViewPortZoomApply;
+        Button ViewShapeButton;
+        Button CloseShapeViewPort;
+        Button RenderImageButton;
+        Button AboutPageButton;
+        Button CloseAboutPageButton;
+        Button ColumnButton;
+        Button RowButton;
+        TextEditor CentralEditor;
+        Image ImagePreview;
+        TextBox WidthBox;
+        TextBox HeightBox;
+        TextBox ScaleBox;
+        TextBox ViewPortZoomBox;
+        StackPanel WarningsStackPanel;
+        StackPanel ShapeList;
+        Grid WarningsView;
+        Grid ShapesViewPort;
+        Grid CentralEditorView;
+        Grid AboutView;
+        Grid EditorGrid;
+        Grid ViewerGrid;
+        Grid DialogGrid;
+        Grid CentralViewPort;
+        Button Button0;
+        Button Button1;
+        Button Button2;
+        TextBlock DialogTitle;
+        TextBlock DialogContent;
+        ScrollViewer MenuArea;
+        public void Show3ButtonDialog(string Title, string Content, CommandableButton Button0 = null, CommandableButton Button1 = null, CommandableButton Button2 = null)
+        {
+            DialogTitle.Text = Title;
+            DialogContent.Text = Content;
+            OnShowDialog();
+            if (Button0 is not null)
+            {
+                this.Button0.IsVisible = true;
+                this.Button0.Content = Button0.Content;
+                this.Button0.Click += (_, _) =>
+                {
+                    OnHideDialog();
+                    if (Button0.action is not null) Button0.action();
+                };
+
+            }
+            else
+                this.Button0.IsVisible = false;
+            if (Button1 is not null)
+            {
+                this.Button1.IsVisible = true;
+                this.Button1.Content = Button1.Content;
+                this.Button1.Click += (_, _) =>
+                {
+                    OnHideDialog();
+                    if (Button1.action is not null) Button1.action();
+                };
+
+            }
+            else
+                this.Button1.IsVisible = false;
+            if (Button2 is not null)
+            {
+                this.Button2.IsVisible = true;
+                this.Button2.Content = Button2.Content;
+                this.Button2.Click += (_, _) =>
+                {
+                    OnHideDialog();
+                    if (Button2.action is not null) Button2.action();
+                };
+
+            }
+            else
+                this.Button2.IsVisible = false;
+        }
+        void OnHideDialog()
+        {
+            CentralViewPort.Focusable = true;
+            CentralViewPort.IsEnabled = true;
+            MenuArea.IsEnabled = true;
+            DialogGrid.IsVisible = false;
+        }
+        void OnShowDialog()
+        {
+            CentralViewPort.Focusable = false;
+            CentralViewPort.IsEnabled = false;
+            MenuArea.IsEnabled = false;
+            DialogGrid.IsVisible = true;
+        }
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -438,6 +514,26 @@ namespace ScalableRelativeImage.AvaloniaGUI
             AboutView = this.FindControl<Grid>("AboutView");
             EditorGrid = this.FindControl<Grid>("EditorGrid");
             ViewerGrid = this.FindControl<Grid>("ViewerGrid");
+
+            CentralViewPort = this.FindControl<Grid>("CentralViewPort");
+            MenuArea = this.FindControl<ScrollViewer>("MenuArea");
+
+            DialogGrid = this.FindControl<Grid>("Dialogs");
+            Button0 = this.FindControl<Button>("DialogButton0");
+            Button1 = this.FindControl<Button>("DialogButton1");
+            Button2 = this.FindControl<Button>("DialogButton2");
+            DialogTitle = this.FindControl<TextBlock>("DialogTitle");
+            DialogContent = this.FindControl<TextBlock>("DialogContent");
+        }
+    }
+    public class CommandableButton
+    {
+        public string Content;
+        public Action action;
+        public CommandableButton(string Content, Action action = null)
+        {
+            this.Content = Content;
+            this.action = action;
         }
     }
 }
