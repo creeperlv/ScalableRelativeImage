@@ -22,12 +22,13 @@ namespace ScalableRelativeImage.AvaloniaGUI
             InitializeComponent();
             try
             {
-                INode? n = Activator.CreateInstance(Shape) as INode;
-                if (n is not null && MainButton is not null)
+                INode n = Activator.CreateInstance(Shape) as INode;
+                if (n is not null)
                 {
                     this.FindControl<TextBlock>("MainText").Text = Shape.Name;
                     this.FindControl<TextBlock>("SubText").Text = Shape.Assembly.GetName().Name;
-                    MainButton.Click += (_, _) => {
+                    MainButton.Click += (_, _) =>
+                    {
                         var v = n.GetValueSet();
                         if (v is not null)
                         {
@@ -48,7 +49,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             catch (Exception)
             {
                 this.FindControl<TextBlock>("MainText").Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                this.FindControl<TextBlock>("MainText").Text = Shape.Name+" (?)";
+                this.FindControl<TextBlock>("MainText").Text = Shape.Name + " (?)";
+                this.FindControl<TextBlock>("SubText").Text = Shape.Assembly.GetName().Name;
             }
         }
         static XmlAttribute CreateAttribute(ref XmlDocument xmlDocument, string Name, string Value)
@@ -57,7 +59,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
             attr.Value = Value;
             return attr;
         }
-        Button? MainButton;
+        Button MainButton;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);

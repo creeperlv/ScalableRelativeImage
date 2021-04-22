@@ -138,7 +138,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             {
                 this.FindControl<Button>("GithubPageButton").Click += (_, _) =>
                 {
-                    Process.Start("https://github.com/creeperlv/ScalableRelativeImage/");
+                    //                    Process.Start("https://github.com/creeperlv/ScalableRelativeImage/");
+                    Show3ButtonDialog("GitHub Repository", "Please visit:https://github.com/creeperlv/ScalableRelativeImage/", new CommandableButton("OK", null));
                 };
                 this.FindControl<Button>("CloseButton").Click += (_, _) =>
                 {
@@ -364,7 +365,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
         public ImageNodeRoot Compile()
         {
             if (CentralEditor is null) return null;
-            List<ExecutionWarning> Warnings = new List<ExecutionWarning>();
+            List<ExecutionWarning> Warnings;
             var vectorimg = SRIEngine.Deserialize(CentralEditor.Text, out Warnings);
             {
                 WarningsStackPanel.Children.Clear();
