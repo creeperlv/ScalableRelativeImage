@@ -86,9 +86,9 @@ namespace ScalableRelativeImage.Nodes
             Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(Bit);
             g.FillRectangle(new SolidBrush(profile.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)profile.TargetWidth, (int)profile.TargetHeight));
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = profile.SmoothingMode;
+            g.TextRenderingHint = profile.TextRenderingHint;
+            g.InterpolationMode = profile.InterpolationMode;
             foreach (var item in Children)
             {
                 item.Paint(ref g, profile);

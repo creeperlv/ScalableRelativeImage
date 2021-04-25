@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.IO;
 using System.Reflection;
 using System.Xml;
@@ -20,6 +22,9 @@ namespace ScalableRelativeImage
         public float TargetHeight;
         public Color? DefaultForeground = null;
         public Color? DefaultBackground = null;
+        public InterpolationMode InterpolationMode= InterpolationMode.HighQualityBicubic;
+        public TextRenderingHint TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+        public SmoothingMode SmoothingMode = SmoothingMode.HighQuality;
         internal IContainer root;
         public string WorkingDirectory = Environment.CurrentDirectory;
         public SubImage Ref(string Name)

@@ -129,9 +129,9 @@ namespace ScalableRelativeImage.Nodes
                     g.FillRectangle(new SolidBrush(Background.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
                 else
                 g.FillRectangle(new SolidBrush(p.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = profile.SmoothingMode;
+                g.TextRenderingHint = profile.TextRenderingHint;
+                g.InterpolationMode = profile.InterpolationMode;
                 sub.Paint(ref g, p);
                 TargetGraphics.DrawImage(Bit, _rect, __rect, GraphicsUnit.Pixel);
                 g.Dispose();

@@ -115,9 +115,9 @@ namespace ScalableRelativeImage.Nodes
             subProfile.TargetWidth = rect.Width;
             subProfile.TargetHeight = rect.Height;
             Graphics g = Graphics.FromImage(img);
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = profile.SmoothingMode;
+            g.TextRenderingHint = profile.TextRenderingHint;
+            g.InterpolationMode = profile.InterpolationMode;
             foreach (var item in Children)
             {
                 item.Paint(ref g, profile);
