@@ -339,18 +339,24 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                     profile.TargetWidth *= Scale;
                     profile.TargetHeight *= Scale;
-                    var img = vectorimg.Render(profile);
-                    MemoryStream memoryStream = new MemoryStream();
-                    img.Save(memoryStream, ImageFormat.Png);
-                    memoryStream.Position = 0;
-                    Bitmap b = new Bitmap(memoryStream);
-                    ImagePreview.Source = b;
-                    PreviewOriginWidth = profile.TargetWidth;
-                    PreviewOriginHeight = profile.TargetHeight;
-                    ImagePreview.Width = profile.TargetWidth;
-                    ImagePreview.Height = profile.TargetHeight;
-                    ApplyPreviewZoom();
-                    GC.Collect();
+                   
+                   
+                    using (var img = vectorimg.Render(profile))
+                    {
+                        MemoryStream memoryStream = new MemoryStream();
+                        img.Save(memoryStream, ImageFormat.Png);
+                        memoryStream.Position = 0;
+                        Bitmap b = new Bitmap(memoryStream);
+                        ImagePreview.Source = b;
+                        PreviewOriginWidth = profile.TargetWidth;
+                        PreviewOriginHeight = profile.TargetHeight;
+                        ImagePreview.Width = profile.TargetWidth;
+                        ImagePreview.Height = profile.TargetHeight;
+                        ApplyPreviewZoom();
+                        memoryStream.Dispose();
+                        GC.Collect();
+                    }
+                    
                     return;
                 }
                 catch (System.Exception exception)
