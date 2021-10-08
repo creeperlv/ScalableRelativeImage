@@ -53,7 +53,7 @@ namespace ScalableRelativeImage.Nodes
             var LT = profile.FindTargetPoint(X, Y);
             float D = _S / MathF.Sqrt(2);
             float R = D / 2;
-            TargetGraphics.DrawEllipse(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), LT.X - R, LT.Y - R, LT.X + R, LT.Y + R);
+            TargetGraphics.FillEllipse(new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), LT.X - R, LT.Y - R, D,  D);
         }
     }
 }
