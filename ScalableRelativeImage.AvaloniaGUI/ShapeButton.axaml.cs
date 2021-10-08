@@ -11,7 +11,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
 {
     public class ShapeButton : UserControl
     {
-        TextEditor? MainEditor;
+        TextEditor MainEditor;
         public ShapeButton()
         {
             InitializeComponent();
