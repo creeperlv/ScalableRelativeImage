@@ -42,7 +42,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             }
             this.Closing += (a, b) =>
             {
-                Closing(null,()=> {
+                Closing(null, () =>
+                {
                     b.Cancel = true;
                 });
             };
@@ -279,6 +280,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 var result = await sfd.ShowAsync(this);
+                if (result == "") return;
+                if (result == null) return;
                 {
                     CurrentFile = result;
                     Save();
@@ -339,8 +342,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                     profile.TargetWidth *= Scale;
                     profile.TargetHeight *= Scale;
-                   
-                   
+
+
                     using (var img = vectorimg.Render(profile))
                     {
                         MemoryStream memoryStream = new MemoryStream();
@@ -356,7 +359,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                         memoryStream.Dispose();
                         GC.Collect();
                     }
-                    
+
                     return;
                 }
                 catch (System.Exception exception)
