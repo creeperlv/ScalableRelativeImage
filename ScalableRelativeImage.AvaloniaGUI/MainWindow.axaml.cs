@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -264,16 +265,9 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     Grid.SetColumnSpan(ViewerGrid, 1);
                 };
                 RowButton.Click += (_, _) =>
-                {
-                    Grid.SetRow(EditorGrid, 1);
-                    Grid.SetRow(ViewerGrid, 0);
-                    Grid.SetColumn(EditorGrid, 0);
-                    Grid.SetColumn(ViewerGrid, 0);
-                    Grid.SetRowSpan(EditorGrid, 1);
-                    Grid.SetRowSpan(ViewerGrid, 1);
-                    Grid.SetColumnSpan(EditorGrid, 2);
-                    Grid.SetColumnSpan(ViewerGrid, 2);
-                };
+                
+                    RowButtonClick();
+                ;
             }
             async Task SaveAs()
             {
@@ -294,6 +288,19 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     File.WriteAllText(CurrentFile, CentralEditor.Text);
                 }
             }
+            RowButtonClick();
+        }
+        void RowButtonClick()
+        {
+
+            Grid.SetRow(EditorGrid, 1);
+            Grid.SetRow(ViewerGrid, 0);
+            Grid.SetColumn(EditorGrid, 0);
+            Grid.SetColumn(ViewerGrid, 0);
+            Grid.SetRowSpan(EditorGrid, 1);
+            Grid.SetRowSpan(ViewerGrid, 1);
+            Grid.SetColumnSpan(EditorGrid, 2);
+            Grid.SetColumnSpan(ViewerGrid, 2);
         }
         string CurrentFile = null;
         float PreviewOriginWidth = 10;
