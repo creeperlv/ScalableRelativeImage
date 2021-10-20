@@ -5,7 +5,9 @@
         xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
         xmlns:AvalonEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" MinWidth="800" MinHeight="400"
-        x:Class="ScalableRelativeImage.AvaloniaGUI.MainWindow" FontFamily="Sarasa Mono CL"
+        x:Class="ScalableRelativeImage.AvaloniaGUI.MainWindow"
+		Icon="Icon-1024.ico"
+		FontFamily="Sarasa Mono CL"
         Title="ScalableRelativeImage.AvaloniaGUI">
   <Grid>
     <Grid.ColumnDefinitions>
