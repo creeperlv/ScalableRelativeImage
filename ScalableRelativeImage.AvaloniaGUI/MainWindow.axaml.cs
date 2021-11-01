@@ -58,7 +58,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     XshdSyntaxDefinition xshd;
                     FileInfo fi = new(typeof(Program).Assembly.Location);
 
-                    using (XmlTextReader reader = new XmlTextReader(System.IO.Path.Combine(fi.Directory.FullName,"Resources/Theme.xml")))
+                    using (XmlTextReader reader = new XmlTextReader(System.IO.Path.Combine(fi.Directory.FullName, "Resources/Theme.xml")))
                     {
                         xshd = HighlightingLoader.LoadXshd(reader);
                         CentralEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
@@ -81,10 +81,11 @@ namespace ScalableRelativeImage.AvaloniaGUI
                          OpenFileDialog openFileDialog = new OpenFileDialog();
                          openFileDialog.AllowMultiple = false;
                          var filePick = await openFileDialog.ShowAsync(this);
-                         if (filePick.Length > 0)
-                         {
-                             OpenFile(filePick.First());
-                         }
+                         if (filePick != null)
+                             if (filePick.Length > 0)
+                             {
+                                 OpenFile(filePick.First());
+                             }
                      }
                  };
             }
@@ -224,7 +225,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
 
                     SaveFileDialog sfd = new SaveFileDialog();
                     sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "png" }, Name = "Portable Network Graphics" });
-                    sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "jpg","jpeg" }, Name = "Joint Photographic Experts Group" });
+                    sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "jpg", "jpeg" }, Name = "Joint Photographic Experts Group" });
                     sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "bmp" }, Name = "Bitmap Image" });
                     sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "*" }, Name = "All Formats" });
                     var result = await sfd.ShowAsync(this);
@@ -357,6 +358,11 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     var vectorimg = Compile();
                     if (vectorimg is null) return;
                     RenderProfile profile = new RenderProfile();
+                    if (CurrentFile != null)
+                        if (CurrentFile != "")
+                        {
+                            profile.WorkingDirectory = new FileInfo(CurrentFile).DirectoryName;
+                        }
                     float Scale = 1.0f;
                     try
                     {
