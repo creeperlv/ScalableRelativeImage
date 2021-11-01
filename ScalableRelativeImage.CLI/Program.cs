@@ -1,4 +1,5 @@
-﻿using ScalableRelativeImage.Nodes;
+﻿using CLUNL.ConsoleAppHelper;
+using ScalableRelativeImage.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -55,69 +56,56 @@ namespace ScalableRelativeImage.CLI
             Console.WriteLine("This software is still in active development, every behaviors may change without notification. Please do NOT use it in production environment.");
             Console.ResetColor();
             Console.WriteLine("");
-            string SourceFile = "";
-            string OutFile = "a.png";
-            float Width = -1;
-            float Height = -1;
-            Color Foreground = Color.White;
-            Color Background= Color.Transparent;
+            ConsoleAppHelper.Init("SRI", "Scalable Relative Image CLI Tool");
+            ConsoleAppHelper.Execute(args);
+        }
+    }
+    [DependentVersion("SRI")]
+    public class VerInfo : IFeatureCollectionVersion
+    {
+        public string GetVersionString()
+        {
+            return $"{SRIEngine.FormatVersion}-{SRIEngine.Flavor}";
+        }
+    }
+    [DependentFeature("SRI", "render", Description = "Render the SRI source file to an image.",
+        Options = new string[] { "O,Output", "Width", "Height", "B,Background", "F,Foreground" },
+        OptionDescriptions = new string[] { "Output location", "Width of final rendered image.", "Height of final rendered image.", "Background color of the image.", "Foreground color of the image" })]
+    public class Render : IFeature
+    {
+        public void Execute(ParameterList Parameters, string SourceFile)
+        {
+            var Output = (string)Parameters.Query("O");
+            var _Width = Parameters.Query("width");
+            var _Height = Parameters.Query("height");
+            var B = Parameters.Query<string>("B");
+            var F = (string)Parameters.Query("F");
             ColorConverter cc = new ColorConverter();
-            for (int i = 0; i < args.Length; i++)
+            Color Foreground = Color.White;
+            Color Background = Color.Transparent;
+            if (B != null)
             {
-                var item = args[i];
-                switch (item.ToUpper())
-                {
-                    case "-H":
-                    case "-HELP":
-                    case "-?":
-                    case "--?":
-                        PrintHelp();
-                        return;
-                    case "--V":
-                    case "-VERSION":
-                        PrintVersion();
-                        return;
-                    case "--S":
-                    case "-SOURCE":
-                        i++;
-                        SourceFile = args[i];
-                        break;
-                    case "--O":
-                    case "-OUTPUT":
-                        i++;
-                        OutFile = args[i];
-                        break;
-                    case "--W":
-                    case "-WIDTH":
-                        i++;
-                        Width = float.Parse(args[i]);
-                        break;
-                    case "--H":
-                    case "-HEIGHT":
-                        i++;
-                        Height = float.Parse(args[i]);
-                        break;
-                    case "--F":
-                    case "-FOREGROUND":
-                        i++;
-                        Foreground = (Color)cc.ConvertFromString(args[i]);
-                        break;
-                    case "--B":
-                    case "-BACKGROUND":
-                        i++;
-                        Background = (Color)cc.ConvertFromString(args[i]);
-                        break;
-                    case "--E":
-                    case "-EXTENSION":
-                        i++;
-                        Assembly.LoadFile(args[i]);
-                        break;
-                    default:
-                        break;
-                }
+                Background = (Color)cc.ConvertFromString((string)B);
             }
-            List<ExecutionWarning> warnings;
-            if (SourceFile == "")
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Missing Backaground, using Transparent.");
+                Console.ResetColor();
+            }
+            if (F != null)
+            {
+                Foreground = (Color)cc.ConvertFromString((string)F);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Missing Foreground, using White.");
+                Console.ResetColor();
+            }
+            float Height;
+            float Width;
+            if (SourceFile == null || SourceFile == "")
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("FATAL ERROR:");
@@ -125,27 +113,76 @@ namespace ScalableRelativeImage.CLI
                 Console.WriteLine("Please specify a source file!");
                 return;
             }
-            Console.WriteLine("Resolving...");
             var source = new FileInfo(SourceFile);
-            var Img = SRIEngine.Deserialize(source, out warnings);
-            if (warnings.Count == 0)
-                Console.WriteLine("Completed.");
-            else
+            ImageNodeRoot Img;
             {
-                Console.WriteLine("Completed with warnings:");
-                foreach (var item in warnings)
+                List<ExecutionWarning> warnings;
+
+                if (!source.Exists)
                 {
-                    Console.WriteLine($"{item.ID}:{item.Message}");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("FATAL ERROR:");
+                    Console.ResetColor();
+                    Console.WriteLine("Source file does not exist!");
+                    return;
+                }
+
+                Console.WriteLine("Resolving...");
+                Img = SRIEngine.Deserialize(source, out warnings);
+                if (warnings.Count == 0)
+                    Console.WriteLine("Completed.");
+                else
+                {
+                    Console.WriteLine("Completed with warnings:");
+                    foreach (var item in warnings)
+                    {
+                        Console.WriteLine($"{item.ID}:{item.Message}");
+                    }
+                }
+                if (_Width == null)
+                {
+                    Width = Img.RelativeWidth;
+                }
+                else
+                {
+                    if (_Width.GetType() == typeof(int))
+                    {
+                        Width = (int)_Width;
+                    }
+                    else if (_Width.GetType() == typeof(float))
+                    {
+                        Width = (float)_Width;
+                    }
+                    else
+                    {
+
+                        Width = Img.RelativeWidth;
+                    }
+                }
+                if (_Height == null)
+                {
+                    Height = Img.RelativeHeight;
+                }
+                else
+                {
+                    if (_Height.GetType() == typeof(int))
+                    {
+                        Height = (int)_Width;
+                    }
+                    else if (_Height.GetType() == typeof(float))
+                    {
+                        Height = (float)_Width;
+                    }
+                    else
+                    {
+
+                        Height = Img.RelativeWidth;
+                    }
                 }
             }
-            if (Width == -1)
-            {
-                Width = Img.RelativeWidth;
-            }
-            if (Height == -1)
-            {
-                Height = Img.RelativeHeight;
-            }
+
+
+
             RenderProfile renderProfile = new RenderProfile();
             renderProfile.TargetWidth = Width;
             renderProfile.TargetHeight = Height;
@@ -154,8 +191,24 @@ namespace ScalableRelativeImage.CLI
             renderProfile.WorkingDirectory = source.Directory.FullName;
             Console.WriteLine("Rendering...");
             var bitmap = Img.Render(renderProfile);
-            if (File.Exists(OutFile)) File.Delete(OutFile);
-            bitmap.Save(OutFile);
+
+            if (Output == null)
+            {
+                Output = source.DirectoryName;
+                if (source.Name.IndexOf(".") > 0)
+                {
+                    Output = System.IO.Path.Combine(Output, source.Name.Substring(0, source.Name.LastIndexOf(".")) + ".png");
+
+                }
+                else
+                {
+                    Output = System.IO.Path.Combine(Output, source.Name + ".png");
+                }
+
+            }
+
+            if (File.Exists(Output)) File.Delete(Output);
+            bitmap.Save(Output);
             Console.WriteLine("Completed.");
         }
     }
