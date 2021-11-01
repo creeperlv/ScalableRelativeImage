@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -54,7 +56,9 @@ namespace ScalableRelativeImage.AvaloniaGUI
             {
                 {
                     XshdSyntaxDefinition xshd;
-                    using (XmlTextReader reader = new XmlTextReader("Resources/Theme.xml"))
+                    FileInfo fi = new(typeof(Program).Assembly.Location);
+
+                    using (XmlTextReader reader = new XmlTextReader(System.IO.Path.Combine(fi.Directory.FullName,"Resources/Theme.xml")))
                     {
                         xshd = HighlightingLoader.LoadXshd(reader);
                         CentralEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
@@ -79,10 +83,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                          var filePick = await openFileDialog.ShowAsync(this);
                          if (filePick.Length > 0)
                          {
-                             var content = File.ReadAllText(filePick[0]);
-                             CurrentFile = filePick[0];
-                             LastContent = content;
-                             CentralEditor.Text = content;
+                             OpenFile(filePick.First());
                          }
                      }
                  };
@@ -222,6 +223,10 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 {
 
                     SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "png" }, Name = "Portable Network Graphics" });
+                    sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "jpg","jpeg" }, Name = "Joint Photographic Experts Group" });
+                    sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "bmp" }, Name = "Bitmap Image" });
+                    sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "*" }, Name = "All Formats" });
                     var result = await sfd.ShowAsync(this);
                     if (result is not null)
                     {
@@ -265,7 +270,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     Grid.SetColumnSpan(ViewerGrid, 1);
                 };
                 RowButton.Click += (_, _) =>
-                
+
                     RowButtonClick();
                 ;
             }
@@ -273,6 +278,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
             {
 
                 SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "sri" }, Name = "Scalable Relative Image" });
                 var result = await sfd.ShowAsync(this);
                 if (result == "") return;
                 if (result == null) return;
@@ -289,6 +295,35 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 }
             }
             RowButtonClick();
+            CheckAssociatedOpen();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        void OpenFile(string FilePath)
+        {
+            var content = File.ReadAllText(FilePath);
+            CurrentFile = FilePath;
+            LastContent = content;
+            CentralEditor.Text = content;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        void CheckAssociatedOpen()
+        {
+            var CLA = Environment.GetCommandLineArgs();
+            try
+            {
+                for (int i = 1; i < CLA.Length; i++)
+                {
+                    var FILE = CLA[i];
+                    if (File.Exists(FILE))
+                    {
+                        OpenFile(FILE);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
         void RowButtonClick()
         {
@@ -313,7 +348,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 ImagePreview.Height = PreviewOriginHeight * PreviewScale;
             }
         }
-        private void RefreshButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             Trace.WriteLine("Try Refresh");
             {
@@ -387,20 +422,29 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 WarningsStackPanel.Children.Clear();
                 if (Warnings.Count is not 0)
                 {
-                    WarningsView.IsVisible = true;
                     foreach (var item in Warnings)
                     {
-
-                        TextBlock textBlock = new TextBlock();
-                        textBlock.Text = item.ID + ">" + item.Message;
-                        WarningsStackPanel.Children.Add(textBlock);
+                        OutputConsole(item.ID + ">" + item.Message);
+                        //TextBlock textBlock = new TextBlock();
+                        //textBlock.Text = ;
+                        //WarningsStackPanel.Children.Add(textBlock);
                     }
                 }
 
             }
             return vectorimg;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        void OutputConsole(string Content)
+        {
+            Trace.WriteLine(Content);
+            Console.WriteLine(Content);
+            WarningsView.IsVisible = true;
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = Content;
+            WarningsStackPanel.Children.Add(textBlock);
 
+        }
         Button OpenButton;
         Button CloseWarningsViewButton;
         Button SaveButton;
