@@ -10,52 +10,24 @@ namespace ScalableRelativeImage.CLI
 {
     class Program
     {
-        static void PrintHelp()
-        {
-
-        }
-        static void PrintVersion()
-        {
-            Console.WriteLine($"Flavor: {SRIEngine.Flavor}");
-            Console.WriteLine($"Format Version: {SRIEngine.FormatVersion}");
-            Console.WriteLine($"");
-            Console.WriteLine($"Available Shapes:");
-            Console.WriteLine($"");
-            //var asm = Assembly.GetAssembly(typeof(SRIEngine));
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                var TotalTypes = asm.GetTypes();
-                foreach (var item in TotalTypes)
-                {
-                    if (item.IsAssignableTo(typeof(INode)))
-                    {
-                        if (item.Name != "ImageNodeRoot")
-                            if (item.Name != "INode")
-                            {
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write($"\t{item.Name}");
-                                Console.ResetColor();
-                                Console.WriteLine($" in {item.Namespace}");
-
-                            }
-
-                    }
-                }
-            }
-        }
         static void Main(string[] args)
         {
-            Console.WriteLine("Copyright (C) 2021 Creeper Lv");
-            Console.WriteLine("All rights reserved.");
-            Console.WriteLine("");
-            Console.WriteLine("Scalable Relative Image CLI Tool");
-            Console.WriteLine("");
-            Console.WriteLine("This tool is licensed under The MIT License.");
-            Console.WriteLine("");
+            Output.OutLine("Copyright (C) 2021 Creeper Lv");
+            Output.OutLine("All rights reserved.");
+            Output.OutLine("");
+            Output.OutLine("Scalable Relative Image CLI Tool");
+            Output.OutLine("");
+            Output.OutLine("This tool is licensed under The MIT License.");
+            Output.OutLine("");
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("This software is still in active development, every behaviors may change without notification. Please do NOT use it in production environment.");
+            Output.OutLine(new ErrorMsg
+            {
+                Fallback = "This software is still in active development, every behaviors may change without notification. Please do NOT use it in production environment.",
+                ID = "PREVIEW.NOTIFY"
+            });
             Console.ResetColor();
-            Console.WriteLine("");
+            
+            Output.OutLine("");
             ConsoleAppHelper.Init("SRI", "Scalable Relative Image CLI Tool");
             ConsoleAppHelper.Execute(args);
         }
@@ -75,7 +47,7 @@ namespace ScalableRelativeImage.CLI
     {
         public void Execute(ParameterList Parameters, string SourceFile)
         {
-            var Output = (string)Parameters.Query("O");
+            var _Output = (string)Parameters.Query("O");
             var _Width = Parameters.Query("width");
             var _Height = Parameters.Query("height");
             var B = Parameters.Query<string>("B");
@@ -83,6 +55,24 @@ namespace ScalableRelativeImage.CLI
             ColorConverter cc = new ColorConverter();
             Color Foreground = Color.White;
             Color Background = Color.Transparent;
+            if (SourceFile == null || SourceFile == "")
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Output.Out("FATAL ERROR:");
+                Console.ResetColor();
+                Output.OutLine(new ErrorMsg { Fallback = "Please specify a source file!", ID = "NoInpupt" });
+                return;
+            }
+            var source = new FileInfo(SourceFile);
+            if (!source.Exists)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Output.Out("FATAL ERROR:");
+                Console.ResetColor();
+                Output.OutLine(new ErrorMsg { Fallback = "Source file does not exist!", ID = "InputNotFound" });
+                return;
+            }
+            //Checks...
             if (B != null)
             {
                 Background = (Color)cc.ConvertFromString((string)B);
@@ -90,7 +80,7 @@ namespace ScalableRelativeImage.CLI
             else
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Missing Backaground, using Transparent.");
+                Output.OutLine(new WarnMsg { Fallback = $"Missing Backaground, using Transparent.", ID = "NoBG" });
                 Console.ResetColor();
             }
             if (F != null)
@@ -100,43 +90,27 @@ namespace ScalableRelativeImage.CLI
             else
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Missing Foreground, using White.");
+                Output.OutLine(new WarnMsg { Fallback = $"Missing Foreground, using White.", ID = "NoFG" });
                 Console.ResetColor();
             }
             float Height;
             float Width;
-            if (SourceFile == null || SourceFile == "")
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("FATAL ERROR:");
-                Console.ResetColor();
-                Console.WriteLine("Please specify a source file!");
-                return;
-            }
-            var source = new FileInfo(SourceFile);
             ImageNodeRoot Img;
             {
                 List<ExecutionWarning> warnings;
 
-                if (!source.Exists)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("FATAL ERROR:");
-                    Console.ResetColor();
-                    Console.WriteLine("Source file does not exist!");
-                    return;
-                }
 
-                Console.WriteLine("Resolving...");
+                Output.OutLine("Resolving...");
                 Img = SRIEngine.Deserialize(source, out warnings);
                 if (warnings.Count == 0)
-                    Console.WriteLine("Completed.");
+                    Output.OutLine("Completed.");
                 else
                 {
-                    Console.WriteLine("Completed with warnings:");
+                    Output.OutLine("Completed with warnings:");
                     foreach (var item in warnings)
                     {
-                        Console.WriteLine($"{item.ID}:{item.Message}");
+                        Output.Out($"{item.ID}:");
+                        Output.OutLine(new WarnMsg { Fallback = item.Message,ID= item.ID }) ;
                     }
                 }
                 if (_Width == null)
@@ -189,27 +163,27 @@ namespace ScalableRelativeImage.CLI
             renderProfile.DefaultForeground = Foreground;
             renderProfile.DefaultBackground = Background;
             renderProfile.WorkingDirectory = source.Directory.FullName;
-            Console.WriteLine("Rendering...");
+            Output.OutLine("Rendering...");
             var bitmap = Img.Render(renderProfile);
 
-            if (Output == null)
+            if (_Output == null)
             {
-                Output = source.DirectoryName;
+                _Output = source.DirectoryName;
                 if (source.Name.IndexOf(".") > 0)
                 {
-                    Output = System.IO.Path.Combine(Output, source.Name.Substring(0, source.Name.LastIndexOf(".")) + ".png");
+                    _Output = System.IO.Path.Combine(_Output, source.Name.Substring(0, source.Name.LastIndexOf(".")) + ".png");
 
                 }
                 else
                 {
-                    Output = System.IO.Path.Combine(Output, source.Name + ".png");
+                    _Output = System.IO.Path.Combine(_Output, source.Name + ".png");
                 }
 
             }
 
-            if (File.Exists(Output)) File.Delete(Output);
-            bitmap.Save(Output);
-            Console.WriteLine("Completed.");
+            if (File.Exists(_Output)) File.Delete(_Output);
+            bitmap.Save(_Output);
+            Output.OutLine("Completed.");
         }
     }
 }
