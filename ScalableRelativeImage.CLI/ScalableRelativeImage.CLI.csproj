@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CLUNL.ConsoleAppHelper" Version="0.0.3" />
+    <PackageReference Include="CLUNL.ConsoleAppHelper" Version="0.0.4" />
   </ItemGroup>
 
   <ItemGroup>
