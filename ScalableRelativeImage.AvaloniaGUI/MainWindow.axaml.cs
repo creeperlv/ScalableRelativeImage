@@ -297,6 +297,38 @@ namespace ScalableRelativeImage.AvaloniaGUI
             }
             RowButtonClick();
             CheckAssociatedOpen();
+            {
+                this.ExtendClientAreaToDecorationsHint = true;
+                this.ExtendClientAreaChromeHints = Avalonia.Platform.ExtendClientAreaChromeHints.PreferSystemChrome;
+                this.TransparencyLevelHint = WindowTransparencyLevel.Mica;
+                if (this.ActualTransparencyLevel != WindowTransparencyLevel.Mica)
+                {
+                    TransparencyLevelHint = WindowTransparencyLevel.Blur;
+                }
+                this.TransparencyBackgroundFallback = new SolidColorBrush(Colors.Black);
+                this.Background = new SolidColorBrush(Colors.Transparent);
+                var L =
+                Environment.GetCommandLineArgs();
+                for (int i = 0; i < L.Length; i++)
+                {
+                    var item = L[i];
+
+                    switch (item.ToUpper())
+                    {
+                        case "--MICA-WINDOW":
+                            {
+                                this.TransparencyLevelHint = WindowTransparencyLevel.Mica;
+                                if (this.ActualTransparencyLevel != WindowTransparencyLevel.Mica)
+                                {
+                                    TransparencyLevelHint = WindowTransparencyLevel.Blur;
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
