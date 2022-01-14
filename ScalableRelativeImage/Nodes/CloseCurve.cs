@@ -1,19 +1,14 @@
 ﻿using ScalableRelativeImage.Core;
-using ScalableRelativeImage.Nodes;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
-    public class Lines : GraphicNode
+    public class CloseCurve : GraphicNode
     {
         public float Size = 0;
         public IntermediateValue Foreground = null;
+        public bool Fill = false;
         public List<INode> Points = new List<INode>();
 
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
@@ -23,6 +18,9 @@ namespace ScalableRelativeImage.Nodes
                 case "Size":
                     Size = float.Parse(Value);
                     break;
+                case "Fill":
+                    Fill = bool.Parse(Value);
+                    break;
                 case "Color":
                     {
                         Foreground = new IntermediateValue();
@@ -30,7 +28,7 @@ namespace ScalableRelativeImage.Nodes
                     }
                     break;
                 default:
-                    base.SetValue(Key, Value, ref executionWarnings);
+                    base.SetValue(Key, Value,ref executionWarnings);
                     break;
             }
         }
@@ -38,6 +36,7 @@ namespace ScalableRelativeImage.Nodes
         {
             Dictionary<string, string> dict = new();
             dict.Add("Size", Size.ToString());
+            dict.Add("Fill", Fill.ToString());
             if (Foreground is not null)
                 dict.Add("Color", Foreground.Value);
             return dict;
@@ -48,7 +47,10 @@ namespace ScalableRelativeImage.Nodes
             {
                 Points.Add(node);
             }
-            else executionWarnings.Add(new ShapeMismatchWarning(node, typeof(Point)));
+            else
+            {
+                executionWarnings.Add(new ShapeMismatchWarning(node, typeof(Point)));
+            }
         }
         public override List<INode> ListNodes()
         {
@@ -66,8 +68,10 @@ namespace ScalableRelativeImage.Nodes
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            TargetGraphics.DrawLines(new(Color, RealWidth), Points.ToArray());
-
+            if (Fill is false)
+                TargetGraphics.DrawClosedCurve(new(Color, RealWidth), Points.ToArray());
+            else
+                TargetGraphics.FillClosedCurve(new SolidBrush(Color), Points.ToArray());
         }
     }
 }

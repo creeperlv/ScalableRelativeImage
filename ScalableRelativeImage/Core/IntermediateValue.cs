@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +12,12 @@ namespace ScalableRelativeImage.Core
     {
         static readonly Type IntT = typeof(int);
         public string Value;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return Value;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetInt(SymbolHelper s, int Fallback = 0)
         {
 
@@ -32,6 +35,7 @@ namespace ScalableRelativeImage.Core
             }
             return Fallback;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool GetBool(SymbolHelper s, bool Fallback = false)
         {
 
@@ -49,6 +53,7 @@ namespace ScalableRelativeImage.Core
             }
             return Fallback;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float GetFloat(SymbolHelper s, float Fallback = 0f)
         {
 
@@ -66,6 +71,7 @@ namespace ScalableRelativeImage.Core
             }
             return Fallback;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double Getdouble(SymbolHelper s, double Fallback = 0f)
         {
 
@@ -83,6 +89,7 @@ namespace ScalableRelativeImage.Core
             }
             return Fallback;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string Getstring(SymbolHelper s, string Fallback = "")
         {
             if (Value.StartsWith("#"))
@@ -91,6 +98,7 @@ namespace ScalableRelativeImage.Core
             }
             return Value;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Color GetColor(SymbolHelper s, string Fallback = "White")
         {
 

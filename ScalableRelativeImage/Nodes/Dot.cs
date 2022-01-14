@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScalableRelativeImage.Core;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ScalableRelativeImage.Nodes
         public float X;
         public float Y;
         public float Size;
-        public Color? Foreground = null;
+        public IntermediateValue Foreground = null;
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
@@ -28,7 +29,8 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "Color":
                     {
-                        Foreground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                        Foreground = new IntermediateValue();
+                        Foreground.Value = Value;
                     }
                     break;
                 default:
@@ -43,8 +45,7 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("Y", Y.ToString());
             dict.Add("Size", Size.ToString());
             if (Foreground is not null)
-                if (Foreground.HasValue is true)
-                    dict.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
+                dict.Add("Color", Foreground.Value);
             return dict;
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
@@ -53,7 +54,10 @@ namespace ScalableRelativeImage.Nodes
             var LT = profile.FindTargetPoint(X, Y);
             float D = _S / MathF.Sqrt(2);
             float R = D / 2;
-            TargetGraphics.FillEllipse(new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), LT.X - R, LT.Y - R, D,  D);
+            Color Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            else Color = profile.DefaultForeground.Value;
+            TargetGraphics.FillEllipse(new SolidBrush(Color), LT.X - R, LT.Y - R, D,  D);
         }
     }
 }

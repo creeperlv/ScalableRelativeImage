@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScalableRelativeImage.Core;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace ScalableRelativeImage.Nodes
     public class Curve : GraphicNode
     {
         public float Size = 0;
-        public Color? Foreground = null;
+        public IntermediateValue Foreground = null;
         public List<INode> Points = new List<INode>();
 
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
@@ -22,11 +23,12 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "Color":
                     {
-                        Foreground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                        Foreground = new IntermediateValue();
+                        Foreground.Value = Value;
                     }
                     break;
                 default:
-                    base.SetValue(Key, Value,ref executionWarnings);
+                    base.SetValue(Key, Value, ref executionWarnings);
                     break;
             }
         }
@@ -35,8 +37,7 @@ namespace ScalableRelativeImage.Nodes
             Dictionary<string, string> dict = new();
             dict.Add("Size", Size.ToString());
             if (Foreground is not null)
-                if (Foreground.HasValue is true)
-                    dict.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
+                dict.Add("Color", Foreground.Value);
             return dict;
         }
         public override void AddNode(INode node, ref List<ExecutionWarning> executionWarnings)
@@ -60,7 +61,10 @@ namespace ScalableRelativeImage.Nodes
                 var P = item as Point;
                 Points.Add(profile.FindTargetPoint(P.X, P.Y));
             }
-            TargetGraphics.DrawCurve(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), Points.ToArray());
+            Color Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            else Color = profile.DefaultForeground.Value;
+            TargetGraphics.DrawCurve(new(Color, RealWidth), Points.ToArray());
 
         }
     }

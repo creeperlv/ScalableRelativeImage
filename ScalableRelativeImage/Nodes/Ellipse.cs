@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScalableRelativeImage.Core;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace ScalableRelativeImage.Nodes
         public float Height;
         public float Size;
         public bool Fill = false;
-        public Color? Foreground;
+        public IntermediateValue Foreground = null;
         public override Dictionary<string, string> GetValueSet()
         {
             Dictionary<string, string> dict = new();
@@ -26,8 +27,7 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("Size", Size.ToString());
             dict.Add("Fill", Fill.ToString());
             if (Foreground is not null)
-                if (Foreground.HasValue is true)
-                    dict.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
+                dict.Add("Color", Foreground.Value);
             return dict;
         }
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
@@ -54,7 +54,8 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "Color":
                     {
-                        Foreground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                        Foreground = new IntermediateValue();
+                        Foreground.Value = Value;
                     }
                     break;
                 default:
@@ -65,12 +66,15 @@ namespace ScalableRelativeImage.Nodes
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
             float RealWidth = profile.FindAbsoluteSize(Size);
-            var LT=profile.FindTargetPoint(X, Y);
-            if(Fill is not true)
-            TargetGraphics.DrawEllipse(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),new Size(
-                (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight))));
+            var LT = profile.FindTargetPoint(X, Y);
+            Color Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            else Color = profile.DefaultForeground.Value;
+            if (Fill is not true)
+                TargetGraphics.DrawEllipse(new(Color, RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
+                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight))));
             else
-                TargetGraphics.FillEllipse(new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
+                TargetGraphics.FillEllipse(new SolidBrush(Color), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
     (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight))));
 
         }
