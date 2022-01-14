@@ -189,26 +189,138 @@
 					<TextBlock Text="SRI GUI Tool" FontSize="24" Margin="5" TextWrapping="Wrap"/>
 					<ToggleButton HorizontalAlignment="Stretch" Content="Files" Name="FilesTab"/>
 					<StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #FilesTab.IsChecked}" Margin="5,0">
-						<Button HorizontalAlignment="Stretch" Content="Open" Name="OpenButton"/>
-						<Button HorizontalAlignment="Stretch" Content="Save" Name="SaveButton"/>
-						<Button HorizontalAlignment="Stretch" Content="Save As" Name="SaveAsButton"/>
-						<Button HorizontalAlignment="Stretch" Content="New" Name="NewButton"/>
+						<Button HorizontalAlignment="Stretch" Name="OpenButton">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White"  Data="M6.1,10L4,18V8H21A2,2 0 0,0 19,6H12L10,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H19C19.9,20 20.7,19.4 20.9,18.5L23.2,10H6.1M19,18H6L7.6,12H20.6L19,18Z" />
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="Open"/>
+							</StackPanel>
+						</Button>
+						<Button HorizontalAlignment="Stretch" Name="SaveButton">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White"  Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="Save"/>
+							</StackPanel>
+						</Button>
+						<Button HorizontalAlignment="Stretch" Content="Save As" Name="SaveAsButton">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" 
+											  Data="M17,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H11.81C11.42,20.34 11.17,19.6 11.07,18.84C9.5,18.31 8.66,16.6 9.2,15.03C9.61,13.83 10.73,13 12,13C12.44,13 12.88,13.1 13.28,13.29C15.57,11.5 18.83,11.59 21,13.54V7L17,3M15,9H5V5H15V9M13,17H17V14L22,18.5L17,23V20H13V17" />
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="Save As"/>
+							</StackPanel>
+						</Button>
+						<Button HorizontalAlignment="Stretch" Name="NewButton">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White"
+											  Data="M5 19V5H12V12H19V13C19.7 13 20.37 13.13 21 13.35V9L15 3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H13.35C13.13 20.37 13 19.7 13 19H5M14 4.5L19.5 10H14V4.5M23 18V20H20V23H18V20H15V18H18V15H20V18H23Z" />
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="New"/>
+							</StackPanel>
+						</Button>
 						<Line Height="1" Margin="2" Stroke="#AAA" StartPoint="0,0" EndPoint="180,1" Fill="#AAA"/>
-						<Button HorizontalAlignment="Stretch" Content="Close" Name="CloseButton"/>
+						<Button HorizontalAlignment="Stretch" Name="CloseButton">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White"
+											  Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="Close"/>
+							</StackPanel>
+						</Button>
 					</StackPanel>
 
 					<ToggleButton HorizontalAlignment="Stretch" Content="Tools" Name="ToolTab"/>
 					<StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #ToolTab.IsChecked}" Margin="5,0">
-						<Button HorizontalAlignment="Stretch" Content="Render To Image" Name="RenderImageButton"/>
-						<Button HorizontalAlignment="Stretch" Content="View Shapes" Name="ViewShapeButton"/>
-						<Button HorizontalAlignment="Stretch" Content="Add Extension"/>
-						<Button HorizontalAlignment="Stretch" Content="Remove Extension"/>
+						<Button HorizontalAlignment="Stretch" Name="RenderImageButton">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M12,1L8,5H11V14H13V5H16M18,23H6C4.89,23 4,22.1 4,21V9A2,2 0 0,1 6,7H9V9H6V21H18V9H15V7H18A2,2 0 0,1 20,9V21A2,2 0 0,1 18,23Z"/>
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="Render To Image"/>
+							</StackPanel>
+						</Button>
+						<Button HorizontalAlignment="Stretch"  Name="ViewShapeButton">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M11,13.5V21.5H3V13.5H11M9,15.5H5V19.5H9V15.5M12,2L17.5,11H6.5L12,2M12,5.86L10.08,9H13.92L12,5.86M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13M17.5,15A2.5,2.5 0 0,0 15,17.5A2.5,2.5 0 0,0 17.5,20A2.5,2.5 0 0,0 20,17.5A2.5,2.5 0 0,0 17.5,15Z"/>
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="View Shapes"/>
+							</StackPanel>
+						</Button>
+						<Button HorizontalAlignment="Stretch">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M19 6V5A2 2 0 0 0 17 3H15A2 2 0 0 0 13 5V6H11V5A2 2 0 0 0 9 3H7A2 2 0 0 0 5 5V6H3V20H14V18H5V8H19V13H21V6M21 15V18H24V20H21V23H19V20H16V18H19V15Z"/>
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="Add Extension"/>
+							</StackPanel>
+						</Button>
+						<Button HorizontalAlignment="Stretch">
+
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M13.09 20H3V6H5V5C5 3.9 5.9 3 7 3H9C10.11 3 11 3.9 11 5V6H13V5C13 3.9 13.9 3 15 3H17C18.11 3 19 3.9 19 5V6H21V13.35C20.37 13.13 19.7 13 19 13V8H5V18H13.09C13.04 18.33 13 18.66 13 19S13.04 19.67 13.09 20M23 18H15V20H23V18Z"/>
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="Remove Extension"/>
+							</StackPanel>
+						</Button>
 					</StackPanel>
 
 					<ToggleButton HorizontalAlignment="Stretch" Content="Help" Name="HelpTab"/>
 					<StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #HelpTab.IsChecked}" Margin="5,0">
-						<Button HorizontalAlignment="Stretch" Content="Github Repository" Name="GithubPageButton"/>
-						<Button HorizontalAlignment="Stretch" Content="About" Name="AboutPageButton"/>
+						<Button HorizontalAlignment="Stretch" Name="GithubPageButton">
+							<StackPanel Orientation="Horizontal">
+
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="Github Repository"/>
+							</StackPanel>
+						</Button>
+						<Button HorizontalAlignment="Stretch" Name="AboutPageButton">
+							<StackPanel Orientation="Horizontal">
+								<Viewbox Width="15" Height="15" Margin="0,0,10,0">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+									</Canvas>
+								</Viewbox>
+								<TextBlock Text="About"/>
+							</StackPanel>
+						</Button>
 					</StackPanel>
 					<ToggleButton HorizontalAlignment="Stretch" Content="Settings" Name="SettingsTab" IsChecked="True"/>
 					<StackPanel HorizontalAlignment="Stretch" IsVisible="{Binding #SettingsTab.IsChecked}" Margin="5,0">
