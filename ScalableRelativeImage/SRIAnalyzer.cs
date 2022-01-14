@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.IO;
 using System.Reflection;
 using System.Xml;
@@ -15,82 +13,6 @@ namespace ScalableRelativeImage
     {
         public string Namespace;
         public string DLLFile = null;
-    }
-    public class RenderProfile
-    {
-        public float TargetWidth;
-        public float TargetHeight;
-        public Color? DefaultForeground = null;
-        public Color? DefaultBackground = null;
-        public InterpolationMode InterpolationMode= InterpolationMode.HighQualityBicubic;
-        public TextRenderingHint TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-        public SmoothingMode SmoothingMode = SmoothingMode.HighQuality;
-        internal IContainer root;
-        public string WorkingDirectory = Environment.CurrentDirectory;
-        public SubImage Ref(string Name)
-        {
-            return Ref(root, Name);
-        }
-        SubImage Ref(INode node, string Name)
-        {
-            var l = node.ListNodes();
-            if (l is not null)
-            {
-                foreach (var item in l)
-                {
-                    var d =
-                    item.GetValueSet();
-                    if(item is SubImage)
-                    {
-
-                        if (d.ContainsKey("Name"))
-                        {
-                            if (d["Name"] == Name)
-                            {
-                                return item as SubImage;
-                            }
-                        }
-                    }else if(item is IContainer || item is Group)
-                    {
-                        var a=Ref(item, Name);
-                        if (a is not null) return a;
-                    }
-                }
-            }
-            return null;
-        }
-        public RenderProfile Copy(IContainer Root)
-        {
-            RenderProfile renderProfile = new RenderProfile();
-            renderProfile.DefaultBackground = DefaultBackground;
-            renderProfile.DefaultForeground = DefaultForeground;
-            renderProfile.TargetHeight = TargetHeight;
-            renderProfile.TargetWidth = TargetWidth;
-            renderProfile.root = Root;
-            renderProfile.WorkingDirectory = Environment.CurrentDirectory;
-            return renderProfile;
-        }
-        public FileInfo FindFile(string FileName)
-        {
-            var path0 = System.IO.Path.Combine(WorkingDirectory, FileName);
-            if (File.Exists(path0)) return new FileInfo(path0); else if (File.Exists(FileName)) return new FileInfo(FileName); else return null;
-        }
-        public PointF FindTargetPoint(float RX, float RY)
-        {
-            PointF p = new(((RX / root.RelativeWidth) * TargetWidth), ((RY / root.RelativeWidth) * TargetHeight));
-            return p;
-        }
-        public float FindAbsoluteSize(float RelativeSize)
-        {
-            if (RelativeSize > 0)
-            {
-                return (RelativeSize / MathF.Sqrt(root.RelativeArea)) * MathF.Sqrt(TargetWidth * TargetHeight);
-            }
-            else
-            {
-                return Math.Abs(RelativeSize);
-            }
-        }
     }
     public record ShapeDisposedWarning : ExecutionWarning
     {
@@ -159,6 +81,7 @@ namespace ScalableRelativeImage
             XmlNode ImageNodeRootNode = null;
             ImageNodeRoot ImageRoot;
             List<ImageReference> references = new List<ImageReference>();
+            SymbolHelper symbols=new SymbolHelper();
             for (int i = 0; i < l.Count; i++)
             {
                 var item = l.Item(i);
@@ -184,6 +107,24 @@ namespace ScalableRelativeImage
                     }
                     //var NS= item.Attributes["Namespace"];
                     //reference.Namespace= NS.Value;
+                }
+                else if (item.Name == "Symbol"|| item.Name == "Define")
+                {
+                    Symbol symbol = new Symbol();
+                    foreach (var attr in GetAttributes(item))
+                    {
+                        if (attr.Key == "Name")
+                        {
+                            symbol.Name = attr.Value;
+                        }
+                        else if (attr.Key == "Value")
+                        {
+                            symbol.Value = attr.Value;
+                        }
+                    }
+                    symbols.Set(symbol);
+
+
                 }
             }
             references.Add(new ImageReference() { Namespace = "ScalableRelativeImage.Nodes" });
@@ -251,6 +192,7 @@ namespace ScalableRelativeImage
             if (ImageNodeRootNode is not null)
             {
                 ImageRoot = new();
+                ImageRoot.Symbols = symbols;
                 foreach (var attribute in GetAttributes(ImageNodeRootNode))
                 {
                     ImageRoot.SetValue(attribute.Key, attribute.Value, ref ExecutionWarnings);

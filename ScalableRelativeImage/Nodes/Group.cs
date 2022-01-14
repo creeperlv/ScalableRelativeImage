@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScalableRelativeImage.Core;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,13 +11,16 @@ namespace ScalableRelativeImage.Nodes
     public class Group : GraphicNode
     {
         public List<INode> Children = new();
-        public bool? Visible = null;
+        public IntermediateValue Visible = null;
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
                 case "Visible":
-                    Visible = bool.Parse(Value);
+                    {
+                        Visible = new IntermediateValue();
+                        Visible.Value = Value;
+                    }
                     break;
                 default:
                     base.SetValue(Key, Value, ref executionWarnings);
@@ -50,7 +54,9 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            if (Visible == true || Visible == null)
+            if (Visible == null)
+            {
+
                 foreach (var item in Children)
                 {
                     if (item is GraphicNode)
@@ -58,6 +64,18 @@ namespace ScalableRelativeImage.Nodes
                         ((GraphicNode)item).Paint(ref TargetGraphics, profile);
                     }
                 }
+            }else
+            if (Visible.GetBool(profile.CurrentSymbols) == true)
+            {
+                foreach (var item in Children)
+                {
+                    if (item is GraphicNode)
+                    {
+                        ((GraphicNode)item).Paint(ref TargetGraphics, profile);
+                    }
+                }
+
+            }
         }
     }
 }

@@ -50,6 +50,7 @@ namespace ScalableRelativeImage.Nodes
         internal float _RelativeHeight = 0;
         internal Color _PreferredBackground = Color.White;
         internal Color _PreferredForeground = Color.Transparent;
+        public SymbolHelper Symbols=new SymbolHelper();
         public float RelativeArea { get; internal set; }
         public List<GraphicNode> Children = new();
         public ImageNodeRoot()
@@ -75,6 +76,7 @@ namespace ScalableRelativeImage.Nodes
         public Bitmap Render(RenderProfile profile)
         {
             profile.root = this;
+            profile.CurrentSymbols = Symbols;
             if (profile.DefaultBackground == null)
             {
                 profile.DefaultBackground = _PreferredBackground;
