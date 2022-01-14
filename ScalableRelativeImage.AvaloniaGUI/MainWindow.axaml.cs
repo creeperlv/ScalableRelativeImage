@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -261,19 +262,30 @@ namespace ScalableRelativeImage.AvaloniaGUI
             {
                 ColumnButton.Click += (_, _) =>
                 {
-                    Grid.SetColumn(EditorGrid, 0);
-                    Grid.SetColumn(ViewerGrid, 1);
-                    Grid.SetRow(EditorGrid, 0);
-                    Grid.SetRow(ViewerGrid, 0);
-                    Grid.SetRowSpan(EditorGrid, 2);
-                    Grid.SetRowSpan(ViewerGrid, 2);
-                    Grid.SetColumnSpan(EditorGrid, 1);
-                    Grid.SetColumnSpan(ViewerGrid, 1);
+                    ColumnButtonClick(); ReArrange();
                 };
                 RowButton.Click += (_, _) =>
-
-                    RowButtonClick();
-                ;
+                {
+                    RowButtonClick(); ReArrange();
+                };
+            }
+            {
+                CodeView.Checked += (_, _) =>
+                {
+                    EditorGrid.IsVisible = true; ReArrange();
+                };
+                CodeView.Unchecked += (_, _) =>
+                {
+                    EditorGrid.IsVisible = false; ReArrange();
+                };
+                ImageView.Checked += (_, _) =>
+                {
+                    ViewerGrid.IsVisible = true; ReArrange();
+                };
+                ImageView.Unchecked += (_, _) =>
+                {
+                    ViewerGrid.IsVisible = false; ReArrange();
+                };
             }
             async Task SaveAs()
             {
@@ -307,8 +319,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 }
                 this.TransparencyBackgroundFallback = new SolidColorBrush(Colors.Black);
                 this.Background = new SolidColorBrush(Colors.Transparent);
-                var L =
-                Environment.GetCommandLineArgs();
+                this.SystemDecorations = SystemDecorations.Full;
+                var L = Environment.GetCommandLineArgs();
                 for (int i = 0; i < L.Length; i++)
                 {
                     var item = L[i];
@@ -330,7 +342,53 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 }
             }
         }
+        void ReArrange()
+        {
+            if (ViewMode == 0)
+            {
+                RowButtonClick();
+            }
+            else
+            {
+                ColumnButtonClick();
+            }
+            if (ViewerGrid.IsVisible == false)
+            {
+                Grid.SetColumnSpan(EditorGrid, 2);
+                Grid.SetRowSpan(EditorGrid, 2);
+                if (ViewMode == 0)
+                {
+                    Grid.SetColumn(EditorGrid, 0);
+                    Grid.SetRow(EditorGrid, 0);
 
+                }
+            }
+            else
+            {
+
+                if (EditorGrid.IsVisible == false)
+                {
+                    Grid.SetColumnSpan(ViewerGrid, 2);
+                    Grid.SetRowSpan(ViewerGrid, 2);
+                    Grid.SetColumn(ViewerGrid, 0);
+                    Grid.SetRow(ViewerGrid, 0);
+                }
+            }
+        }
+        private void ColumnButtonClick()
+        {
+            ViewMode = 1;
+            Grid.SetColumn(EditorGrid, 0);
+            Grid.SetColumn(ViewerGrid, 1);
+            Grid.SetRow(EditorGrid, 0);
+            Grid.SetRow(ViewerGrid, 0);
+            Grid.SetRowSpan(EditorGrid, 2);
+            Grid.SetRowSpan(ViewerGrid, 2);
+            Grid.SetColumnSpan(EditorGrid, 1);
+            Grid.SetColumnSpan(ViewerGrid, 1);
+        }
+
+        int ViewMode = 0;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void OpenFile(string FilePath)
         {
@@ -360,7 +418,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
         }
         void RowButtonClick()
         {
-
+            ViewMode = 0;
             Grid.SetRow(EditorGrid, 1);
             Grid.SetRow(ViewerGrid, 0);
             Grid.SetColumn(EditorGrid, 0);
@@ -520,6 +578,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Button Button2;
         TextBlock DialogTitle;
         TextBlock DialogContent;
+        ToggleButton CodeView;
+        ToggleButton ImageView;
         ScrollViewer MenuArea;
         public void Show3ButtonDialog(string Title, string Content, CommandableButton Button0 = null, CommandableButton Button1 = null, CommandableButton Button2 = null)
         {
@@ -623,6 +683,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             Button2 = this.FindControl<Button>("DialogButton2");
             DialogTitle = this.FindControl<TextBlock>("DialogTitle");
             DialogContent = this.FindControl<TextBlock>("DialogContent");
+            CodeView = this.FindControl<ToggleButton>("CodeView");
+            ImageView = this.FindControl<ToggleButton>("ImageView");
         }
     }
     public class CommandableButton

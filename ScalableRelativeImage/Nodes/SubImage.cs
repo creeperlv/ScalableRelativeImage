@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
-    public class SubImage : GraphicNode,IContainer
+    public class SubImage : GraphicNode, IContainer
     {
         public List<GraphicNode> Children = new();
         public float X;
@@ -18,11 +18,11 @@ namespace ScalableRelativeImage.Nodes
         public float ScaledHeightRatio = 1f;
         public Color? Background;
         public string Name = null;
-
+        public float Rotation = 0;
         public float RelativeWidth { get => Width; set => throw new NotImplementedException(); }
         public float RelativeHeight { get => Height; set => throw new NotImplementedException(); }
 
-        public float RelativeArea => Width*Height;
+        public float RelativeArea => Width * Height;
 
         public override Dictionary<string, string> GetValueSet()
         {
@@ -30,12 +30,13 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("X", X.ToString());
             dict.Add("Y", Y.ToString());
             dict.Add("Width", Width.ToString());
+            dict.Add("Height", Height.ToString());
             dict.Add("ScaledWidthRatio", ScaledWidthRatio.ToString());
             dict.Add("ScaledHeightRatio", ScaledHeightRatio.ToString());
-            dict.Add("Height", Height.ToString());
+            dict.Add("Rotation", Rotation.ToString());
             if (Name is not null)
             {
-                dict.Add("Name",Name);
+                dict.Add("Name", Name);
             }
             if (Background is not null)
                 if (Background.HasValue is true)
@@ -87,6 +88,9 @@ namespace ScalableRelativeImage.Nodes
                 case "ScaledWidthRatio":
                     ScaledWidthRatio = float.Parse(Value);
                     break;
+                case "Rotation":
+                    Rotation = float.Parse(Value);
+                    break;
                 case "Background":
                     {
                         Background = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
@@ -110,25 +114,56 @@ namespace ScalableRelativeImage.Nodes
             var _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
                     (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
             //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            var img = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            var b = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var subProfile = profile.Copy(this);
             subProfile.TargetWidth = rect.Width;
             subProfile.TargetHeight = rect.Height;
-            Graphics g = Graphics.FromImage(img);
-            g.SmoothingMode = profile.SmoothingMode;
-            g.TextRenderingHint = profile.TextRenderingHint;
-            g.InterpolationMode = profile.InterpolationMode;
-            foreach (var item in Children)
             {
-                item.Paint(ref g, profile);
+                Graphics g = Graphics.FromImage(b);
+                {
+                    g.SmoothingMode = profile.SmoothingMode;
+                    g.TextRenderingHint = profile.TextRenderingHint;
+                    g.InterpolationMode = profile.InterpolationMode;
+                    foreach (var item in Children)
+                    {
+                        item.Paint(ref g, profile);
+                    }
+                    if (Background is not null)
+                    {
+                        TargetGraphics.FillRectangle(new SolidBrush(Background.Value), _rect);
+                    }
+                    g.Dispose();
+                }
             }
-            if (Background is not null)
+            if (Rotation == 0 || Rotation == 360)
             {
-                TargetGraphics.FillRectangle(new SolidBrush(Background.Value), _rect);
+                TargetGraphics.DrawImage(b, _rect, 0, 0, b.Width, b.Height, GraphicsUnit.Pixel);
             }
-            TargetGraphics.DrawImage(img, _rect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
-            g.Dispose();
-            img.Dispose();
+            else
+            {
+                var The = MathHelper.Deg2Rad_P(Rotation);
+                int W = (int)(Math.Abs(b.Width * Math.Cos(The)) + Math.Abs(b.Height * Math.Sin(The)));
+                int H = (int)(Math.Abs(b.Height * Math.Cos(The)) + Math.Abs(b.Width * Math.Sin(The)));
+                Bitmap FB = new Bitmap(W, H);
+                using (Graphics g = Graphics.FromImage(FB))
+                {
+                    g.SmoothingMode = profile.SmoothingMode;
+                    g.TextRenderingHint = profile.TextRenderingHint;
+                    g.InterpolationMode = profile.InterpolationMode;
+                    g.TranslateTransform((float)W / 2, (float)H / 2);
+                    g.RotateTransform(Rotation);
+                    g.TranslateTransform(-(float)W / 2, -(float)H / 2);
+                    g.DrawImage(b, (W - b.Width) / 2, (H - b.Height) / 2);
+                    g.TranslateTransform((float)W / 2, (float)H / 2);
+                    g.RotateTransform(-Rotation);
+                    g.TranslateTransform(-(float)W / 2, -(float)H / 2);
+                }
+                int _W = (int)(W / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio);
+                int _H = (int)(H / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio);
+                _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)(LT.X-(_W- _rect.Width)/2), (int)(LT.Y-(_H-_rect.Height)/2)), new Size(_W,_H));
+                TargetGraphics.DrawImage(FB, _rect, 0, 0, W,H, GraphicsUnit.Pixel);
+            }
+            b.Dispose();
         }
     }
 }

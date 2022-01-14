@@ -237,7 +237,13 @@
 							<RowDefinition/>
 						</Grid.RowDefinitions>
 						<TextBlock Text="Shapes" VerticalAlignment="Center" FontSize="24"/>
-						<Button HorizontalAlignment="Right" Name="CloseShapeViewPort" Content="X" Width="40" HorizontalContentAlignment="Center"/>
+						<Button HorizontalAlignment="Right" Name="CloseShapeViewPort" Width="40" HorizontalContentAlignment="Center">
+							<Viewbox Width="15" Height="15">
+								<Canvas Width="24" Height="24">
+									<Path Fill="White" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+								</Canvas>
+							</Viewbox>
+						</Button>
 						<ScrollViewer Grid.Row="1">
 							<StackPanel Name="ShapeList" Margin="5"/>
 						</ScrollViewer>
@@ -247,7 +253,7 @@
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="1*"/>
 						</Grid.RowDefinitions>
-						<StackPanel Orientation="Horizontal" Background="#50202020">
+						<StackPanel Orientation="Horizontal" Background="#A333">
 							<Button Name="RefreshButton">
 								<i:Icon Value="fas fa-sync" />
 							</Button>
@@ -271,6 +277,20 @@
 									<Border BorderBrush="White" BorderThickness="1" Margin="0,-1,0,0" Grid.Row="1"></Border>
 								</Grid>
 							</Button>
+							<ToggleButton Name="CodeView" IsChecked="true">
+								<Viewbox Width="15" Height="15">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z" />
+									</Canvas>
+								</Viewbox>
+							</ToggleButton>
+							<ToggleButton Name="ImageView" IsChecked="true">
+								<Viewbox Width="15" Height="15">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
+									</Canvas>
+								</Viewbox>
+							</ToggleButton>
 						</StackPanel>
 						<Grid Grid.Row="1">
 							<Grid.RowDefinitions>

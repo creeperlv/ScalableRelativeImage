@@ -19,6 +19,8 @@ namespace ScalableRelativeImage.Nodes
         public float Y;
         public float Width;
         public float Height;
+        public StringAlignment Align = StringAlignment.Near;
+
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
@@ -68,6 +70,11 @@ namespace ScalableRelativeImage.Nodes
                         Foreground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
                     }
                     break;
+                case "Align":
+                    {
+                        Align = Enum.Parse<StringAlignment>(Value);
+                    }
+                    break;
                 default:
                     base.SetValue(Key, Value, ref executionWarnings);
                     break;
@@ -84,6 +91,7 @@ namespace ScalableRelativeImage.Nodes
             result.Add("Y", Y.ToString());
             result.Add("Width", Width.ToString());
             result.Add("Height", Height.ToString());
+            result.Add("Align", Align.ToString());
             if (Foreground is not null)
                 if (Foreground.HasValue is true)
                     result.Add("Color", "#" + Foreground.Value.ToArgb().ToString("X"));
@@ -96,8 +104,8 @@ namespace ScalableRelativeImage.Nodes
             var AH = Height / profile.root.RelativeHeight * profile.TargetHeight;
             float FS = RelativeFontSize > 0 ? RelativeFontSize * (profile.TargetHeight / profile.root.RelativeWidth) : -RelativeFontSize;
             TargetGraphics.DrawString(Content,
-                new Font(FontFamily,FS, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle))
-                , new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), new RectangleF(p0, new SizeF(AW, AH)));
+                new Font(FontFamily, FS, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle))
+                , new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), new RectangleF(p0, new SizeF(AW, AH)), new StringFormat { Alignment = Align });
         }
     }
 }
