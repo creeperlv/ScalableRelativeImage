@@ -361,7 +361,13 @@
 				<Grid Name="AboutView" HorizontalAlignment="Stretch" IsVisible="False" Background="#A333">
 					<ScrollViewer HorizontalAlignment="Stretch">
 						<StackPanel HorizontalAlignment="Stretch" Margin="5,0">
-							<Button Name="CloseAboutPageButton" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="50" Content="&lt;-"/>
+							<Button Name="CloseAboutPageButton" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="50">
+								<Viewbox Width="24" Height="24">
+									<Canvas Width="24" Height="24">
+										<Path Fill="White" Data="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+									</Canvas>
+								</Viewbox>
+							</Button>
 							<TextBlock Text="SRI GUI Tool" FontSize="28" Margin="5"/>
 							<TextBlock Text="Created By Creeper Lv" />
 							<TextBlock Text="Version: In-Dev Preview"/>
