@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScalableRelativeImage.Core;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace ScalableRelativeImage.Nodes
     {
 
         public float Size = 0;
-        public Color? Foreground = null;
+        public IntermediateValue Foreground = null;
         public bool Fill = false;
         public List<INode> Points = new List<INode>();
 
@@ -70,9 +71,10 @@ namespace ScalableRelativeImage.Nodes
                 case "Fill":
                     Fill = bool.Parse(Value);
                     break;
-                case "Foreground":
+                case "Color":
                     {
-                        Foreground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                        Foreground = new IntermediateValue();
+                        Foreground.Value= Value;
                     }
                     break;
                 default:
@@ -86,8 +88,7 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("Size", Size.ToString());
             dict.Add("Fill", Fill.ToString());
             if (Foreground is not null)
-                if (Foreground.HasValue is true)
-                    dict.Add("Foreground", "#" + Foreground.Value.ToArgb().ToString("X"));
+                    dict.Add("Color", Foreground.ToString());
             return dict;
         }
         public override void AddNode(INode node, ref List<ExecutionWarning> executionWarnings)
@@ -105,6 +106,10 @@ namespace ScalableRelativeImage.Nodes
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
             float RealWidth = profile.FindAbsoluteSize(Size);
+            Color Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            else Color = profile.DefaultForeground.Value;
+
             List<PointF> Points = new();
             List<byte> Types = new();
             foreach (var item in this.Points)
@@ -114,9 +119,9 @@ namespace ScalableRelativeImage.Nodes
                 Types.Add((byte)(int)P.NodeType);
             }
             if (Fill is false)
-                TargetGraphics.DrawPath(new((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value), RealWidth), new(Points.ToArray(), Types.ToArray()));
+                TargetGraphics.DrawPath(new(Color, RealWidth), new(Points.ToArray(), Types.ToArray()));
             else
-                TargetGraphics.FillPath(new SolidBrush((Foreground == null ? profile.DefaultForeground.Value : Foreground.Value)), new(Points.ToArray(), Types.ToArray()));
+                TargetGraphics.FillPath(new SolidBrush(Color), new(Points.ToArray(), Types.ToArray()));
         }
     }
 }
