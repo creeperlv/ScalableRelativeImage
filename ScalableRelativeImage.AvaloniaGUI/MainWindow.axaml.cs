@@ -91,6 +91,10 @@ namespace ScalableRelativeImage.AvaloniaGUI
                  };
             }
             {
+                SaveButton_Toolbar.Click += async (_, _) =>
+                 {
+                     if (CurrentFile is null) await SaveAs(); else Save();
+                 };
                 SaveButton.Click += async (_, _) =>
                  {
                      if (CurrentFile is null) await SaveAs(); else Save();
@@ -313,10 +317,13 @@ namespace ScalableRelativeImage.AvaloniaGUI
                 this.ExtendClientAreaToDecorationsHint = true;
                 this.ExtendClientAreaChromeHints = Avalonia.Platform.ExtendClientAreaChromeHints.PreferSystemChrome;
                 this.TransparencyLevelHint = WindowTransparencyLevel.Mica;
-                if (this.ActualTransparencyLevel != WindowTransparencyLevel.Mica)
-                {
-                    TransparencyLevelHint = WindowTransparencyLevel.Blur;
-                }
+
+                DisableW1011Style.IsChecked = Global.Default.DisableW1011Style;
+                DisableW1011Style.Checked += (_, _) => { SetStyle(!true); Global.Default.DisableW1011Style = true; Global.Default.Save(); };
+                DisableW1011Style.Unchecked += (_, _) => { SetStyle(!false);Global.Default.DisableW1011Style = false;Global.Default.Save(); };
+                ApplyDesignSymbol.Checked += (_, _) => { Global.Default.ApplyDesignSymbol = true; Global.Default.Save(); };
+                ApplyDesignSymbol.Unchecked += (_, _) => {Global.Default.ApplyDesignSymbol = false;Global.Default.Save(); };
+                SetStyle(!Global.Default.DisableW1011Style);
                 this.TransparencyBackgroundFallback = new SolidColorBrush(Colors.Black);
                 this.Background = new SolidColorBrush(Colors.Transparent);
                 this.SystemDecorations = SystemDecorations.Full;
@@ -327,15 +334,6 @@ namespace ScalableRelativeImage.AvaloniaGUI
 
                     switch (item.ToUpper())
                     {
-                        case "--MICA-WINDOW":
-                            {
-                                this.TransparencyLevelHint = WindowTransparencyLevel.Mica;
-                                if (this.ActualTransparencyLevel != WindowTransparencyLevel.Mica)
-                                {
-                                    TransparencyLevelHint = WindowTransparencyLevel.Blur;
-                                }
-                            }
-                            break;
                         default:
                             break;
                     }
@@ -374,6 +372,17 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     Grid.SetRow(ViewerGrid, 0);
                 }
             }
+        }
+        void SetStyle(bool style)
+        {
+            if (style)
+            {
+                if (this.ActualTransparencyLevel != WindowTransparencyLevel.Mica)
+                {
+                    TransparencyLevelHint = WindowTransparencyLevel.Blur;
+                }
+            }
+            else TransparencyLevelHint = WindowTransparencyLevel.None;
         }
         private void ColumnButtonClick()
         {
@@ -480,7 +489,10 @@ namespace ScalableRelativeImage.AvaloniaGUI
                     }
                     profile.TargetWidth *= Scale;
                     profile.TargetHeight *= Scale;
-
+                    if (ApplyDesignSymbol.IsChecked==true)
+                    {
+                        vectorimg.Symbols.Set(new Symbol { Name="DESIGN",Value="True" });
+                    }
 
                     using (var img = vectorimg.Render(profile))
                     {
@@ -544,6 +556,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
         Button OpenButton;
         Button CloseWarningsViewButton;
         Button SaveButton;
+        Button SaveButton_Toolbar;
         Button SaveAsButton;
         Button NewButton;
         Button RefreshButton;
@@ -580,6 +593,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
         TextBlock DialogContent;
         ToggleButton CodeView;
         ToggleButton ImageView;
+        ToggleSwitch DisableW1011Style;
+        ToggleSwitch ApplyDesignSymbol;
         ScrollViewer MenuArea;
         public void Show3ButtonDialog(string Title, string Content, CommandableButton Button0 = null, CommandableButton Button1 = null, CommandableButton Button2 = null)
         {
@@ -646,6 +661,7 @@ namespace ScalableRelativeImage.AvaloniaGUI
             OpenButton = this.FindControl<Button>("OpenButton");
             CloseWarningsViewButton = this.FindControl<Button>("CloseWarningsViewButton");
             RenderImageButton = this.FindControl<Button>("RenderImageButton");
+            SaveButton_Toolbar = this.FindControl<Button>("SaveButton_Toolbar");
             SaveButton = this.FindControl<Button>("SaveButton");
             SaveAsButton = this.FindControl<Button>("SaveAsButton");
             NewButton = this.FindControl<Button>("NewButton");
@@ -685,6 +701,8 @@ namespace ScalableRelativeImage.AvaloniaGUI
             DialogContent = this.FindControl<TextBlock>("DialogContent");
             CodeView = this.FindControl<ToggleButton>("CodeView");
             ImageView = this.FindControl<ToggleButton>("ImageView");
+            DisableW1011Style = this.FindControl<ToggleSwitch>("DisableW1011Style");
+            ApplyDesignSymbol = this.FindControl<ToggleSwitch>("ApplyDesignSymbol");
         }
     }
     public class CommandableButton

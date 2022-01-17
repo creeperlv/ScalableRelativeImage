@@ -186,13 +186,24 @@
 				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
 			<Grid  Background="#A333">
-				<ToggleButton IsHitTestVisible="True" Margin="10" IsChecked="True" Name="MenuButton">
-					<Viewbox Width="18" Height="18">
-						<Canvas Width="24" Height="24">
-							<Path Fill="White" Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
-						</Canvas>
-					</Viewbox>
-				</ToggleButton>
+				<StackPanel Orientation="Horizontal" Margin="10">
+
+					<ToggleButton IsHitTestVisible="True" IsChecked="True" Name="MenuButton">
+						<Viewbox Width="18" Height="18">
+							<Canvas Width="24" Height="24">
+								<Path Fill="White" Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+							</Canvas>
+						</Viewbox>
+					</ToggleButton>
+					<Button Classes="Toolbar" Name="SaveButton_Toolbar">
+
+						<Viewbox Width="18" Height="18">
+							<Canvas Width="24" Height="24">
+								<Path Fill="White"  Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
+							</Canvas>
+						</Viewbox>
+					</Button>
+				</StackPanel>
 			</Grid>
 
 			<Grid Grid.Column="1"  Background="#A333" IsHitTestVisible="False">
@@ -356,6 +367,8 @@
 							<TextBox Name="ImageHeightBox" Watermark="Pure Number"/>
 							<TextBlock Text="Render Image Scale" Margin="0,5"/>
 							<TextBox Name="PreviewImageScaleBox" Text="1.0" Watermark="Pure Number"/>
+							<ToggleSwitch Content="Disable Blur/Mica" Name="DisableW1011Style"/>
+							<ToggleSwitch Content="Apply 'DESIGN' Symbol on preview" Name="ApplyDesignSymbol"/>
 						</StackPanel>
 						<StackPanel></StackPanel>
 					</StackPanel>
@@ -451,6 +464,7 @@
 								<AvalonEdit:TextEditor Grid.Row="1" Name="CentralEditor" Background="#5000"
 													   HorizontalAlignment="Stretch"
 													   VerticalAlignment="Stretch"
+													   InputMethod.IsInputMethodEnabled="True"
 													   Margin="5" FontFamily="Sarasa Mono CL"
 													   Foreground="White"
 													   SyntaxHighlighting="XML" ShowLineNumbers="True"
