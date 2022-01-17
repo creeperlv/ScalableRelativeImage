@@ -49,5 +49,9 @@ namespace SRI.Editor.Main.Pages
             VersionBlock = this.FindControl<TextBlock>("VersionBlock");
             CoreVersionBlock = this.FindControl<TextBlock>("CoreVersionBlock");
         }
+
+        public void Insert(string Content)
+        {
+        }
     }
 }

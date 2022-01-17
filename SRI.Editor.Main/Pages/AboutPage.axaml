@@ -8,5 +8,8 @@
 		<TextBlock Text="SRI Editor" FontSize="28"/>
 		<TextBlock Text="Version:" Name="VersionBlock"/>
 		<TextBlock Text="Core Version:" Name="CoreVersionBlock"/>
+		<TextBlock Text="Third-Party Libraries" FontSize="22"/>
+		<TextBlock Text="AvaloniaUI (github.com/AvaloniaUI/Avalonia)"/>
+		<TextBlock Text="AvaloniaEditor (github.com/AvaloniaUI/AvaloniaEditor)"/>
 	</StackPanel>
 </UserControl>

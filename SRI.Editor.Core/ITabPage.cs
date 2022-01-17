@@ -9,6 +9,7 @@ namespace SRI.Editor.Core
         void Save();
         void Preview();
         void Save(string Path);
+        void Insert(string Content);
         void SetButton(ITabPageButton button);
     }
     public interface ITabPageButton
@@ -21,6 +22,7 @@ namespace SRI.Editor.Core
     }
     public interface ITabPageContainer
     {
+        ITabPageButton CurrentPage();
         void ShowPage(ITabPageButton button);
         void RemovePage(ITabPage page, ITabPageButton button);
         void AddPage(ITabPage page);

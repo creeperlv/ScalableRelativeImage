@@ -84,5 +84,10 @@ namespace SRI.Editor.Main
             tabPageButton.ControlledPage = page;
             ShowPage(tabPageButton);
         }
+
+        public ITabPageButton CurrentPage()
+        {
+            return CurrentButton;
+        }
     }
 }
