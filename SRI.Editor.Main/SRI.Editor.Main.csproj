@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.11" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.11" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.11" />
+    <PackageReference Include="Avalonia.Direct2D1" Version="0.10.11" />
+   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SRI.Editor.Core\SRI.Editor.Core.csproj" />
+    <ProjectReference Include="..\SRI.Editor.Styles\SRI.Editor.Styles.csproj" />
+  </ItemGroup>
+</Project>

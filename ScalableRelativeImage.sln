@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31004.235
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScalableRelativeImage", "ScalableRelativeImage\ScalableRelativeImage.csproj", "{A7E9A0CF-153A-48AD-990A-FAD82FBC189F}"
 EndProject
@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScalableRelativeImage.TestA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScalableRelativeImage.CLI", "ScalableRelativeImage.CLI\ScalableRelativeImage.CLI.csproj", "{A4A36F51-662C-46E1-9CC8-F881171BD124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalableRelativeImage.AvaloniaGUI", "ScalableRelativeImage.AvaloniaGUI\ScalableRelativeImage.AvaloniaGUI.csproj", "{A3BB7260-BA16-4BC0-A800-A7475A699533}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScalableRelativeImage.AvaloniaGUI", "ScalableRelativeImage.AvaloniaGUI\ScalableRelativeImage.AvaloniaGUI.csproj", "{A3BB7260-BA16-4BC0-A800-A7475A699533}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRI.Editor.Core", "SRI.Editor.Core\SRI.Editor.Core.csproj", "{EFE024C7-2E15-408D-A558-031202FCEF84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRI.Editor.Main", "SRI.Editor.Main\SRI.Editor.Main.csproj", "{B9333A3E-060B-424E-A259-A52C0F5BCA22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRI.Editor.Styles", "SRI.Editor.Styles\SRI.Editor.Styles.csproj", "{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{A3BB7260-BA16-4BC0-A800-A7475A699533}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3BB7260-BA16-4BC0-A800-A7475A699533}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3BB7260-BA16-4BC0-A800-A7475A699533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFE024C7-2E15-408D-A558-031202FCEF84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFE024C7-2E15-408D-A558-031202FCEF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFE024C7-2E15-408D-A558-031202FCEF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFE024C7-2E15-408D-A558-031202FCEF84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9333A3E-060B-424E-A259-A52C0F5BCA22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9333A3E-060B-424E-A259-A52C0F5BCA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9333A3E-060B-424E-A259-A52C0F5BCA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9333A3E-060B-424E-A259-A52C0F5BCA22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,8 +7,8 @@ using System.IO;
 namespace ScalableRelativeImage.CLI
 {
     [DependentFeature("SRI", "render", Description = "Render the SRI source file to an image.",
-        Options = new string[] { "O,Output", "Width", "Height", "B,Background", "F,Foreground" },
-        OptionDescriptions = new string[] { "Output location", "Width of final rendered image.", "Height of final rendered image.", "Background color of the image.", "Foreground color of the image" })]
+        Options = new string[] { "O,Output", "Width", "Height", "B,Background", "F,Foreground", "S,Symbol" },
+        OptionDescriptions = new string[] { "Output location", "Width of final rendered image.", "Height of final rendered image.", "Background color of the image.", "Foreground color of the image", "Define symbols" })]
     public class Render : IFeature
     {
         public void Execute(ParameterList Parameters, string SourceFile)
@@ -18,6 +18,7 @@ namespace ScalableRelativeImage.CLI
             var _Height = Parameters.Query("height");
             var B = Parameters.Query<string>("B");
             var F = (string)Parameters.Query("F");
+            var S = Parameters.Query<string>("S");
             ColorConverter cc = new ColorConverter();
             Color Foreground = Color.White;
             Color Background = Color.Transparent;
@@ -59,6 +60,16 @@ namespace ScalableRelativeImage.CLI
                 Output.OutLine(new WarnMsg { Fallback = $"Missing Foreground, using White.", ID = "NoFG" });
                 //Console.ResetColor();
             }
+            List<Symbol> symbols = new List<Symbol>();
+            if (S != null)
+            {
+                var pair = S.Split(';');
+                foreach (var item in pair)
+                {
+                    var KV = item.Split('=');
+                    symbols.Add(new Symbol() { Name = KV[0], Value = KV[1] });
+                }
+            }
             float Height;
             float Width;
             ImageNodeRoot Img;
@@ -68,6 +79,10 @@ namespace ScalableRelativeImage.CLI
 
                 Output.OutLine("Resolving...");
                 Img = SRIEngine.Deserialize(source, out warnings);
+                foreach (var item in symbols)
+                {
+                    Img.Symbols.Set(item);
+                }
                 if (warnings.Count == 0)
                     Output.OutLine("Completed.");
                 else
@@ -76,7 +91,7 @@ namespace ScalableRelativeImage.CLI
                     foreach (var item in warnings)
                     {
                         //Output.Out($"{item.ID}:");
-                        Output.OutLine(new WarnMsg { Fallback = $"{item.ID }:{item.Message}",ID= item.ID }) ;
+                        Output.OutLine(new WarnMsg { Fallback = $"{item.ID }:{item.Message}", ID = item.ID });
                     }
                 }
                 if (_Width == null)
@@ -156,7 +171,7 @@ namespace ScalableRelativeImage.CLI
     Options = new string[] { "O,Output", "Width", "Height", "B,Background", "F,Foreground" },
     OptionDescriptions = new string[] { "Output location", "Width of final rendered image.", "Height of final rendered image.", "Background color of the image.", "Foreground color of the image" })]
 
-    public class Build: IFeature
+    public class Build : IFeature
     {
 
         public void Execute(ParameterList Parameters, string SourceFile)

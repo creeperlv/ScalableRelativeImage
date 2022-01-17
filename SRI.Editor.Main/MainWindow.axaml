@@ -1,0 +1,206 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SRI.Editor.Main.MainWindow" FontFamily="Sarasa Mono CL, Consolas"
+        Title="SRI.Editor.Main">
+	<Window.Styles>
+		<StyleInclude Source="avares://SRI.Editor.Styles/SRIEditor.axaml" />
+	</Window.Styles>
+	<Grid>
+
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="1*"/>
+			</Grid.RowDefinitions>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="1*"/>
+				</Grid.ColumnDefinitions>
+				<Grid  Background="#A333">
+
+					<Menu Margin="8">
+						<MenuItem Header="_File">
+							<MenuItem Header="_Open">
+								<MenuItem Header="_File">
+									<MenuItem.Icon>
+										<Viewbox Width="16" Height="16">
+											<Canvas Width="24" Height="24">
+												<Path Fill="#50D0FF" Data="M14 2H6C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2M18 20H6V4H13V9H18V20M9.54 15.65L11.63 17.74L10.35 19L7 15.65L10.35 12.3L11.63 13.56L9.54 15.65M17 15.65L13.65 19L12.38 17.74L14.47 15.65L12.38 13.56L13.65 12.3L17 15.65Z"  />
+											</Canvas>
+										</Viewbox>
+									</MenuItem.Icon>
+								</MenuItem>
+								<MenuItem Header="_Project">
+								</MenuItem>
+
+							</MenuItem>
+							<MenuItem Header="_Save">
+								<MenuItem.Icon>
+									<Viewbox Width="16" Height="16">
+										<Canvas Width="24" Height="24">
+											<Path Fill="#50D0FF" Data="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z" />
+										</Canvas>
+									</Viewbox>
+								</MenuItem.Icon>
+							</MenuItem>
+							<MenuItem Header="Save _As">
+								<MenuItem.Icon>
+									<Viewbox Width="16" Height="16">
+										<Canvas Width="24" Height="24">
+											<Path Fill="#50D0FF" Data="M13 17H17V14L22 18.5L17 23V20H13V17M14 12.8C13.5 12.31 12.78 12 12 12C10.34 12 9 13.34 9 15C9 16.31 9.84 17.41 11 17.82C11.07 15.67 12.27 13.8 14 12.8M11.09 19H5V5H16.17L19 7.83V12.35C19.75 12.61 20.42 13 21 13.54V7L17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H11.81C11.46 20.39 11.21 19.72 11.09 19M6 10H15V6H6V10Z"  />
+										</Canvas>
+									</Viewbox>
+								</MenuItem.Icon>
+							</MenuItem>
+							<Separator/>
+							<MenuItem Header="_New">
+
+								<MenuItem Header="_Scalable Relative Image">
+									<MenuItem.Icon>
+										<Viewbox Width="16" Height="16">
+											<Canvas Width="24" Height="24">
+												<Path Fill="#50D0FF" Data="M14 2H6C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2M18 20H6V4H13V9H18V20M9.54 15.65L11.63 17.74L10.35 19L7 15.65L10.35 12.3L11.63 13.56L9.54 15.65M17 15.65L13.65 19L12.38 17.74L14.47 15.65L12.38 13.56L13.65 12.3L17 15.65Z"  />
+											</Canvas>
+										</Viewbox>
+									</MenuItem.Icon>
+								</MenuItem>
+								<MenuItem Header="_Project"></MenuItem>
+							</MenuItem>
+							<Separator/>
+							<MenuItem Header="_Exit">
+								<MenuItem.Icon>
+									<Viewbox Width="16" Height="16">
+										<Canvas Width="24" Height="24">
+											<Path Fill="#FF9080" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+										</Canvas>
+									</Viewbox>
+								</MenuItem.Icon>
+							</MenuItem>
+						</MenuItem>
+						<MenuItem Header="Edit"></MenuItem>
+						<MenuItem Header="Tools">
+							<MenuItem Header="Shapes"></MenuItem>
+						</MenuItem>
+						<MenuItem Header="Help">
+							<MenuItem Header="View GitHub"></MenuItem>
+							<MenuItem Header="About" Name="Help_About">
+								<MenuItem.Icon>
+									<Viewbox Width="16" Height="16">
+										<Canvas Width="24" Height="24">
+											<Path Fill="#50A0FF" Data="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+										</Canvas>
+									</Viewbox>
+								</MenuItem.Icon>
+							</MenuItem>
+						</MenuItem>
+					</Menu>
+				</Grid>
+				<Grid Background="#A333" Grid.Column="1" IsHitTestVisible="False">
+					<TextBlock Text="SRI Editor" Foreground="#8FFF" VerticalAlignment="Center"/>
+				</Grid>
+			</Grid>
+			<Grid Grid.Row="1" Background="#A333">
+				<StackPanel Orientation="Horizontal" Margin="8,0,5,8">
+					<ToggleButton Background="Transparent" Name="ProjectBrowserToggle" IsChecked="True">
+						<Viewbox Width="16" Height="16">
+							<Canvas Width="24" Height="24">
+								<Path Fill="#F0A020" Data="M3,3H9V7H3V3M15,10H21V14H15V10M15,17H21V21H15V17M13,13H7V18H13V20H7L5,20V9H7V11H13V13Z" />
+							</Canvas>
+						</Viewbox>
+					</ToggleButton>
+					<Button Name="SaveButton_Toolbar"  Classes="Toolbar" ToolTip.Tip="Save">
+						<Viewbox Width="16" Height="16">
+							<Canvas Width="24" Height="24">
+								<Path Fill="#50D0FF" Data="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z" />
+							</Canvas>
+						</Viewbox>
+					</Button>
+					<Button Name="SaveAsButton_Toolbar"  Classes="Toolbar" ToolTip.Tip="Save As">
+						<Viewbox Width="16" Height="16">
+							<Canvas Width="24" Height="24">
+								<Path Fill="#50D0FF" Data="M13 17H17V14L22 18.5L17 23V20H13V17M14 12.8C13.5 12.31 12.78 12 12 12C10.34 12 9 13.34 9 15C9 16.31 9.84 17.41 11 17.82C11.07 15.67 12.27 13.8 14 12.8M11.09 19H5V5H16.17L19 7.83V12.35C19.75 12.61 20.42 13 21 13.54V7L17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H11.81C11.46 20.39 11.21 19.72 11.09 19M6 10H15V6H6V10Z"  />
+							</Canvas>
+						</Viewbox>
+					</Button>
+					<Grid Width="1" Background="#8AAA" Margin="1,5"/>
+					<Button Name="BuildButton_Toolbar" Classes="Toolbar" ToolTip.Tip="Build Project">
+						<Viewbox Width="16" Height="16">
+							<Canvas Width="24" Height="24">
+								<Path Fill="#00AA00" Data="M22.61,19L13.53,9.91C14.46,7.57 14,4.81 12.09,2.91C9.79,0.61 6.21,0.4 3.66,2.26L7.5,6.11L6.08,7.5L2.25,3.69C0.39,6.23 0.6,9.82 2.9,12.11C4.76,13.97 7.47,14.46 9.79,13.59L18.9,22.7C19.29,23.09 19.92,23.09 20.31,22.7L22.61,20.4C23,20 23,19.39 22.61,19M19.61,20.59L10.15,11.13C9.54,11.58 8.86,11.85 8.15,11.95C6.79,12.15 5.36,11.74 4.32,10.7C3.37,9.76 2.93,8.5 3,7.26L6.09,10.35L10.33,6.11L7.24,3C8.5,2.95 9.73,3.39 10.68,4.33C11.76,5.41 12.17,6.9 11.92,8.29C11.8,9 11.5,9.66 11.04,10.25L20.5,19.7L19.61,20.59Z" />
+							</Canvas>
+						</Viewbox>
+					</Button>
+					<Button Name="PlayButton_Toolbar"  Classes="Toolbar" ToolTip.Tip="Preview">
+						<Viewbox Width="16" Height="16">
+							<Canvas Width="24" Height="24">
+								<Path Fill="#00AA00" Data="M8,5.14V19.14L19,12.14L8,5.14Z" />
+							</Canvas>
+						</Viewbox>
+					</Button>
+				</StackPanel>
+			</Grid>
+			<Border Grid.Row="2" BorderThickness="8" Padding="0" BorderBrush="#A333">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid Width="200" Background="#A333" IsVisible="{Binding #ProjectBrowserToggle.IsChecked}">
+						<!--Project Browser-->
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<Grid>
+							<TextBlock Text="Project" Margin="3,0"/>
+						</Grid>
+						<Grid Margin="5" Grid.Row="1" Background="#3000">
+							
+						</Grid>
+					</Grid>
+					<Grid Width="200" Grid.Column="1" Background="#A333">
+						<!--Shapes-->
+
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<Grid>
+							<TextBlock Text="Shapes" Margin="3"/>
+							<Button HorizontalAlignment="Right" VerticalAlignment="Center" Classes="Toolbar">
+								<Viewbox Width="14" Height="14">
+									<Canvas Width="24" Height="24">
+										<Path Fill="#FFFFFF" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+									</Canvas>
+								</Viewbox>
+							</Button>
+						</Grid>
+					</Grid>
+					<Grid Background="#8222" Grid.Column="2">
+						<!--Content Area-->
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+							<StackPanel Name="TabPageButtons" Orientation="Horizontal"></StackPanel>
+						</ScrollViewer>
+						<Border Grid.Row="1" BorderThickness="0,2,0,0" BorderBrush="#882288EE">
+
+							<Grid  Name="TabPageContent">
+
+							</Grid>
+						</Border>
+					</Grid>
+				</Grid>
+			</Border >
+		</Grid>
+		<Grid Name="DialogRoot" IsVisible="False"></Grid>
+	</Grid>
+</Window>
