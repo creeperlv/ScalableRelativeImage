@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SRI.Editor.Extension.Defaults;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -78,7 +80,7 @@ namespace SRI.Editor.Extension
 
             }
             {
-                var editor = new EditorControl();
+                var editor = new BaseEditor();
                 //editor.OpenFile(fi);
                 return editor;
             }

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using SRI.Editor.Core;
 using SRI.Editor.Extension;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +13,16 @@ namespace SRI.Editor.Main.Controls
     public partial class FileTreeNode : UserControl
     {
         FileSystemInfo controlledItem;
+        ITabPageContainer HostedContainer;
+        public FileTreeNode(ITabPageContainer Container)
+        {
+            HostedContainer = Container;
+            InitializeComponent();
+            ApplyLanguage();
+        }
         public FileTreeNode()
         {
+            HostedContainer = null;
             InitializeComponent();
             ApplyLanguage();
         }
@@ -64,7 +73,7 @@ namespace SRI.Editor.Main.Controls
                         menuItem.Header = editor.Value;
                         menuItem.Click += (a, b) =>
                         {
-                            //MainWindow.CurrentWindow.OpenDesignatedEditor(id, new FileInfo(controlledItem.FullName));
+                            HostedContainer.OpenDesignatedEditor(id, new FileInfo(controlledItem.FullName));
                         };
                         submenu.Add(menuItem);
                     }
@@ -104,7 +113,7 @@ namespace SRI.Editor.Main.Controls
                         {
                             if (item.Name.ToUpper() == ".GIT") continue;
                         }
-                        var node = new FileTreeNode();
+                        var node = new FileTreeNode(HostedContainer);
                         node.SetFileSystemInfo(item);
                         SubNodes.Children.Add(node);
                         node.CheckBox.IsVisible = CheckBox.IsVisible;
@@ -112,7 +121,7 @@ namespace SRI.Editor.Main.Controls
                     foreach (var item in directoryInfo.EnumerateFiles())
                     {
 
-                        var node = new FileTreeNode();
+                        var node = new FileTreeNode(HostedContainer);
                         node.SetFileSystemInfo(item);
                         SubNodes.Children.Add(node);
                         node.CheckBox.IsVisible = CheckBox.IsVisible;
@@ -132,7 +141,7 @@ namespace SRI.Editor.Main.Controls
             }
             else
             {
-                //MainWindow.CurrentWindow.OpenFileEditor(new FileInfo(controlledItem.FullName));
+                HostedContainer.OpenFileEditor(new FileInfo(controlledItem.FullName));
             }
         }
         private void CentralButton_DoubleTapped(object sender, Avalonia.Interactivity.RoutedEventArgs e)

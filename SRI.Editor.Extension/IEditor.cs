@@ -11,5 +11,7 @@ namespace SRI.Editor.Extension
     public interface IEditor:ITabPage
     {
         void OpenFile(FileInfo file);
+        void SetContent(string content);
+        
     }
 }

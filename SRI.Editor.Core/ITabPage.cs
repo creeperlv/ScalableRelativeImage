@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace SRI.Editor.Core
 {
@@ -9,9 +10,8 @@ namespace SRI.Editor.Core
         void Save();
         void Preview();
 
-        public void Open(string Path) { }
         
-        void Save(string Path);
+        void Save(FileInfo Path);
         void Insert(string Content);
         void SetButton(ITabPageButton button);
     }
@@ -28,6 +28,8 @@ namespace SRI.Editor.Core
         ITabPageButton CurrentPage();
         void ShowPage(ITabPageButton button);
         void RemovePage(ITabPage page, ITabPageButton button);
-        void AddPage(ITabPage page);
+        ITabPageButton AddPage(ITabPage page);
+        void OpenDesignatedEditor(string id, FileInfo fileInfo);
+        void OpenFileEditor(FileInfo fileInfo);
     }
 }

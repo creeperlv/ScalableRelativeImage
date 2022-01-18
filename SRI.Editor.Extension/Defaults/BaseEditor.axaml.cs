@@ -5,19 +5,20 @@ using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
 using SRI.Editor.Core;
+using SRI.Editor.Styles;
 using System.IO;
 using System.Xml;
 
-namespace SRI.Editor.Main.Pages
+namespace SRI.Editor.Extension.Defaults
 {
-    public partial class BaseEditor : Grid,ITabPage
+    public partial class BaseEditor : Grid, ITabPage, IEditor
     {
         public BaseEditor()
         {
             InitializeComponent();
 
             XshdSyntaxDefinition xshd;
-            FileInfo fi = new(typeof(Program).Assembly.Location);
+            FileInfo fi = new(typeof(StyleLib).Assembly.Location);
             //new XmlReader()
             using (XmlReader reader = XmlReader.Create(System.IO.Path.Combine(fi.Directory.FullName, "Resources/Theme.xml")))
             {
@@ -25,7 +26,7 @@ namespace SRI.Editor.Main.Pages
                 CentralEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
             }
         }
-        string OpenedFile = null;
+        FileInfo OpenedFile = null;
         public void Dispose()
         {
         }
@@ -42,26 +43,35 @@ namespace SRI.Editor.Main.Pages
         public void Preview()
         {
         }
-        public void Open(string Path)
+        public void OpenFile(FileInfo Path)
         {
-            CentralEditor.Text=File.ReadAllText(OpenedFile);
+            if (button != null)
+                button.SetTitle(Path.Name);
+            var __Name = Path.Name.ToUpper();
+            if (__Name.EndsWith(".MD"))
+            {
+                var DEF = HighlightingManager.Instance.GetDefinition("Markdown");
+                if (DEF != null)
+                    CentralEditor.SyntaxHighlighting = DEF;
+            }
+            CentralEditor.Text = File.ReadAllText(Path.FullName);
         }
         public void Save()
         {
             if (OpenedFile != null)
             {
-                File.WriteAllText(OpenedFile, CentralEditor.Text);
+                File.WriteAllText(OpenedFile.FullName, CentralEditor.Text);
             }
         }
 
-        public void Save(string Path)
+        public void Save(FileInfo Path)
         {
             OpenedFile = Path;
         }
-
+        ITabPageButton button;
         public void SetButton(ITabPageButton button)
         {
-
+            this.button = button;
         }
 
         public bool TryClose()
@@ -74,6 +84,11 @@ namespace SRI.Editor.Main.Pages
             AvaloniaXamlLoader.Load(this);
             CentralEditor = this.FindControl<TextEditor>("CentralEditor");
 
+        }
+
+        public void SetContent(string content)
+        {
+            CentralEditor.Text = content;
         }
     }
 }

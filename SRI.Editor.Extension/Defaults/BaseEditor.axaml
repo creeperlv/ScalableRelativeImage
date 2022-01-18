@@ -6,7 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 							HorizontalAlignment="Stretch"
 							VerticalAlignment="Stretch"
-             x:Class="SRI.Editor.Main.Pages.BaseEditor">
+             x:Class="SRI.Editor.Extension.Defaults.BaseEditor">
 	<AvalonEdit:TextEditor Name="CentralEditor" Background="#8222"
 							HorizontalAlignment="Stretch"
 							VerticalAlignment="Stretch"

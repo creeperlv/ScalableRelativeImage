@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using SRI.Editor.Extension;
 using SRI.Editor.Styles;
 using System;
 
@@ -15,6 +16,9 @@ namespace SRI.Editor.Main
         public static void Main(string[] args)
         {
             new StyleLib();
+            IconProviders.RegisterProvider(new DefaultIconProvider());
+            {
+            }
             isDesign = false;
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }

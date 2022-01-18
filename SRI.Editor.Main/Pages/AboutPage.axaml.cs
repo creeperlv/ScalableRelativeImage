@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ScalableRelativeImage;
 using SRI.Editor.Core;
+using System.IO;
 
 namespace SRI.Editor.Main.Pages
 {
@@ -29,7 +30,7 @@ namespace SRI.Editor.Main.Pages
         {
         }
 
-        public void Save(string Path)
+        public void Save(FileInfo Path)
         {
         }
 

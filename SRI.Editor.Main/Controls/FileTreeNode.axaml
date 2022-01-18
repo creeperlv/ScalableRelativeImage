@@ -12,7 +12,7 @@
 				<ColumnDefinition Width="Auto"/>
 			</Grid.ColumnDefinitions>
 			<ToggleButton Name="CheckBox" IsVisible="False" HorizontalAlignment="Stretch" Width="12" Height="12" VerticalAlignment="Center" Background="Transparent" BorderBrush="#AAA"/>
-			<Button Name="CentralButton" Grid.Column="1" HorizontalAlignment="Stretch" Padding="0" Background="Transparent" HorizontalContentAlignment="Left">
+			<Button Name="CentralButton" Grid.Column="1" HorizontalAlignment="Stretch" Padding="0" Background="#01000000" HorizontalContentAlignment="Left">
 				<Button.ContextMenu>
 					<ContextMenu>
 						<MenuItem Header="_Open" Name="Menu_Open"/>

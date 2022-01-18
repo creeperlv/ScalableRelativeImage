@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -7,9 +7,17 @@
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="0.10.11" />
 		<PackageReference Include="Avalonia.Desktop" Version="0.10.11" />
+		<PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.9" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SRI.Editor.Core\SRI.Editor.Core.csproj" />
+	  <ProjectReference Include="..\SRI.Editor.Styles\SRI.Editor.Styles.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Defaults\BaseEditor.axaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 </Project>
