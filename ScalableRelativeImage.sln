@@ -11,11 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScalableRelativeImage.CLI",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScalableRelativeImage.AvaloniaGUI", "ScalableRelativeImage.AvaloniaGUI\ScalableRelativeImage.AvaloniaGUI.csproj", "{A3BB7260-BA16-4BC0-A800-A7475A699533}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRI.Editor.Core", "SRI.Editor.Core\SRI.Editor.Core.csproj", "{EFE024C7-2E15-408D-A558-031202FCEF84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRI.Editor.Core", "SRI.Editor.Core\SRI.Editor.Core.csproj", "{EFE024C7-2E15-408D-A558-031202FCEF84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRI.Editor.Main", "SRI.Editor.Main\SRI.Editor.Main.csproj", "{B9333A3E-060B-424E-A259-A52C0F5BCA22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRI.Editor.Main", "SRI.Editor.Main\SRI.Editor.Main.csproj", "{B9333A3E-060B-424E-A259-A52C0F5BCA22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRI.Editor.Styles", "SRI.Editor.Styles\SRI.Editor.Styles.csproj", "{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRI.Editor.Styles", "SRI.Editor.Styles\SRI.Editor.Styles.csproj", "{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRI.Editor.Extension", "SRI.Editor.Extension\SRI.Editor.Extension.csproj", "{C5CDF79D-86A8-4E78-8F3D-10A2042842AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FA82415-9F8D-4E6D-B171-EC0FA9FFCB14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5CDF79D-86A8-4E78-8F3D-10A2042842AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5CDF79D-86A8-4E78-8F3D-10A2042842AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5CDF79D-86A8-4E78-8F3D-10A2042842AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5CDF79D-86A8-4E78-8F3D-10A2042842AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

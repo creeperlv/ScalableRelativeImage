@@ -30,19 +30,21 @@ namespace SRI.Editor.Main.Controls
                     this.FindControl<TextBlock>("SubText").Text = Shape.Assembly.GetName().Name;
                     MainButton.Click += (_, _) =>
                     {
+                        if (Container.CurrentPage() == null) return;
                         var v = n.GetValueSet();
                         if (v is not null)
                         {
-                            //string xml = "";
-                            //var _node = MainWindow.GlobalXmlDocument.CreateNode(XmlNodeType.Element, Shape.Name, null);
-                            //var node = n;
-                            //if (_node.Attributes is not null)
-                            //    foreach (var item in node.GetValueSet())
-                            //    {
-                            //        _node.Attributes.Append(CreateAttribute(ref MainWindow.GlobalXmlDocument, item.Key, item.Value));
-                            //    }
-                            //xml = _node.OuterXml;
+                            string xml = "";
+                            var _node = Globals.GlobalXmlDocument.CreateNode(XmlNodeType.Element, Shape.Name, null);
+                            var node = n;
+                            if (_node.Attributes is not null)
+                                foreach (var item in node.GetValueSet())
+                                {
+                                    _node.Attributes.Append(CreateAttribute(ref Globals.GlobalXmlDocument, item.Key, item.Value));
+                                }
+                            xml = _node.OuterXml;
                             //editor.Text = editor.Text.Insert(editor.SelectionStart, xml);
+                            Container.CurrentPage().ControlledPage.Insert(xml);
                         }
                     };
                 }

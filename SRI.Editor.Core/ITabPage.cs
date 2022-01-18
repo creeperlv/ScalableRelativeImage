@@ -8,6 +8,9 @@ namespace SRI.Editor.Core
         bool TryClose();
         void Save();
         void Preview();
+
+        public void Open(string Path) { }
+        
         void Save(string Path);
         void Insert(string Content);
         void SetButton(ITabPageButton button);

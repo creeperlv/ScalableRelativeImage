@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SRI.Editor.Main.Controls.FileTreeNode">
+	<StackPanel>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="1*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<ToggleButton Name="CheckBox" IsVisible="False" HorizontalAlignment="Stretch" Width="12" Height="12" VerticalAlignment="Center" Background="Transparent" BorderBrush="#AAA"/>
+			<Button Name="CentralButton" Grid.Column="1" HorizontalAlignment="Stretch" Padding="0" Background="Transparent" HorizontalContentAlignment="Left">
+				<Button.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="_Open" Name="Menu_Open"/>
+						<MenuItem Header="Open _With..." Name="OpenWithMenu"/>
+						<MenuItem Header="_New" Name="NewMenu">
+							<MenuItem Header="_Item" Name="Menu_New_Item"></MenuItem>
+							<MenuItem Header="Fol_der"></MenuItem>
+						</MenuItem>
+						<MenuItem Name="GitMenu" Header="Git">
+							<MenuItem Header="Pull"/>
+							<MenuItem Header="Push"/>
+							<MenuItem Header="Fetch"/>
+							<Separator/>
+							<MenuItem Header="Git Window"/>
+						</MenuItem>
+						<Separator/>
+						<MenuItem Header="_Rename"/>
+						<MenuItem Header="_Copy"/>
+						<MenuItem Header="Cut (_X)"/>
+						<MenuItem Header="_Paste"/>
+						<Separator/>
+						<MenuItem Header="_Delete"/>
+					</ContextMenu>
+				</Button.ContextMenu>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid Name="IconContainer" Width="15" Height="15">
+
+					</Grid>
+					<Grid Name="GitIcon" Width="15" Height="15" Grid.Column="1">
+						<TextBlock Text="" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Grid>
+					<TextBlock Margin="2,0,0,0" Name="NameBlock" Grid.Column="2"/>
+				</Grid>
+			</Button>
+		</Grid>
+		<StackPanel Name="SubNodes" Margin="5,0,0,0">
+
+		</StackPanel>
+	</StackPanel>
+</UserControl>

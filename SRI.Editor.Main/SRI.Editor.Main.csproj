@@ -16,6 +16,12 @@
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SRI.Editor.Core\SRI.Editor.Core.csproj" />
+    <ProjectReference Include="..\SRI.Editor.Extension\SRI.Editor.Extension.csproj" />
     <ProjectReference Include="..\SRI.Editor.Styles\SRI.Editor.Styles.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Resources\Theme.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

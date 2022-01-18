@@ -3,5 +3,6 @@
              x:Class="SRI.Editor.Main.App">
     <Application.Styles>
         <FluentTheme Mode="Dark"/>
+		<StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
     </Application.Styles>
 </Application>
