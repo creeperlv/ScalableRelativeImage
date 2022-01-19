@@ -105,8 +105,8 @@ namespace SRI.Editor.Main.Dialogs
                 Grid.SetColumnSpan(Button1, 2);
                 Grid.SetColumnSpan(Button2, 2);
                 Grid.SetColumn(Button1, 2);
-                Grid.SetColumn(Button1, 4);
-                Button2.Content = button1.Fallback;
+                Grid.SetColumn(Button2, 4);
+                Button2.Content = button2.Fallback;
                 Button2.Click += (_, _) =>
                 {
                     if (button2.OnClick != null)

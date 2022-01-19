@@ -8,6 +8,7 @@ using SRI.Editor.Core;
 using SRI.Editor.Core.Utilities;
 using SRI.Editor.Extension.Utilities;
 using SRI.Editor.Styles;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -33,7 +34,7 @@ namespace SRI.Editor.Extension.Defaults
             EditorHelper.KeyBind(CentralEditor, this);
         }
         string OriginalHash = null;
-        bool isChanged=false;
+        bool isChanged = false;
         private void CentralEditor_TextChanged(object sender, System.EventArgs e)
         {
             isChanged = true;
@@ -53,6 +54,12 @@ namespace SRI.Editor.Extension.Defaults
         }
         public string GetTitle()
         {
+            if (IsVaried())
+                return "*" + ObtainFileTitle();
+            return ObtainFileTitle();
+        }
+        bool IsVaried()
+        {
 
             if (OriginalHash != null)
             {
@@ -61,21 +68,19 @@ namespace SRI.Editor.Extension.Defaults
                     var __hash = HashTool.HashString(CentralEditor.Text);
                     if (OriginalHash != __hash)
                     {
-                        return "*" + ObtainFileTitle();
+                        return true;
                     }
                     else
                     {
-                        isChanged = false;
                     }
                 }
             }
-            return ObtainFileTitle();
+            return false;
         }
-
         public void Insert(string Content)
         {
             CentralEditor.Text = CentralEditor.Text.Insert(CentralEditor.SelectionStart, Content);
-            
+
         }
 
         public void Preview()
@@ -124,8 +129,39 @@ namespace SRI.Editor.Extension.Defaults
             this.button = button;
         }
 
-        public bool TryClose()
+        public bool TryClose(Action NonCancelCallback, Action CancelCallback)
         {
+            if (IsVaried())
+            {
+                Globals.CurrentMainWindow.ShowDialog("Unsaved content!", "Do you wish to save file first?",
+                    new DialogButton()
+                    {
+                        LanguageID = "Dialog.OK",
+                        Fallback = "OK",
+                        OnClick = () =>
+                        {
+                            Save();
+                            button.ForceClose();
+                            if (NonCancelCallback != null) NonCancelCallback();
+                        }
+                    }, new DialogButton()
+                    {
+                        LanguageID = "Dialog.No",
+                        Fallback = "No",
+                        OnClick = () =>
+                        {
+                            button.ForceClose();
+                            if (NonCancelCallback != null) NonCancelCallback();
+                        }
+                    }, new DialogButton()
+                    {
+
+                        LanguageID = "Dialog.Cancel",
+                        Fallback = "Cancel",
+                        OnClick = () => { if (CancelCallback != null) CancelCallback(); }
+                    });
+                return false;
+            }
             return true;
         }
         TextEditor CentralEditor;

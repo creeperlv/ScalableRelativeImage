@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using SRI.Editor.Core;
+using System;
 
 namespace SRI.Editor.Main
 {
@@ -13,14 +14,7 @@ namespace SRI.Editor.Main
             InitializeComponent();
             CloseButton.Click += (_, _) =>
             {
-                if (child != null)
-                {
-                    if (child.TryClose())
-                    {
-                        ParentContainer.RemovePage(child, this);
-                        child.Dispose();
-                    }
-                }
+                Close(null,null);
             };
             NameAreaButton.Click += (_, _) => { ParentContainer.ShowPage(this); };
         }
@@ -48,6 +42,24 @@ namespace SRI.Editor.Main
         {
             this.Background = new SolidColorBrush(Color.FromArgb(01,0,0,0));
             (child as IControl).IsVisible=false;
+        }
+
+        public bool Close(Action act,Action act1)
+        {
+            if (child != null)
+            {
+                if (child.TryClose(act,act1))
+                {
+                    ParentContainer.RemovePage(child, this);
+                    child.Dispose();
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         ITabPage child;

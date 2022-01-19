@@ -6,7 +6,10 @@ namespace SRI.Editor.Core
     public interface ITabPage : IDisposable
     {
         string GetTitle();
-        bool TryClose();
+        bool TryClose(Action NonCancelCallback, Action CancelCallback)
+        {
+            return true;
+        }
         void Save();
         void Preview();
 

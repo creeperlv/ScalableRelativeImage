@@ -53,6 +53,13 @@ namespace SRI.Editor.Main
                     }
                 }
             };
+            this.Closing +=async (a, b) =>
+            {
+                await __closing(null, () =>
+                {
+                    b.Cancel = true;
+                });
+            };
             Help_About.Click += (_, _) =>
               {
                   AddPage(new AboutPage());
@@ -175,6 +182,44 @@ namespace SRI.Editor.Main
             LoadShapeList();
             CheckAssociatedOpen();
         }
+
+        async Task __closing(Action Def = null, Action Addition = null)
+        {
+            int cannot = 0;
+            foreach (var item in TabPageButtons.Children)
+            {
+                if (item is ITabPageButton button)
+                {
+                    if (button.Close(() =>
+                    {
+                        cannot--;
+                    }, () =>
+                    {
+                        if (Addition is not null)
+                            Addition();
+                    }) == false)
+                    {
+                        cannot++;
+                    }
+                }
+            }
+            while (cannot > 0)
+            {
+                await Task.Delay(100);
+            }
+            //if (CentralEditor.Text != SRIContentTemplate)
+            //{
+            //    if (LastContent != CentralEditor.Text)
+            //    {
+            //        //
+            //        Addition();
+            //        Show3ButtonDialog("File Changed", "File has changed since last save/load, do you want to save before you close?",
+            //            new CommandableButton("Save", Save), new CommandableButton("No", () => { Environment.Exit(0); }), new CommandableButton("Cancel", null));
+            //    }
+            //    else if (Def is not null) Def();
+            //}
+            //else if (Def is not null) Def();
+        }
         void Save()
         {
             if (CurrentPage() != null)
@@ -217,7 +262,7 @@ namespace SRI.Editor.Main
                     OpenProject(filePick.First());
                 }
         }
-        FileTreeNode RootNode=null;
+        FileTreeNode RootNode = null;
         public void OpenProject(string file)
         {
             FileInfo Proj = new FileInfo(file);
