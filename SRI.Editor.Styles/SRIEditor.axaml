@@ -5,9 +5,19 @@
 		<Border Padding="20">
 			<!-- Add Controls for Previewer Here -->
 			<Grid>
-				<Button Classes="Toolbar">
-					ASD
-				</Button>
+				<StackPanel>
+					<Button Classes="Toolbar">
+						ASD
+					</Button>
+					<ComboBox SelectedIndex="0">
+						<ComboBoxItem>Item1 </ComboBoxItem>
+						<ComboBoxItem>Item2</ComboBoxItem>
+					</ComboBox>
+					<ComboBox SelectedIndex="0" IsEnabled="False">
+						<ComboBoxItem>Item1 </ComboBoxItem>
+						<ComboBoxItem>Item2</ComboBoxItem>
+					</ComboBox>
+				</StackPanel>
 			</Grid>
 		</Border>
 	</Design.PreviewWith>
@@ -15,6 +25,7 @@
 
 	<Styles.Resources>
 		<Thickness x:Key="MenuFlyoutPresenterThemePadding">1</Thickness>
+		<SolidColorBrush x:Key="ToggleButtonBackground">#01000000</SolidColorBrush>
 	</Styles.Resources>
 	<Style Selector="MenuItem">
 
@@ -159,22 +170,54 @@
 		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="BorderBrush" Value="#15AAAAAA"/>
 	</Style>
+	<Style Selector="ComboBox">
+		<Setter Property="Padding" Value="5,0" />
+		<Setter Property="MaxDropDownHeight" Value="504" />
+		<Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}" />
+		<Setter Property="Background" Value="#01000000" />
+		<Setter Property="BorderBrush" Value="#0FFF" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="MinHeight" Value="10" />
+		<Setter Property="PlaceholderForeground" Value="{DynamicResource ComboBoxPlaceHolderForeground}" />
+	</Style>
+	<Style Selector="ComboBox:pointerover /template/ Border#Background">
+		<Setter Property="Background" Value="#3AAA" />
+		<Setter Property="BorderBrush" Value="#3FFF" />
+	</Style>
+	<Style Selector="ComboBox:disabled /template/ Border#Background">
+		<Setter Property="Background" Value="#5FFF" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+	</Style>
+
 	<Style Selector="Button.Toolbar">
 		<Setter Property="Background" Value="Transparent"/>
 		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
 	</Style>
 	<Style Selector="Button.TabPageButton">
 		<Setter Property="Background" Value="Transparent"/>
 		<Setter Property="BorderBrush" Value="Transparent"/>
 		<Setter Property="CornerRadius" Value="0"/>
-		<Setter Property="Padding" Value="4,2"/>
-		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="Padding" Value="2,2"/>
+		<Setter Property="FontSize" Value="12"/>
 	</Style>
 	<Style Selector="Button:pointover">
 		<Setter Property="BorderBrush" Value="#2AAA"/>
 	</Style>
 	<Style Selector="TextBox">
 		<Setter Property="BorderThickness" Value="0,0,0,1" />
+		<Setter Property="Padding" Value="5,2" />
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="MinHeight" Value="0" />
+		<Setter Property="VerticalAlignment" Value="Center" />
 	</Style>
 	<Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
 		<Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}"/>

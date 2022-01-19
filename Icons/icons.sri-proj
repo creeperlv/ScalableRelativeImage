@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <BuildConfigurations>
+    <BuildConfiguration>
+      <Name>Debug</Name>
+      <OutputDirectory></OutputDirectory>
+      <Symbols>
+        <Symbol>
+          <Name>DEBUG</Name>
+          <Value>true</Value>
+        </Symbol>
+      </Symbols>
+      <BuildTargets>
+        <BuildTarget>
+          <Name>Icon</Name>
+          <File>icon.sri</File>
+          <OutputName>icon.png</OutputName>
+          <Background>Transparent</Background>
+          <Foreground>White</Foreground>
+          <Width>1024</Width>
+          <Height>1024</Height>
+          <Symbols>
+            <Symbol>
+              <Name>&lt;Symbol&gt;</Name>
+              <Value>&lt;Any-Value&gt;</Value>
+            </Symbol>
+          </Symbols>
+        </BuildTarget>
+      </BuildTargets>
+    </BuildConfiguration>
+  </BuildConfigurations>
+</Project>

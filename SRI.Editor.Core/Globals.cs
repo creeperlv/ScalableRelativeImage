@@ -11,5 +11,6 @@ namespace SRI.Editor.Core
     {
 
         public static XmlDocument GlobalXmlDocument = new XmlDocument();
+        public static IWindow CurrentMainWindow;
     }
 }

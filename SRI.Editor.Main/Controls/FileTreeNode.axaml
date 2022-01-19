@@ -14,7 +14,7 @@
 			<ToggleButton Name="CheckBox" IsVisible="False" HorizontalAlignment="Stretch" Width="12" Height="12" VerticalAlignment="Center" Background="Transparent" BorderBrush="#AAA"/>
 			<Button Name="CentralButton" Grid.Column="1" HorizontalAlignment="Stretch" Padding="0" Background="#01000000" HorizontalContentAlignment="Left">
 				<Button.ContextMenu>
-					<ContextMenu>
+					<ContextMenu FontFamily="Sarasa Mono CL">
 						<MenuItem Header="_Open" Name="Menu_Open"/>
 						<MenuItem Header="Open _With..." Name="OpenWithMenu"/>
 						<MenuItem Header="_New" Name="NewMenu">
@@ -34,7 +34,7 @@
 						<MenuItem Header="Cut (_X)"/>
 						<MenuItem Header="_Paste"/>
 						<Separator/>
-						<MenuItem Header="_Delete"/>
+						<MenuItem Header="_Delete" Name="Delete_Item"/>
 					</ContextMenu>
 				</Button.ContextMenu>
 				<Grid>

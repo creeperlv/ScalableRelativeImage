@@ -26,6 +26,7 @@ namespace SRI.Editor.Main
         private const string FILE_PS1 = "FILE.PS1";
         private const string FILE_C = "FILE.C";
         private const string FILE_7Z = "FILE.7Z";
+        private const string FILE_SRI = "FILE.SRI";
 
         public IControl ObtainIcon(string ID, Color Foreground)
         {
@@ -184,6 +185,15 @@ namespace SRI.Editor.Main
                             p.Fill = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x88, 0xEE));
                             canvas.Children.Add(p);
                             p.Data = StreamGeometry.Parse("M21.83,4C22.32,4 22.63,4.4 22.5,4.89L19.34,19.11C19.23,19.6 18.75,20 18.26,20H2.17C1.68,20 1.37,19.6 1.5,19.11L4.66,4.89C4.77,4.4 5.25,4 5.74,4H21.83M15.83,16H11.83C11.37,16 11,16.38 11,16.84C11,17.31 11.37,17.69 11.83,17.69H15.83C16.3,17.69 16.68,17.31 16.68,16.84C16.68,16.38 16.3,16 15.83,16M5.78,16.28C5.38,16.56 5.29,17.11 5.57,17.5C5.85,17.92 6.41,18 6.81,17.73C14.16,12.56 14.21,12.5 14.26,12.47C14.44,12.31 14.53,12.09 14.54,11.87C14.55,11.67 14.5,11.5 14.38,11.31L9.46,6.03C9.13,5.67 8.57,5.65 8.21,6C7.85,6.32 7.83,6.88 8.16,7.24L12.31,11.68L5.78,16.28Z");
+
+                        }
+                        break;
+                    case FILE_SRI:
+                        {
+                            var p = new Avalonia.Controls.Shapes.Path();
+                            p.Fill = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x80, 0x40));
+                            canvas.Children.Add(p);
+                            p.Data = StreamGeometry.Parse("M11,13.5V21.5H3V13.5H11M9,15.5H5V19.5H9V15.5M12,2L17.5,11H6.5L12,2M12,5.86L10.08,9H13.92L12,5.86M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13M17.5,15A2.5,2.5 0 0,0 15,17.5A2.5,2.5 0 0,0 17.5,20A2.5,2.5 0 0,0 20,17.5A2.5,2.5 0 0,0 17.5,15Z");
 
                         }
                         break;

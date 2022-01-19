@@ -1,0 +1,8 @@
+<ScalableRelativeImage Flavor="CreeperLv.SRI" FormatVersion="1.0.0.0">
+	<ImageNodeRoot RelativeWidth="1" RelativeHeight="1">
+		<Rectangle X="0.25" Y="0.5" Width="0.25" Height="0.25" Size="0" Fill="True" Color="#D00000"/>
+		<Triangle Point1="0.65,0.3" Point2="0.5,0.5" Point3="0.8,0.5" Size="0" Fill="True" Color="#30A030"/>
+		<Ellipse X="0.375" Y="0.375" Width="0.25" Height="0.25" Size="0" Fill="True" Color="#FFA000"/>
+		<Text Content="&lt; &gt;" FontFamily="Sarasa Mono Cl" FontStyle="Regular" Size="0.3" X="0" Y="0.2" Width="1" Height="1" Align="Center" Color="#2288EE" />
+	</ImageNodeRoot>
+</ScalableRelativeImage>

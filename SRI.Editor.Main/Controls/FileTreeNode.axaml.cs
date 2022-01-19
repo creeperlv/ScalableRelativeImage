@@ -25,7 +25,9 @@ namespace SRI.Editor.Main.Controls
             HostedContainer = null;
             InitializeComponent();
             ApplyLanguage();
+        
         }
+        
         public void ApplyLanguage()
         {
             //this.FindControl<MenuItem>("Menu_New_Item").Header = Language.Find("Menu.File.New.Item");
@@ -43,7 +45,8 @@ namespace SRI.Editor.Main.Controls
             CentralButton.DoubleTapped += CentralButton_DoubleTapped;
             if (isDirectory == true)
             {
-                this.FindControl<MenuItem>("Menu_New_Item").Click += (a, b) => {
+                this.FindControl<MenuItem>("Menu_New_Item").Click += (a, b) =>
+                {
                     //MainWindow.CurrentWindow.ShowNewItemDialog(item.FullName);
                 };
                 var icon = IconProviders.ObtainIcon("folder.generic", Color.FromArgb(0xFF, 0xDD, 0xBB, 0x88)) as Control;
@@ -57,6 +60,34 @@ namespace SRI.Editor.Main.Controls
                     this.FindControl<Grid>("GitIcon").IsVisible = false;
                     this.FindControl<MenuItem>("GitMenu").IsVisible = false;
                 }
+                this.FindControl<MenuItem>("Delete_Item").Click += (_, _) =>
+                {
+                    Globals.CurrentMainWindow.ShowDialog("Are you sure?", $"This operation will delete \"{controlledItem.Name}\".",
+                        new DialogButton
+                        {
+                            LanguageID = "Dialog.OK",
+                            Fallback = "OK",
+                            OnClick = () =>
+                            {
+
+                                try
+                                {
+                                    Directory.Delete(controlledItem.FullName, true);
+                                    (this.Parent as StackPanel).Children.Remove(this);
+                                    SubNodes.Children.Clear();
+                                    System.GC.Collect();
+                                }
+                                catch (System.Exception)
+                                {
+                                }
+                            }
+                        },
+                        new DialogButton
+                        {
+                            LanguageID = "Dialog.Cancel",
+                            Fallback = "Cancel",
+                        });
+                };
             }
             else
             {
@@ -86,6 +117,32 @@ namespace SRI.Editor.Main.Controls
                 icon.Height = 15;
                 this.FindControl<Grid>("IconContainer").Children.Add(icon);
                 this.FindControl<MenuItem>("NewMenu").IsVisible = false;
+                this.FindControl<MenuItem>("Delete_Item").Click += (_, _) =>
+                {
+                    Globals.CurrentMainWindow.ShowDialog("Are you sure?", $"This operation will delete \"{controlledItem.Name}\".", new DialogButton
+                    {
+                        LanguageID = "Dialog.OK",
+                        Fallback = "OK",
+                        OnClick = () =>
+                        {
+
+
+                            try
+                            {
+                                controlledItem.Delete();
+                                (this.Parent as StackPanel).Children.Remove(this);
+                            }
+                            catch (System.Exception)
+                            {
+                            }
+                        }
+                    },
+                        new DialogButton
+                        {
+                            LanguageID = "Dialog.Cancel",
+                            Fallback = "Cancel",
+                        });
+                };
 
             }
 
@@ -95,53 +152,67 @@ namespace SRI.Editor.Main.Controls
             if (isDirectory)
             {
                 //Is directory.
-                if (SubNodes.Children.Count == 0)
-                {
-
-                    DirectoryInfo directoryInfo = new DirectoryInfo(controlledItem.FullName);
-                    foreach (var item in directoryInfo.EnumerateDirectories())
-                    {
-                        //if (Program.configuration.HideBinFolders == true)
-                        {
-                            if (item.Name.ToUpper() == "BIN") continue;
-                        }
-                        //if (Program.configuration.HideObjFolders == true)
-                        {
-                            if (item.Name.ToUpper() == "OBJ") continue;
-                        }
-                        //if (Program.configuration.HideDotGitFolders == true)
-                        {
-                            if (item.Name.ToUpper() == ".GIT") continue;
-                        }
-                        var node = new FileTreeNode(HostedContainer);
-                        node.SetFileSystemInfo(item);
-                        SubNodes.Children.Add(node);
-                        node.CheckBox.IsVisible = CheckBox.IsVisible;
-                    }
-                    foreach (var item in directoryInfo.EnumerateFiles())
-                    {
-
-                        var node = new FileTreeNode(HostedContainer);
-                        node.SetFileSystemInfo(item);
-                        SubNodes.Children.Add(node);
-                        node.CheckBox.IsVisible = CheckBox.IsVisible;
-                    }
-                    //foreach (var item in directoryInfo.EnumerateFileSystemInfos())
-                    //{
-                    //    var node = new FileTreeNode();
-                    //    node.SetFileSystemInfo(item);
-                    //    SubNodes.Children.Add(node);
-                    //    node.CheckBox.IsVisible = CheckBox.IsVisible;
-                    //}
-                }
-                else
-                {
-                    SubNodes.Children.Clear();
-                }
+                OpenDir();
             }
             else
             {
-                HostedContainer.OpenFileEditor(new FileInfo(controlledItem.FullName));
+                if (controlledItem.Name.ToUpper().EndsWith(".SRI-PROJ"))
+                {
+                    (HostedContainer as MainWindow).OpenProject(controlledItem.FullName);
+                }
+                else
+                    HostedContainer.OpenFileEditor(new FileInfo(controlledItem.FullName));
+            }
+        }
+        public void BuildChildren()
+        {
+            SubNodes.Children.Clear();
+            DirectoryInfo directoryInfo = new DirectoryInfo(controlledItem.FullName);
+            foreach (var item in directoryInfo.EnumerateDirectories())
+            {
+                //if (Program.configuration.HideBinFolders == true)
+                {
+                    if (item.Name.ToUpper() == "BIN") continue;
+                }
+                //if (Program.configuration.HideObjFolders == true)
+                {
+                    if (item.Name.ToUpper() == "OBJ") continue;
+                }
+                //if (Program.configuration.HideDotGitFolders == true)
+                {
+                    if (item.Name.ToUpper() == ".GIT") continue;
+                }
+                var node = new FileTreeNode(HostedContainer);
+                node.SetFileSystemInfo(item);
+                SubNodes.Children.Add(node);
+                node.CheckBox.IsVisible = CheckBox.IsVisible;
+            }
+            foreach (var item in directoryInfo.EnumerateFiles())
+            {
+
+                var node = new FileTreeNode(HostedContainer);
+                node.SetFileSystemInfo(item);
+                SubNodes.Children.Add(node);
+                node.CheckBox.IsVisible = CheckBox.IsVisible;
+            }
+        }
+        void OpenDir()
+        {
+
+            if (SubNodes.Children.Count == 0)
+            {
+                BuildChildren();
+                //foreach (var item in directoryInfo.EnumerateFileSystemInfos())
+                //{
+                //    var node = new FileTreeNode();
+                //    node.SetFileSystemInfo(item);
+                //    SubNodes.Children.Add(node);
+                //    node.CheckBox.IsVisible = CheckBox.IsVisible;
+                //}
+            }
+            else
+            {
+                SubNodes.Children.Clear();
             }
         }
         private void CentralButton_DoubleTapped(object sender, Avalonia.Interactivity.RoutedEventArgs e)

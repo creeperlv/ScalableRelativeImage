@@ -2,9 +2,15 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+	  <ApplicationIcon>Icon-1024.ico</ApplicationIcon>
+	  <Version>0.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Icon-1024.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Icon-1024.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.11" />

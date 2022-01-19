@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="SRI.Editor.Main.MainWindow" FontFamily="Sarasa Mono CL, Consolas"
+		Icon="avares://SRI.Editor.Main/Icon-1024.ico"
         Title="SRI.Editor.Main">
 	<Window.Styles>
 		<StyleInclude Source="avares://SRI.Editor.Styles/SRIEditor.axaml" />
@@ -39,7 +40,7 @@
 								</MenuItem>
 
 							</MenuItem>
-							<MenuItem Header="_Save">
+							<MenuItem Header="_Save" Name="File_Save">
 								<MenuItem.Icon>
 									<Viewbox Width="16" Height="16">
 										<Canvas Width="24" Height="24">
@@ -48,7 +49,7 @@
 									</Viewbox>
 								</MenuItem.Icon>
 							</MenuItem>
-							<MenuItem Header="Save _As">
+							<MenuItem Header="Save _As"  Name="File_SaveAs">
 								<MenuItem.Icon>
 									<Viewbox Width="16" Height="16">
 										<Canvas Width="24" Height="24">
@@ -60,7 +61,7 @@
 							<Separator/>
 							<MenuItem Header="_New">
 
-								<MenuItem Header="_Scalable Relative Image">
+								<MenuItem Header="_Scalable Relative Image"  Name="File_New_SRI">
 									<MenuItem.Icon>
 										<Viewbox Width="16" Height="16">
 											<Canvas Width="24" Height="24">
@@ -91,9 +92,9 @@
 								</MenuItem.Icon>
 							</MenuItem>
 						</MenuItem>
-						<MenuItem Header="Edit"></MenuItem>
-						<MenuItem Header="Tools">
-							<MenuItem Header="Shapes"></MenuItem>
+						<MenuItem Header="Build">
+							<MenuItem Header="Build _Project"></MenuItem>
+							<MenuItem Header="_Export Current File"></MenuItem>
 						</MenuItem>
 						<MenuItem Header="Help">
 							<MenuItem Header="View GitHub"></MenuItem>
@@ -115,20 +116,21 @@
 			</Grid>
 			<Grid Grid.Row="1" Background="#A333">
 				<StackPanel Orientation="Horizontal" Margin="8,0,5,8">
-					<ToggleButton Background="Transparent" Name="ProjectBrowserToggle" IsChecked="True">
+					<ToggleButton Name="ProjectBrowserToggle" IsChecked="True">
 						<Viewbox Width="16" Height="16">
 							<Canvas Width="24" Height="24">
 								<Path Fill="#D0A050" Data="M3,3H9V7H3V3M15,10H21V14H15V10M15,17H21V21H15V17M13,13H7V18H13V20H7L5,20V9H7V11H13V13Z" />
 							</Canvas>
 						</Viewbox>
 					</ToggleButton>
-					<ToggleButton Background="Transparent" Name="ShapesListToggle" ToolTip.Tip="Shapes List" IsChecked="True">
+					<ToggleButton Name="ShapesListToggle" ToolTip.Tip="Shapes List" IsChecked="True">
 						<Viewbox Width="16" Height="16">
 							<Canvas Width="24" Height="24">
 								<Path Fill="#FF8040" Data="M11,13.5V21.5H3V13.5H11M9,15.5H5V19.5H9V15.5M12,2L17.5,11H6.5L12,2M12,5.86L10.08,9H13.92L12,5.86M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13M17.5,15A2.5,2.5 0 0,0 15,17.5A2.5,2.5 0 0,0 17.5,20A2.5,2.5 0 0,0 20,17.5A2.5,2.5 0 0,0 17.5,15Z" />
 							</Canvas>
 						</Viewbox>
 					</ToggleButton>
+					<Grid Width="1" Background="#8AAA" Margin="1,5"/>
 					<Button Name="SaveButton_Toolbar"  Classes="Toolbar" ToolTip.Tip="Save">
 						<Viewbox Width="16" Height="16">
 							<Canvas Width="24" Height="24">
@@ -144,6 +146,9 @@
 						</Viewbox>
 					</Button>
 					<Grid Width="1" Background="#8AAA" Margin="1,5"/>
+					<ComboBox Name="ConfigurationBox" IsEnabled="False" SelectedIndex="0">
+						<ComboBoxItem>None</ComboBoxItem>
+					</ComboBox>
 					<Button Name="BuildButton_Toolbar" IsEnabled="False" Classes="Toolbar" ToolTip.Tip="Build Project">
 						<Viewbox Width="16" Height="16">
 							<Canvas Width="24" Height="24">
@@ -151,7 +156,7 @@
 							</Canvas>
 						</Viewbox>
 					</Button>
-					<Button Name="PlayButton_Toolbar"  Classes="Toolbar" ToolTip.Tip="Preview">
+					<Button Name="PreviewButton_Toolbar"  Classes="Toolbar" ToolTip.Tip="Preview">
 						<Viewbox Width="16" Height="16">
 							<Canvas Width="24" Height="24">
 								<Path Fill="#00AA00" Data="M8,5.14V19.14L19,12.14L8,5.14Z" />

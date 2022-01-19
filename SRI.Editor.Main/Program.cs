@@ -2,6 +2,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using SRI.Editor.Extension;
+using SRI.Editor.Extension.Defaults;
+using SRI.Editor.Main.Editors;
 using SRI.Editor.Styles;
 using System;
 
@@ -18,6 +20,8 @@ namespace SRI.Editor.Main
             new StyleLib();
             IconProviders.RegisterProvider(new DefaultIconProvider());
             {
+                EditorProvider.RegisterEditor("SRI.Editor.SRIEditor", "SRI Editor", typeof(SRIEditor),"sri");
+                EditorProvider.RegisterEditor("SRI.Editor.BaseEditor", "Basic Editor", typeof(BaseEditor),"sri-proj", "*");
             }
             isDesign = false;
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);

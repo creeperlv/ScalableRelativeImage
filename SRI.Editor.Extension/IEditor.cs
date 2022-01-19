@@ -12,6 +12,9 @@ namespace SRI.Editor.Extension
     {
         void OpenFile(FileInfo file);
         void SetContent(string content);
-        
+        string GetSuggestedFileName()
+        {
+            return "New File.txt";
+        }
     }
 }

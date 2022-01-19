@@ -5,7 +5,10 @@ using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
 using SRI.Editor.Core;
+using SRI.Editor.Core.Utilities;
+using SRI.Editor.Extension.Utilities;
 using SRI.Editor.Styles;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -16,7 +19,6 @@ namespace SRI.Editor.Extension.Defaults
         public BaseEditor()
         {
             InitializeComponent();
-
             XshdSyntaxDefinition xshd;
             FileInfo fi = new(typeof(StyleLib).Assembly.Location);
             //new XmlReader()
@@ -25,19 +27,55 @@ namespace SRI.Editor.Extension.Defaults
                 xshd = HighlightingLoader.LoadXshd(reader);
                 CentralEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
             }
+            CentralEditor.TextChanged += CentralEditor_TextChanged;
+            CentralEditor.ContextMenu = new ContextMenu();
+            ContextMenuHelper.ApplyEditorContextMenu(CentralEditor);
+            EditorHelper.KeyBind(CentralEditor, this);
         }
+        string OriginalHash = null;
+        bool isChanged=false;
+        private void CentralEditor_TextChanged(object sender, System.EventArgs e)
+        {
+            isChanged = true;
+        }
+
         FileInfo OpenedFile = null;
         public void Dispose()
         {
         }
-
+        string ObtainFileTitle()
+        {
+            if (OpenedFile != null)
+            {
+                return OpenedFile.Name;
+            }
+            return "New File";
+        }
         public string GetTitle()
         {
-            return "BaseEditor";
+
+            if (OriginalHash != null)
+            {
+                if (isChanged)
+                {
+                    var __hash = HashTool.HashString(CentralEditor.Text);
+                    if (OriginalHash != __hash)
+                    {
+                        return "*" + ObtainFileTitle();
+                    }
+                    else
+                    {
+                        isChanged = false;
+                    }
+                }
+            }
+            return ObtainFileTitle();
         }
 
         public void Insert(string Content)
         {
+            CentralEditor.Text = CentralEditor.Text.Insert(CentralEditor.SelectionStart, Content);
+            
         }
 
         public void Preview()
@@ -45,6 +83,7 @@ namespace SRI.Editor.Extension.Defaults
         }
         public void OpenFile(FileInfo Path)
         {
+            OpenedFile = Path;
             if (button != null)
                 button.SetTitle(Path.Name);
             var __Name = Path.Name.ToUpper();
@@ -55,6 +94,9 @@ namespace SRI.Editor.Extension.Defaults
                     CentralEditor.SyntaxHighlighting = DEF;
             }
             CentralEditor.Text = File.ReadAllText(Path.FullName);
+            CentralEditor.Document.UndoStack.ClearAll();
+            OriginalHash = HashTool.HashString(CentralEditor.Text);
+            isChanged = false;
         }
         public void Save()
         {
@@ -62,11 +104,19 @@ namespace SRI.Editor.Extension.Defaults
             {
                 File.WriteAllText(OpenedFile.FullName, CentralEditor.Text);
             }
+            else
+            {
+                button.ParentContainer.SaveAs(this);
+            }
         }
 
         public void Save(FileInfo Path)
         {
             OpenedFile = Path;
+            File.WriteAllText(OpenedFile.FullName, CentralEditor.Text);
+            button.ParentContainer.SetOpenFileBind(button, Path);
+            isChanged = false;
+            OriginalHash = HashTool.HashString(CentralEditor.Text);
         }
         ITabPageButton button;
         public void SetButton(ITabPageButton button)

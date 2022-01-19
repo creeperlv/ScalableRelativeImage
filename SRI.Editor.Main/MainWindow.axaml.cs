@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Threading;
 using ScalableRelativeImage;
 using ScalableRelativeImage.Nodes;
 using SRI.Editor.Core;
@@ -9,6 +10,7 @@ using SRI.Editor.Core.Projects;
 using SRI.Editor.Extension;
 using SRI.Editor.Extension.Defaults;
 using SRI.Editor.Main.Controls;
+using SRI.Editor.Main.Editors;
 using SRI.Editor.Main.Pages;
 using System;
 using System.Collections.Generic;
@@ -21,18 +23,20 @@ using System.Xml.Serialization;
 
 namespace SRI.Editor.Main
 {
-    public partial class MainWindow : Window, ITabPageContainer
+    public partial class MainWindow : Window, ITabPageContainer, IWindow
     {
         LoadedProject OpenedProject = null;
         public MainWindow()
         {
             InitializeComponent();
+            Globals.CurrentMainWindow = this;
 #if DEBUG
             this.AttachDevTools();
 #endif
             if (Program.isDesign) return;
             InitializeWindow();
-            File_New_Proj.Click += async(_, _) => {
+            File_New_Proj.Click += async (_, _) =>
+            {
 
 
                 SaveFileDialog __dialog = new SaveFileDialog();
@@ -50,25 +54,157 @@ namespace SRI.Editor.Main
                 }
             };
             Help_About.Click += (_, _) =>
-            {
-                AddPage(new AboutPage());
-            };
-            File_New_PF.Click += (_, _) =>
-            {
-                AddPage(new BaseEditor());
-            };
-            ShapesListRefreshButton.Click += (_, _) =>
-            {
-                LoadShapeList();
-            };
-            File_Open_Project.Click += async (_, _) =>
-            {
-                await OpenProjectDialog();
-            };
-            BuildButton_Toolbar.Click += async (_, _) =>
               {
+                  AddPage(new AboutPage());
               };
+            File_New_SRI.Click += (_, _) =>
+              {
+                  var __editor = new SRIEditor();
+                  __editor.SetContent(ProjectEngine.NewSRIDocument());
+                  AddPage(__editor);
+              };
+            File_New_PF.Click += (_, _) =>
+              {
+                  AddPage(new BaseEditor());
+              };
+            File_Open_File.Click += async (_, _) =>
+            {
+                OpenFileDialog __dialog = new();
+                var file = await __dialog.ShowAsync(this);
+                if (file != null)
+                    foreach (var item in file)
+                    {
+                        OpenFileEditor(new FileInfo(item));
+                    }
+            };
+            PreviewButton_Toolbar.Click += (_, _) =>
+              {
+                  if (CurrentPage() != null)
+                  {
+                      CurrentPage().ControlledPage.Preview();
+                  }
+              };
+            ShapesListRefreshButton.Click += (_, _) =>
+              {
+                  LoadShapeList();
+              };
+            File_Open_Project.Click += async (_, _) =>
+              {
+                  await OpenProjectDialog();
+              };
+            BuildButton_Toolbar.Click += (_, _) =>
+              {
+
+                  this.SetProgress(0, 100, 0);
+                  int Total = 0;
+                  var P = ProjectEngine.BuildAsync(OpenedProject,
+                        (ConfigurationBox.SelectedItem as ComboBoxItem).Content as string,
+
+                      (_0_c, _0_t) =>
+                      {
+                          Dispatcher.UIThread.InvokeAsync(() =>
+                          {
+                              this.SetProgress(_0_c);
+                              this.SetProgressDescription($"Building target \"{_0_t.Name}\"...({_0_c}/{Total})");
+                          });
+                      },
+
+                      (_0_c, _0_t) =>
+                      {
+                          Dispatcher.UIThread.InvokeAsync(() =>
+                          {
+                              this.SetProgress(_0_c);
+                              this.SetProgressDescription($"Building target \"{_0_t.Name}\"...({_0_c}/{Total})...Done!");
+                          });
+                      }, () =>
+                      {
+                          Dispatcher.UIThread.InvokeAsync(() =>
+                          {
+                              this.EndProgressMask();
+                          });
+                      },
+                      (Exception e) =>
+                      {
+                          Dispatcher.UIThread.InvokeAsync(() =>
+                          {
+                              this.EndProgressMask();
+                              this.ShowDialog("Error Happened", e.Message);
+                          });
+                      }, (_c, _w) =>
+                      {
+                      }
+                      );
+                  Total = P.Item1.TotalCount;
+                  this.ShowProgressMask("Building...", true);
+                  this.SetProgress(0, P.Item1.TotalCount, P.Item1.Current);
+              };
+            SaveAsButton_Toolbar.Click += (_, _) =>
+              {
+
+                  SaveAs();
+              };
+            File_Save.Click += (_, _) =>
+            {
+                Save();
+            };
+            File_SaveAs.Click += (_, _) =>
+            {
+                SaveAs();
+            };
+            SaveButton_Toolbar.Click += (_, _) =>
+            {
+                Save();
+            };
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    await Task.Delay(3000);
+                    lock (OpenFileBind)
+                    {
+                        foreach (var item in OpenFileBind.Keys)
+                        {
+                            Dispatcher.UIThread.InvokeAsync(() =>
+                            {
+                                item.SetTitle(item.ControlledPage.GetTitle());
+                            });
+                        }
+                    }
+                }
+            });
             LoadShapeList();
+            CheckAssociatedOpen();
+        }
+        void Save()
+        {
+            if (CurrentPage() != null)
+                CurrentPage().ControlledPage.Save();
+        }
+        void SaveAs()
+        {
+            {
+                SaveAs(CurrentPage().ControlledPage);
+            }
+        }
+        public void SaveAs(ITabPage page)
+        {
+            if (page is IEditor editor)
+            {
+                Task.Run(async () =>
+                {
+
+                    SaveFileDialog __dialog = new SaveFileDialog();
+                    __dialog.InitialFileName = editor.GetSuggestedFileName();
+                    var t = await __dialog.ShowAsync(this);
+                    if (t != null)
+                    {
+                        await Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            editor.Save(new FileInfo(t));
+                        });
+                    }
+                });
+            }
         }
         async Task OpenProjectDialog()
         {
@@ -81,6 +217,7 @@ namespace SRI.Editor.Main
                     OpenProject(filePick.First());
                 }
         }
+        FileTreeNode RootNode=null;
         public void OpenProject(string file)
         {
             FileInfo Proj = new FileInfo(file);
@@ -88,22 +225,34 @@ namespace SRI.Editor.Main
             {
                 //try
                 //{
-                    Trace.WriteLine("Try to laod.");
-                    var __proj = ProjectEngine.Load(Proj);
-                    Trace.WriteLine("Load Completed.");
-                    if (__proj.CoreProject != null)
+                Trace.WriteLine("Try to laod.");
+                var __proj = ProjectEngine.Load(Proj);
+                Trace.WriteLine("Load Completed.");
+                if (__proj.CoreProject != null)
+                {
+                    OpenedProject = __proj;
+                    FileList.Children.Clear();
+                    var __root = new FileTreeNode(this);
+                    RootNode = __root;
+                    __root.SetFileSystemInfo(Proj.Directory);
+                    FileList.Children.Add(__root);
+                    BuildButton_Toolbar.IsEnabled = true;
+                    ConfigurationBox.IsEnabled = true;
+                    List<ComboBoxItem> ComboBoxItems = new List<ComboBoxItem>();
+                    foreach (var item in __proj.CoreProject.BuildConfigurations)
                     {
-                        OpenedProject = __proj;
-                        FileList.Children.Clear();
-                        var __root = new FileTreeNode(this);
-                        __root.SetFileSystemInfo(Proj.Directory);
-                        FileList.Children.Add(__root);
-                        BuildButton_Toolbar.IsEnabled = true;
+                        ComboBoxItem comboBoxItem = new ComboBoxItem();
+                        comboBoxItem.Content = item.Name;
+                        ComboBoxItems.Add(comboBoxItem);
                     }
-                    else
-                    {
-                        Trace.WriteLine("Open Failed.");
-                    }
+
+                    ConfigurationBox.Items = ComboBoxItems;
+                    ConfigurationBox.SelectedIndex = 0;
+                }
+                else
+                {
+                    Trace.WriteLine("Open Failed.");
+                }
                 //}
                 //catch (Exception)
                 //{
@@ -202,7 +351,17 @@ namespace SRI.Editor.Main
         {
             return CurrentButton;
         }
-
+        public void SetOpenFileBind(ITabPageButton button, FileInfo info)
+        {
+            if (OpenFileBind.ContainsKey(button))
+            {
+                OpenFileBind[button] = info;
+            }
+            else
+            {
+                OpenFileBind.Add(button, info);
+            }
+        }
         Dictionary<ITabPageButton, FileInfo> OpenFileBind = new Dictionary<ITabPageButton, FileInfo>();
         public void OpenDesignatedEditor(string ID, FileInfo fi)
         {
@@ -212,7 +371,7 @@ namespace SRI.Editor.Main
                 if (item.Value.FullName == fi.FullName)
                 {
                     isHit = true;
-                    item.Key.Show();
+                    ShowPage(item.Key);
                 }
             }
             if (isHit is false)
@@ -221,6 +380,7 @@ namespace SRI.Editor.Main
                 var t = AddPage(ed);
                 OpenFileBind.Add(t, fi);
                 ed.OpenFile(fi);
+                ShowPage(t);
             }
         }
 
@@ -234,7 +394,7 @@ namespace SRI.Editor.Main
                     if (item.Value.FullName == fi.FullName)
                     {
                         isHit = true;
-                        item.Key.Show();
+                        ShowPage(item.Key);
                     }
                 }
                 if (isHit is false)
@@ -243,6 +403,7 @@ namespace SRI.Editor.Main
                     var t = AddPage(ed);
                     ed.OpenFile(fi);
                     OpenFileBind.Add(t, fi);
+                    ShowPage(t);
                 }
             }
             catch (Exception e)
