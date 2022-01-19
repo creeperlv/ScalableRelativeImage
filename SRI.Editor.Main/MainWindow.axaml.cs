@@ -99,6 +99,10 @@ namespace SRI.Editor.Main
               {
                   await OpenProjectDialog();
               };
+            Help_GH.Click += (_, _) =>
+              {
+                  Process.Start(new ProcessStartInfo { UseShellExecute=true,FileName= "https://github.com/creeperlv/ScalableRelativeImage" });
+              };
             BuildButton_Toolbar.Click += (_, _) =>
               {
 
@@ -142,7 +146,7 @@ namespace SRI.Editor.Main
                       }
                       );
                   Total = P.Item1.TotalCount;
-                  this.ShowProgressMask("Building...", true);
+                  this.ShowProgressMask("Building...", false);
                   this.SetProgress(0, P.Item1.TotalCount, P.Item1.Current);
               };
             SaveAsButton_Toolbar.Click += (_, _) =>
@@ -186,8 +190,10 @@ namespace SRI.Editor.Main
         async Task __closing(Action Def = null, Action Addition = null)
         {
             int cannot = 0;
-            foreach (var item in TabPageButtons.Children)
+            for (int i = TabPageButtons.Children.Count-1; i >=0; i--)
             {
+                var item=TabPageButtons.Children[i];
+
                 if (item is ITabPageButton button)
                 {
                     if (button.Close(() =>

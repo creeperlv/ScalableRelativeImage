@@ -1,0 +1,23 @@
+<Grid xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SRI.Editor.Main.Editors.ProjectEditor">
+	<Grid  Margin="8">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Grid>
+			<TextBlock Text="Build Configurations" FontSize="18"/>
+			<Button Classes="Toolbar" Content="+"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Center"
+					Name="AddConfiguration" Margin="15,0"/>
+		</Grid>
+		<ScrollViewer Grid.Row="1">
+			<StackPanel Name="Configurations" Margin="5,0"></StackPanel>
+		</ScrollViewer>
+	</Grid>
+</Grid>

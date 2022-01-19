@@ -4,12 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SRI.Editor.Main.Pages.AboutPage">
-	<StackPanel>
-		<TextBlock Text="SRI Editor" FontSize="28"/>
-		<TextBlock Text="Version:" Name="VersionBlock"/>
-		<TextBlock Text="Core Version:" Name="CoreVersionBlock"/>
-		<TextBlock Text="Third-Party Libraries" FontSize="22"/>
-		<TextBlock Text="AvaloniaUI (github.com/AvaloniaUI/Avalonia)"/>
-		<TextBlock Text="AvaloniaEditor (github.com/AvaloniaUI/AvaloniaEditor)"/>
-	</StackPanel>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+	<Image Source="avares://SRI.Editor.Main/Icon-1024.ico" Width="96" VerticalAlignment="Top"/>
+		<StackPanel Grid.Column="1" Margin="8">
+			<TextBlock Text="SRI Editor" FontSize="28"/>
+			<TextBlock Text="Version:" Name="VersionBlock"/>
+			<TextBlock Text="Core Version:" Name="CoreVersionBlock"/>
+			<TextBlock Text="Third-Party Libraries" FontSize="22"/>
+			<TextBlock Text="AvaloniaUI (github.com/AvaloniaUI/Avalonia)"/>
+			<TextBlock Text="AvaloniaEditor (github.com/AvaloniaUI/AvaloniaEditor)"/>
+		</StackPanel>
+	</Grid>
 </UserControl>

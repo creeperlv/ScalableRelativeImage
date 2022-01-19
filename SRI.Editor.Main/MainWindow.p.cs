@@ -33,6 +33,7 @@ namespace SRI.Editor.Main
         MenuItem File_Save;
         MenuItem File_SaveAs;
         MenuItem File_New_SRI;
+        MenuItem Help_GH;
         Button BuildButton_Toolbar;
         Button PreviewButton_Toolbar;
         Button SaveButton_Toolbar;
@@ -66,6 +67,7 @@ namespace SRI.Editor.Main
             File_New_SRI = this.FindControl<MenuItem>("File_New_SRI");
             File_Open_Project = this.FindControl<MenuItem>("File_Open_Project");
             File_Save = this.FindControl<MenuItem>("File_Save");
+            Help_GH = this.FindControl<MenuItem>("Help_GH");
             File_SaveAs = this.FindControl<MenuItem>("File_SaveAs");
             ShapesListRefreshButton = this.FindControl<Button>("ShapesListRefreshButton");
             BuildButton_Toolbar = this.FindControl<Button>("BuildButton_Toolbar");

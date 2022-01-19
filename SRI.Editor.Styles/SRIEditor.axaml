@@ -26,6 +26,8 @@
 	<Styles.Resources>
 		<Thickness x:Key="MenuFlyoutPresenterThemePadding">1</Thickness>
 		<SolidColorBrush x:Key="ToggleButtonBackground">#01000000</SolidColorBrush>
+		<SolidColorBrush x:Key="ButtonBackground">#1AAA</SolidColorBrush>
+		<SolidColorBrush x:Key="ButtonBackgroundPointerOver">#2AAA</SolidColorBrush>
 	</Styles.Resources>
 	<Style Selector="MenuItem">
 

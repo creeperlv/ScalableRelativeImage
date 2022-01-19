@@ -21,7 +21,8 @@ namespace SRI.Editor.Main
             IconProviders.RegisterProvider(new DefaultIconProvider());
             {
                 EditorProvider.RegisterEditor("SRI.Editor.SRIEditor", "SRI Editor", typeof(SRIEditor),"sri");
-                EditorProvider.RegisterEditor("SRI.Editor.BaseEditor", "Basic Editor", typeof(BaseEditor),"sri-proj", "*");
+                EditorProvider.RegisterEditor("SRI.Editor.ProjectEditor", "Project Editor", typeof(ProjectEditor),"sri-proj", "*");
+                EditorProvider.RegisterEditor("SRI.Editor.BaseEditor", "Basic Editor", typeof(BaseEditor), "*");
             }
             isDesign = false;
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);

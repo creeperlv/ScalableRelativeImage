@@ -1,0 +1,49 @@
+<Grid xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+             x:Class="SRI.Editor.Main.Controls.BuildTargetEditor" Margin="5,0">
+	<Grid.RowDefinitions>
+		<RowDefinition Height="Auto"/>
+		<RowDefinition/>
+	</Grid.RowDefinitions>
+	<Grid>
+		<ToggleButton Name="Toggle" HorizontalAlignment="Stretch"
+					  IsChecked="True" Content="{Binding #NameBox.Text}"></ToggleButton>
+	</Grid>
+	<StackPanel Margin="8" IsVisible="{Binding #Toggle.IsChecked}" Grid.Row="1">
+		
+		<TextBlock Text="Name"/>
+		<TextBox Name="NameBox"/>
+		<TextBlock Text="File"/>
+		<TextBox Name="FileBox"/>
+		<TextBlock Text="Output"/>
+		<TextBox Name="OutputBox"/>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<TextBlock Text="Foreground" VerticalAlignment="Center"/>
+			<TextBox Name="ForegroundBox" Grid.Column="1"/>
+			<TextBlock Text="Background" VerticalAlignment="Center" Grid.Row="1"/>
+			<TextBox Name="BackgroundBox" Grid.Column="1" Grid.Row="1"/>
+			<TextBlock Text="Width" VerticalAlignment="Center" Grid.Row="2"/>
+			<TextBox Name="WidthBox" Grid.Column="1" Grid.Row="2"/>
+			<TextBlock Text="Height" VerticalAlignment="Center" Grid.Row="3"/>
+			<TextBox Name="HeightBox" Grid.Column="1" Grid.Row="3"/>
+		</Grid>
+		<Grid>
+			<TextBlock Text="Symbols" FontWeight="Black" VerticalAlignment="Center" FontSize="16"/>
+			<Button HorizontalAlignment="Right" Classes="Toolbar" VerticalAlignment="Center" Name="AddSymbols">+</Button>
+		</Grid>
+		<StackPanel Name="Symbols"></StackPanel>
+	</StackPanel>
+</Grid>

@@ -156,11 +156,11 @@ namespace SRI.Editor.Main.Controls
             }
             else
             {
-                if (controlledItem.Name.ToUpper().EndsWith(".SRI-PROJ"))
-                {
-                    (HostedContainer as MainWindow).OpenProject(controlledItem.FullName);
-                }
-                else
+                //if (controlledItem.Name.ToUpper().EndsWith(".SRI-PROJ"))
+                //{
+                //    (HostedContainer as MainWindow).OpenProject(controlledItem.FullName);
+                //}
+                //else
                     HostedContainer.OpenFileEditor(new FileInfo(controlledItem.FullName));
             }
         }

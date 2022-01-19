@@ -97,7 +97,7 @@
 							<MenuItem Header="_Export Current File"></MenuItem>
 						</MenuItem>
 						<MenuItem Header="Help">
-							<MenuItem Header="View GitHub"></MenuItem>
+							<MenuItem Header="View GitHub" Name="Help_GH"></MenuItem>
 							<MenuItem Header="About" Name="Help_About">
 								<MenuItem.Icon>
 									<Viewbox Width="16" Height="16">
@@ -183,7 +183,7 @@
 						</Grid>
 						<Grid Margin="5" Grid.Row="1" Background="#3000">
 
-							<ScrollViewer Grid.Row="1">
+							<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto">
 								<StackPanel Name="FileList"></StackPanel>
 							</ScrollViewer>
 						</Grid>
@@ -229,7 +229,7 @@
 			</Border >
 		</Grid>
 		<Grid Name="DialogRoot" IsVisible="False"></Grid>
-		<Grid Name="ProgressRoot" IsVisible="False" Background="#40000000">
+		<Grid Name="ProgressRoot" IsVisible="False" Background="#A0000000">
 			<Grid.RowDefinitions>
 				<RowDefinition/>
 				<RowDefinition/>

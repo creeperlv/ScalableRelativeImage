@@ -141,6 +141,7 @@ namespace SRI.Editor.Core
                     {
                         OnEndProcess(Current, item);
                     }
+                    GC.Collect();
                 }
                 OnFinished();
             }
