@@ -30,7 +30,9 @@ namespace SRI.Editor.Main
         MenuItem File_New_Proj;
         MenuItem File_Open_Project;
         MenuItem File_Open_File;
+        MenuItem File_Open;
         MenuItem File_Save;
+        MenuItem File_;
         MenuItem File_SaveAs;
         MenuItem File_New_SRI;
         MenuItem Help_GH;
@@ -61,8 +63,10 @@ namespace SRI.Editor.Main
             Progress_Description = this.FindControl<TextBlock>("Progress_Description");
             ConfigurationBox = this.FindControl<ComboBox>("ConfigurationBox");
             Help_About = this.FindControl<MenuItem>("Help_About");
+            File_Open = this.FindControl<MenuItem>("File_Open");
             File_New_PF = this.FindControl<MenuItem>("File_New_PF");
             File_Open_File = this.FindControl<MenuItem>("File_Open_File");
+            File_ = this.FindControl<MenuItem>("File_");
             File_New_Proj = this.FindControl<MenuItem>("File_New_Proj");
             File_New_SRI = this.FindControl<MenuItem>("File_New_SRI");
             File_Open_Project = this.FindControl<MenuItem>("File_Open_Project");

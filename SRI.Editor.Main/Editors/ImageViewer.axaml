@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SRI.Editor.Main.Editors.ImageViewer">
+	<Grid Grid.Column="1" Grid.RowSpan="2" Name="ViewerGrid" Background="#50202020">
+		<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+			<Image Name="ImagePreview"/>
+		</ScrollViewer>
+		<Border Background="#4AAA" Margin="0,0,25,25" HorizontalAlignment="Right" VerticalAlignment="Bottom" ClipToBounds="True" CornerRadius="5">
+
+			<StackPanel Margin="5" Orientation="Horizontal">
+				<TextBox Text="100" Name="ViewPortZoomBox" VerticalAlignment="Stretch"/>
+				<TextBlock Text="%" VerticalAlignment="Center" Margin="5,0"/>
+				<Button Content="+" VerticalContentAlignment="Center" Name="ViewPortZoomIn" Width="35" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+				<Button Content="-" VerticalContentAlignment="Center" Name="ViewPortZoomOut" Width="35" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+				<Button Content="✔" VerticalContentAlignment="Center" Name="ViewPortZoomApply" Width="45" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"/>
+			</StackPanel>
+		</Border>
+	</Grid>
+</UserControl>

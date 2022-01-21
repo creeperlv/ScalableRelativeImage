@@ -53,13 +53,13 @@ namespace SRI.Editor.Main
                     }
                 }
             };
-            this.Closing +=async (a, b) =>
-            {
-                await __closing(null, () =>
-                {
-                    b.Cancel = true;
-                });
-            };
+            this.Closing += async (a, b) =>
+             {
+                 await __closing(null, () =>
+                 {
+                     b.Cancel = true;
+                 });
+             };
             Help_About.Click += (_, _) =>
               {
                   AddPage(new AboutPage());
@@ -101,7 +101,7 @@ namespace SRI.Editor.Main
               };
             Help_GH.Click += (_, _) =>
               {
-                  Process.Start(new ProcessStartInfo { UseShellExecute=true,FileName= "https://github.com/creeperlv/ScalableRelativeImage" });
+                  Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = "https://github.com/creeperlv/ScalableRelativeImage" });
               };
             BuildButton_Toolbar.Click += (_, _) =>
               {
@@ -166,6 +166,7 @@ namespace SRI.Editor.Main
             {
                 Save();
             };
+            ApplyLocal();
             Task.Run(async () =>
             {
                 while (true)
@@ -190,9 +191,9 @@ namespace SRI.Editor.Main
         async Task __closing(Action Def = null, Action Addition = null)
         {
             int cannot = 0;
-            for (int i = TabPageButtons.Children.Count-1; i >=0; i--)
+            for (int i = TabPageButtons.Children.Count - 1; i >= 0; i--)
             {
-                var item=TabPageButtons.Children[i];
+                var item = TabPageButtons.Children[i];
 
                 if (item is ITabPageButton button)
                 {
@@ -271,43 +272,60 @@ namespace SRI.Editor.Main
         FileTreeNode RootNode = null;
         public void OpenProject(string file)
         {
-            FileInfo Proj = new FileInfo(file);
-            if (Proj.Directory != null)
+            try
             {
-                //try
-                //{
-                Trace.WriteLine("Try to laod.");
-                var __proj = ProjectEngine.Load(Proj);
-                Trace.WriteLine("Load Completed.");
-                if (__proj.CoreProject != null)
+                FileInfo Proj = new FileInfo(file);
+                if (Proj.Directory != null)
                 {
-                    OpenedProject = __proj;
-                    FileList.Children.Clear();
-                    var __root = new FileTreeNode(this);
-                    RootNode = __root;
-                    __root.SetFileSystemInfo(Proj.Directory);
-                    FileList.Children.Add(__root);
-                    BuildButton_Toolbar.IsEnabled = true;
-                    ConfigurationBox.IsEnabled = true;
-                    List<ComboBoxItem> ComboBoxItems = new List<ComboBoxItem>();
-                    foreach (var item in __proj.CoreProject.BuildConfigurations)
+                    //try
+                    //{
+                    Trace.WriteLine("Try to laod.");
+                    var __proj = ProjectEngine.Load(Proj);
+                    Trace.WriteLine("Load Completed.");
+                    if (__proj.CoreProject != null)
                     {
-                        ComboBoxItem comboBoxItem = new ComboBoxItem();
-                        comboBoxItem.Content = item.Name;
-                        ComboBoxItems.Add(comboBoxItem);
-                    }
+                        OpenedProject = __proj;
+                        FileList.Children.Clear();
+                        var __root = new FileTreeNode(this);
+                        RootNode = __root;
+                        __root.SetFileSystemInfo(Proj.Directory);
+                        FileList.Children.Add(__root);
+                        BuildButton_Toolbar.IsEnabled = true;
+                        ConfigurationBox.IsEnabled = true;
+                        List<ComboBoxItem> ComboBoxItems = new List<ComboBoxItem>();
+                        foreach (var item in __proj.CoreProject.BuildConfigurations)
+                        {
+                            ComboBoxItem comboBoxItem = new ComboBoxItem();
+                            comboBoxItem.Content = item.Name;
+                            ComboBoxItems.Add(comboBoxItem);
+                        }
 
-                    ConfigurationBox.Items = ComboBoxItems;
-                    ConfigurationBox.SelectedIndex = 0;
+                        ConfigurationBox.Items = ComboBoxItems;
+                        ConfigurationBox.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        Trace.WriteLine("Open Failed.");
+                    }
+                    //}
+                    //catch (Exception)
+                    //{
+                    //}
                 }
-                else
-                {
-                    Trace.WriteLine("Open Failed.");
-                }
-                //}
-                //catch (Exception)
-                //{
-                //}
+
+            }
+            catch (Exception e)
+            {
+                ShowDialog("Cannot load project!", $"Error reason:{e}\r\nDo you wish to open base editor of the project file?",
+                    new DialogButton
+                    {
+                        LanguageID = "DIalog.Yes",
+                        Fallback = "Yes",
+                        OnClick = () =>
+                        {
+                            OpenDesignatedEditor("SRI.Editor.BaseEditor", new FileInfo(file));
+                        }
+                    }, new DialogButton { Fallback = "No", LanguageID = "Dialog.No" });
             }
         }
         private void InitializeComponent()

@@ -5,6 +5,7 @@ using SRI.Editor.Extension;
 using SRI.Editor.Extension.Defaults;
 using SRI.Editor.Main.Editors;
 using SRI.Editor.Styles;
+using SRI.Localization;
 using System;
 
 namespace SRI.Editor.Main
@@ -18,10 +19,12 @@ namespace SRI.Editor.Main
         public static void Main(string[] args)
         {
             new StyleLib();
+            LanguageLib.InitLocal();
             IconProviders.RegisterProvider(new DefaultIconProvider());
             {
                 EditorProvider.RegisterEditor("SRI.Editor.SRIEditor", "SRI Editor", typeof(SRIEditor),"sri");
                 EditorProvider.RegisterEditor("SRI.Editor.ProjectEditor", "Project Editor", typeof(ProjectEditor),"sri-proj", "*");
+                EditorProvider.RegisterEditor("SRI.Editor.ImageViewer", "Image Viewer", typeof(ImageViewer), "png", "jpg", "bmp");
                 EditorProvider.RegisterEditor("SRI.Editor.BaseEditor", "Basic Editor", typeof(BaseEditor), "*");
             }
             isDesign = false;

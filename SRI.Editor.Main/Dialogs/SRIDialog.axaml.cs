@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using SRI.Editor.Core;
+using SRI.Localization;
 using System;
 
 namespace SRI.Editor.Main.Dialogs
@@ -70,7 +71,7 @@ namespace SRI.Editor.Main.Dialogs
             {
                 Button0.IsVisible = true;
                 Grid.SetColumnSpan(Button0, 6);
-                Button0.Content = button0.Fallback;
+                Button0.Content = new LocalizedString(button0.LanguageID,button0.Fallback);
                 Button0.Click += (_, _) =>
                 {
                     if (button0.OnClick != null)
@@ -87,7 +88,7 @@ namespace SRI.Editor.Main.Dialogs
                 Grid.SetColumnSpan(Button0, 3);
                 Grid.SetColumnSpan(Button1, 3);
                 Grid.SetColumn(Button1, 3);
-                Button1.Content = button1.Fallback;
+                Button1.Content = new LocalizedString(button1.LanguageID, button1.Fallback);
                 Button1.Click += (_, _) =>
                 {
                     if (button1.OnClick != null)
@@ -106,7 +107,7 @@ namespace SRI.Editor.Main.Dialogs
                 Grid.SetColumnSpan(Button2, 2);
                 Grid.SetColumn(Button1, 2);
                 Grid.SetColumn(Button2, 4);
-                Button2.Content = button2.Fallback;
+                Button2.Content = new LocalizedString(button2.LanguageID, button2.Fallback);
                 Button2.Click += (_, _) =>
                 {
                     if (button2.OnClick != null)

@@ -1,0 +1,17 @@
+﻿SRI.Title=Scalable Relative Image
+
+Dialog.Yes=Yes
+Dialog.No=No
+Dialog.Cancel=Cancel
+Dialog.OK=OK
+
+Menu.File=_File
+Menu.File_Open=_Open
+Menu.File_Open_File=_File
+
+SRI.Editor.SRIEditor=SRI Editor
+SRI.Editor.BaseEditor=Basic Editor
+
+SRIEditor.Title=SRI Editor
+
+About=About

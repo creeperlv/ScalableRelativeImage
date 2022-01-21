@@ -25,8 +25,8 @@
 				<Grid  Background="#A333">
 
 					<Menu Margin="8">
-						<MenuItem Header="_File">
-							<MenuItem Header="_Open">
+						<MenuItem Header="_File" Name="File_">
+							<MenuItem Header="_Open" Name="File_Open">
 								<MenuItem Header="_File" Name="File_Open_File">
 									<MenuItem.Icon>
 										<Viewbox Width="16" Height="16">

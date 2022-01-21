@@ -1,0 +1,17 @@
+﻿SRI.Title=Scalable Relative Image
+
+Dialog.Yes=是
+Dialog.No=否
+Dialog.Cancel=取消
+Dialog.OK=OK
+
+Menu.File=文件(_F)
+Menu.File_Open=打开(_O)
+Menu.File_Open_File=文件(_F)
+
+SRI.Editor.SRIEditor=SRI 编辑器
+SRI.Editor.BaseEditor=基础编辑器
+
+SRIEditor.Title=SRI 编辑器
+
+About=关于

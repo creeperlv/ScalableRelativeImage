@@ -3,24 +3,27 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ScalableRelativeImage;
 using SRI.Editor.Core;
+using SRI.Localization;
 using System.IO;
 
 namespace SRI.Editor.Main.Pages
 {
-    public partial class AboutPage : UserControl,ITabPage
+    public partial class AboutPage : UserControl,ITabPage,ILocalizable
     {
         public AboutPage()
         {
             InitializeComponent();
             VersionBlock.Text = $"Version:{typeof(MainWindow).Assembly.GetName().Version}";
             CoreVersionBlock.Text = $"Core Version:{typeof(SRIEngine).Assembly.GetName().Version}";
+
+            ApplyLocal();
         }
 
         public void Dispose()
         {
         }
-        string Title="About";
-        public string GetTitle() => Title;
+        LocalizedString LAboutTitle=new LocalizedString("About", "About");
+        public string GetTitle() => LAboutTitle.ToString();
 
         public void Preview()
         {
@@ -53,6 +56,11 @@ namespace SRI.Editor.Main.Pages
 
         public void Insert(string Content)
         {
+        }
+        LocalizedString LTitle=new LocalizedString("SRIEditor.Title","SRI Editor");
+        public void ApplyLocal()
+        {
+            this.FindControl<TextBlock>("Title").Text = LTitle.ToString() ;
         }
     }
 }
