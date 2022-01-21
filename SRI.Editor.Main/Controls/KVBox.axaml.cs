@@ -23,6 +23,9 @@ namespace SRI.Editor.Main.Controls
             AvaloniaXamlLoader.Load(this);
             KBox = this.FindControl<TextBox>("KeyBox");
             VBox = this.FindControl<TextBox>("ValueBox");
+            this.FindControl<Button>("RemoveButton").Click += (_, _) => {
+                (Parent as StackPanel).Children.Remove(this);
+            };
         }
         public (string,string) GetData()
         {

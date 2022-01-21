@@ -90,6 +90,8 @@ namespace SRI.Editor.Core
         public static void Save(LoadedProject project)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Project));
+            project.ProjectFile.Delete();
+            project.ProjectFile.Create().Close();
             var wr=project.ProjectFile.OpenWrite();
             xmlSerializer.Serialize(wr, project.CoreProject);
             wr.Close();

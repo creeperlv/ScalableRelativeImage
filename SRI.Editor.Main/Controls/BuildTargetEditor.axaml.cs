@@ -84,6 +84,9 @@ namespace SRI.Editor.Main.Controls
             BackgroundBox = this.FindControl<TextBox>("BackgroundBox");
             WidthBox = this.FindControl<TextBox>("WidthBox");
             HeightBox = this.FindControl<TextBox>("HeightBox");
+            this.FindControl<Button>("RemoveButton").Click += (_, _) => {
+                (Parent as StackPanel).Children.Remove(this);
+            };
         }
     }
 }

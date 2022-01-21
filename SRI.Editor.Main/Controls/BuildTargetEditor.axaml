@@ -9,8 +9,14 @@
 		<RowDefinition/>
 	</Grid.RowDefinitions>
 	<Grid>
-		<ToggleButton Name="Toggle" HorizontalAlignment="Stretch"
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
+		<ToggleButton Name="Toggle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
 					  IsChecked="True" Content="{Binding #NameBox.Text}"></ToggleButton>
+		<Button Grid.Column="1" Classes="Toolbar" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="RemoveButton">-</Button>
+
 	</Grid>
 	<StackPanel Margin="8" IsVisible="{Binding #Toggle.IsChecked}" Grid.Row="1">
 		

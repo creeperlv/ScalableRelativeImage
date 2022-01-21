@@ -8,7 +8,17 @@
 		<RowDefinition Height="Auto"/>
 		<RowDefinition/>
 	</Grid.RowDefinitions>
-	<ToggleButton Name="Toggle" Content="{Binding #NameBox.Text}" HorizontalAlignment="Stretch" IsChecked="True"/>
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
+		<ToggleButton Name="Toggle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+					  IsChecked="True" Content="{Binding #NameBox.Text}"></ToggleButton>
+		<Button Grid.Column="1" Classes="Toolbar" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="RemoveButton">-</Button>
+
+	</Grid>
 	<StackPanel IsVisible="{Binding #Toggle.IsChecked}" Grid.Row="1">
 		<TextBox Name="NameBox" Watermark="Name"/>
 		<TextBox Name="OutputBox" Watermark="Output"/>

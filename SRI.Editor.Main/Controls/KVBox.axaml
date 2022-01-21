@@ -7,7 +7,9 @@
 	<Grid.ColumnDefinitions>
 		<ColumnDefinition/>
 		<ColumnDefinition/>
+		<ColumnDefinition Width="Auto"/>
 	</Grid.ColumnDefinitions>
 	<TextBox Name="KeyBox" Watermark="Key"/>
 	<TextBox Name="ValueBox" Grid.Column="1" Watermark="Value"/>
+	<Button Grid.Column="2" Classes="Toolbar" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="RemoveButton">-</Button>
 </Grid>

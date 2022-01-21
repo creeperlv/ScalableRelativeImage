@@ -81,6 +81,9 @@ namespace SRI.Editor.Main.Controls
             Symbols = this.FindControl<StackPanel>("Symbols");
             NameBox = this.FindControl<TextBox>("NameBox");
             OutputBox = this.FindControl<TextBox>("OutputBox");
+            this.FindControl<Button>("RemoveButton").Click += (_, _) => {
+                (Parent as StackPanel).Children.Remove(this);
+            };
         }
     }
 }
