@@ -35,12 +35,15 @@ namespace SRI.Editor.Main
         MenuItem File_;
         MenuItem File_SaveAs;
         MenuItem File_New_SRI;
+        MenuItem File_Exit;
         MenuItem Help_GH;
         Button BuildButton_Toolbar;
         Button PreviewButton_Toolbar;
         Button SaveButton_Toolbar;
         Button SaveAsButton_Toolbar;
         Button ShapesListRefreshButton;
+
+        TextBlock Project_Block;
 
         void InitializeWindow()
         {
@@ -70,6 +73,7 @@ namespace SRI.Editor.Main
             File_New_Proj = this.FindControl<MenuItem>("File_New_Proj");
             File_New_SRI = this.FindControl<MenuItem>("File_New_SRI");
             File_Open_Project = this.FindControl<MenuItem>("File_Open_Project");
+            File_Exit = this.FindControl<MenuItem>("File_Exit");
             File_Save = this.FindControl<MenuItem>("File_Save");
             Help_GH = this.FindControl<MenuItem>("Help_GH");
             File_SaveAs = this.FindControl<MenuItem>("File_SaveAs");
@@ -78,6 +82,7 @@ namespace SRI.Editor.Main
             PreviewButton_Toolbar = this.FindControl<Button>("PreviewButton_Toolbar");
             SaveButton_Toolbar = this.FindControl<Button>("SaveButton_Toolbar");
             SaveAsButton_Toolbar = this.FindControl<Button>("SaveAsButton_Toolbar");
+            Project_Block = this.FindControl<TextBlock>("Project_Block");
         }
         public void ShowProgressMask(string description, bool IsIndeterminate)
         {

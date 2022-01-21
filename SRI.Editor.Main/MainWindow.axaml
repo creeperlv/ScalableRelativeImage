@@ -82,7 +82,7 @@
 								<MenuItem Header="_Project" Name="File_New_Proj"></MenuItem>
 							</MenuItem>
 							<Separator/>
-							<MenuItem Header="_Exit">
+							<MenuItem Header="_Exit" Name="File_Exit">
 								<MenuItem.Icon>
 									<Viewbox Width="16" Height="16">
 										<Canvas Width="24" Height="24">
@@ -179,7 +179,7 @@
 							<RowDefinition/>
 						</Grid.RowDefinitions>
 						<Grid>
-							<TextBlock Text="Project" Margin="3,0"/>
+							<TextBlock Text="Project" Name="Project_Block" Margin="3,0"/>
 						</Grid>
 						<Grid Margin="5" Grid.Row="1" Background="#3000">
 

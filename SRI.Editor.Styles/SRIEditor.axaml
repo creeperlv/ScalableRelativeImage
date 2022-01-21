@@ -9,6 +9,12 @@
 					<Button Classes="Toolbar">
 						ASD
 					</Button>
+					<Button>
+						Button_Normal
+					</Button>
+					<Button IsEnabled="False">
+						Button_Disabled
+					</Button>
 					<ComboBox SelectedIndex="0">
 						<ComboBoxItem>Item1 </ComboBoxItem>
 						<ComboBoxItem>Item2</ComboBoxItem>
@@ -26,6 +32,7 @@
 	<Styles.Resources>
 		<Thickness x:Key="MenuFlyoutPresenterThemePadding">1</Thickness>
 		<SolidColorBrush x:Key="ToggleButtonBackground">#01000000</SolidColorBrush>
+		<SolidColorBrush x:Key="ButtonBackgroundDisabled">#2FFF</SolidColorBrush>
 		<SolidColorBrush x:Key="ButtonBackground">#1AAA</SolidColorBrush>
 		<SolidColorBrush x:Key="ButtonBackgroundPointerOver">#2AAA</SolidColorBrush>
 	</Styles.Resources>

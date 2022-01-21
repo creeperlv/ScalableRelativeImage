@@ -15,11 +15,25 @@
 		</Grid.ColumnDefinitions>
 		<ToggleButton Name="Toggle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
 					  IsChecked="True" Content="{Binding #NameBox.Text}"></ToggleButton>
-		<Button Grid.Column="1" Classes="Toolbar" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="RemoveButton">-</Button>
+		<Button Grid.Column="1" Classes="Toolbar" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="RemoveButton">
+
+			<Grid>
+				<Viewbox Width="18" Height="18"  HorizontalAlignment="Center" VerticalAlignment="Center">
+					<Canvas Width="24" Height="24">
+						<Path Fill="White" Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" />
+					</Canvas>
+				</Viewbox>
+				<Viewbox Width="6" Height="6" Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<Canvas Width="24" Height="24">
+						<Path Fill="#FF5050" Data="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"  />
+					</Canvas>
+				</Viewbox>
+			</Grid>
+		</Button>
 
 	</Grid>
 	<StackPanel Margin="8" IsVisible="{Binding #Toggle.IsChecked}" Grid.Row="1">
-		
+
 		<TextBlock Text="Name"/>
 		<TextBox Name="NameBox"/>
 		<TextBlock Text="File"/>
@@ -47,7 +61,7 @@
 			<TextBox Name="HeightBox" Grid.Column="1" Grid.Row="3"/>
 		</Grid>
 		<Grid>
-			<TextBlock Text="Symbols" FontWeight="Black" VerticalAlignment="Center" FontSize="16"/>
+			<TextBlock Text="Symbols" Name="Symbols_Text" FontWeight="Black" VerticalAlignment="Center" FontSize="16"/>
 			<Button HorizontalAlignment="Right" Classes="Toolbar" VerticalAlignment="Center" Name="AddSymbols">+</Button>
 		</Grid>
 		<StackPanel Name="Symbols"></StackPanel>

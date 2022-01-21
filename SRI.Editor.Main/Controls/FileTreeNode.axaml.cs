@@ -5,12 +5,13 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using SRI.Editor.Core;
 using SRI.Editor.Extension;
+using SRI.Localization;
 using System.Collections.Generic;
 using System.IO;
 
 namespace SRI.Editor.Main.Controls
 {
-    public partial class FileTreeNode : UserControl
+    public partial class FileTreeNode : UserControl,ILocalizable
     {
         FileSystemInfo controlledItem;
         ITabPageContainer HostedContainer;
@@ -18,29 +19,25 @@ namespace SRI.Editor.Main.Controls
         {
             HostedContainer = Container;
             InitializeComponent();
-            ApplyLanguage();
+            ApplyLocal();
         }
         public FileTreeNode()
         {
             HostedContainer = null;
             InitializeComponent();
-            ApplyLanguage();
-        
+            ApplyLocal();
+
         }
-        
-        public void ApplyLanguage()
-        {
-            //this.FindControl<MenuItem>("Menu_New_Item").Header = Language.Find("Menu.File.New.Item");
-        }
+
         bool isDirectory = false;
         public bool IsDirectory { get => isDirectory; }
+        MenuItem Menu_Open;
         public void SetFileSystemInfo(FileSystemInfo item)
         {
             NameBlock.Text = item.Name;
             controlledItem = item;
             this.MinWidth = NameBlock.DesiredSize.Width + 5;
-
-            this.FindControl<MenuItem>("Menu_Open").Click += (a, b) => { Open(); };
+            Menu_Open.Click += (a, b) => { Open(); };
             if (Directory.Exists(controlledItem.FullName)) isDirectory = true;
             CentralButton.DoubleTapped += CentralButton_DoubleTapped;
             if (isDirectory == true)
@@ -48,6 +45,34 @@ namespace SRI.Editor.Main.Controls
                 this.FindControl<MenuItem>("Menu_New_Item").Click += (a, b) =>
                 {
                     //MainWindow.CurrentWindow.ShowNewItemDialog(item.FullName);
+                    Globals.CurrentMainWindow.ShowInputDialog("Mew Item", "Input File Name", (___fileName) => {
+                        if (___fileName != null)
+                        {
+                            var __full_file = Path.Combine(item.FullName, ___fileName);
+                            File.Create(__full_file).Close();
+                            var __file_info=new FileInfo(__full_file);
+                            var node = new FileTreeNode(HostedContainer);
+                            node.SetFileSystemInfo(__file_info);
+                            SubNodes.Children.Add(node);
+                            node.CheckBox.IsVisible = CheckBox.IsVisible;
+                        }
+                    });
+                };
+                this.FindControl<MenuItem>("Menu_New_SRI").Click += (a, b) =>
+                {
+                    //MainWindow.CurrentWindow.ShowNewItemDialog(item.FullName);
+                    Globals.CurrentMainWindow.ShowInputDialog("Mew Scalable Relative Image", "Input File Name (Ends with .sri)", (___fileName) => {
+                        if (___fileName != null)
+                        {
+                            var __full_file = Path.Combine(item.FullName, ___fileName);
+                            File.WriteAllText(__full_file, ProjectEngine.NewSRIDocument());
+                            var __file_info=new FileInfo(__full_file);
+                            var node = new FileTreeNode(HostedContainer);
+                            node.SetFileSystemInfo(__file_info);
+                            SubNodes.Children.Add(node);
+                            node.CheckBox.IsVisible = CheckBox.IsVisible;
+                        }
+                    });
                 };
                 var icon = IconProviders.ObtainIcon("folder.generic", Color.FromArgb(0xFF, 0xDD, 0xBB, 0x88)) as Control;
                 icon.Width = 15;
@@ -101,7 +126,7 @@ namespace SRI.Editor.Main.Controls
                     {
                         var id = editor.Key;
                         MenuItem menuItem = new MenuItem();
-                        menuItem.Header = editor.Value;
+                        menuItem.Header = new LocalizedString(editor.Key, editor.Value);
                         menuItem.Click += (a, b) =>
                         {
                             HostedContainer.OpenDesignatedEditor(id, new FileInfo(controlledItem.FullName));
@@ -161,7 +186,7 @@ namespace SRI.Editor.Main.Controls
                 //    (HostedContainer as MainWindow).OpenProject(controlledItem.FullName);
                 //}
                 //else
-                    HostedContainer.OpenFileEditor(new FileInfo(controlledItem.FullName));
+                HostedContainer.OpenFileEditor(new FileInfo(controlledItem.FullName));
             }
         }
         public void BuildChildren()
@@ -228,9 +253,15 @@ namespace SRI.Editor.Main.Controls
         {
             AvaloniaXamlLoader.Load(this);
             CentralButton = this.FindControl<Button>("CentralButton");
+            Menu_Open = this.FindControl<MenuItem>("Menu_Open");
             NameBlock = this.FindControl<TextBlock>("NameBlock");
             SubNodes = this.FindControl<StackPanel>("SubNodes");
             CheckBox = this.FindControl<ToggleButton>("CheckBox");
+        }
+
+        public void ApplyLocal()
+        {
+            Menu_Open.Header = new LocalizedString("Menu.Open", "Open");
         }
     }
 }

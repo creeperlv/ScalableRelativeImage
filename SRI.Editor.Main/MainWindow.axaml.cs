@@ -53,12 +53,11 @@ namespace SRI.Editor.Main
                     }
                 }
             };
+            File_Exit.Click += async (a, b) => { await __Close(); };
             this.Closing += async (a, b) =>
              {
-                 await __closing(null, () =>
-                 {
-                     b.Cancel = true;
-                 });
+                 b.Cancel = true; 
+                 await __Close();
              };
             Help_About.Click += (_, _) =>
               {
@@ -188,44 +187,41 @@ namespace SRI.Editor.Main
             CheckAssociatedOpen();
         }
 
-        async Task __closing(Action Def = null, Action Addition = null)
+        async Task __Close()
         {
             int cannot = 0;
+            int waits = 0;
             for (int i = TabPageButtons.Children.Count - 1; i >= 0; i--)
             {
                 var item = TabPageButtons.Children[i];
-
+                waits++;
                 if (item is ITabPageButton button)
                 {
                     if (button.Close(() =>
                     {
                         cannot--;
+                        waits--;
                     }, () =>
                     {
-                        if (Addition is not null)
-                            Addition();
+                        waits--;
                     }) == false)
                     {
                         cannot++;
                     }
                 }
             }
-            while (cannot > 0)
+            while (waits > 0)
             {
                 await Task.Delay(100);
             }
-            //if (CentralEditor.Text != SRIContentTemplate)
-            //{
-            //    if (LastContent != CentralEditor.Text)
-            //    {
-            //        //
-            //        Addition();
-            //        Show3ButtonDialog("File Changed", "File has changed since last save/load, do you want to save before you close?",
-            //            new CommandableButton("Save", Save), new CommandableButton("No", () => { Environment.Exit(0); }), new CommandableButton("Cancel", null));
-            //    }
-            //    else if (Def is not null) Def();
-            //}
-            //else if (Def is not null) Def();
+            if(cannot > 0)
+            {
+
+            }
+            else
+            {
+                System.Environment.Exit(0);
+            }
         }
         void Save()
         {

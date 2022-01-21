@@ -5,15 +5,17 @@ using SRI.Editor.Core;
 using SRI.Editor.Core.Projects;
 using SRI.Editor.Extension;
 using SRI.Editor.Main.Controls;
+using SRI.Localization;
 using System.IO;
 
 namespace SRI.Editor.Main.Editors
 {
-    public partial class ProjectEditor : Grid, IEditor
+    public partial class ProjectEditor : Grid, IEditor, ILocalizable
     {
         public ProjectEditor()
         {
             InitializeComponent();
+            ApplyLocal();
             AddConfiguration.Click += (_, _) =>
             {
                 BuildConfigurationEditor buildConfigurationEditor = new BuildConfigurationEditor();
@@ -22,14 +24,16 @@ namespace SRI.Editor.Main.Editors
         }
         Button AddConfiguration;
         StackPanel Configurations;
+        TextBlock BuildConfigurations;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
             AddConfiguration = this.FindControl<Button>("AddConfiguration");
             Configurations = this.FindControl<StackPanel>("Configurations");
+            BuildConfigurations = this.FindControl<TextBlock>("BuildConfigurations");
         }
 
-        FileInfo OpendFile=null;
+        FileInfo OpendFile = null;
         LoadedProject __proj;
         public void OpenFile(FileInfo file)
         {
@@ -73,7 +77,7 @@ namespace SRI.Editor.Main.Editors
 
         public void Save(FileInfo Path)
         {
-            OpendFile=Path;
+            OpendFile = Path;
             __proj.ProjectFile = Path;
             __proj.WorkingDirectory = Path.Directory;
             Save();
@@ -90,6 +94,18 @@ namespace SRI.Editor.Main.Editors
 
         public void Dispose()
         {
+        }
+        static LocalizedString LBuildConfigurations = new LocalizedString("BuildConfigurations", "Build Configurations");
+        public void ApplyLocal()
+        {
+            BuildConfigurations.Text = LBuildConfigurations;
+            foreach (var item in Configurations.Children)
+            {
+                if (item is BuildConfigurationEditor bce)
+                {
+                    bce.ApplyLocal();
+                }
+            }
         }
     }
 }

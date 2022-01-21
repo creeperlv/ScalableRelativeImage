@@ -6,12 +6,24 @@ Dialog.Cancel=取消
 Dialog.OK=OK
 
 Menu.File=文件(_F)
+Menu.File_Save=保存(_S)
+Menu.File_SaveAs=另存为(_A)
 Menu.File_Open=打开(_O)
 Menu.File_Open_File=文件(_F)
+Menu.File_Exit=退出(_E)
+MenuBar.Project=项目(_P)
+
+Menu.Open=打开
 
 SRI.Editor.SRIEditor=SRI 编辑器
 SRI.Editor.BaseEditor=基础编辑器
+SRI.Editor.ProjectEditor=项目编辑器
 
 SRIEditor.Title=SRI 编辑器
 
 About=关于
+Project=项目
+
+Symbols=符号
+BuildTargets=构建目标
+BuildConfigurations=构建配置

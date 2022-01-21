@@ -6,12 +6,24 @@ Dialog.Cancel=Cancel
 Dialog.OK=OK
 
 Menu.File=_File
+Menu.File_Save=_Save
+Menu.File_SaveAs=Save _As
 Menu.File_Open=_Open
 Menu.File_Open_File=_File
+Menu.File_Exit=_Exit
+MenuBar.Project=_Project
+
+Menu.Open=Open
 
 SRI.Editor.SRIEditor=SRI Editor
 SRI.Editor.BaseEditor=Basic Editor
+SRI.Editor.ProjectEditor=Project Editor
 
 SRIEditor.Title=SRI Editor
 
 About=About
+Project=Project
+
+Symbols=Symbols
+BuildTargets=Build Targets
+BuildConfigurations=Build Configurations

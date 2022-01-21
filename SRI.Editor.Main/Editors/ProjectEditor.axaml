@@ -10,7 +10,7 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<Grid>
-			<TextBlock Text="Build Configurations" FontSize="18"/>
+			<TextBlock Text="Build Configurations" Name="BuildConfigurations" FontSize="18"/>
 			<Button Classes="Toolbar" Content="+"
 					HorizontalAlignment="Right"
 					VerticalAlignment="Center"

@@ -19,6 +19,7 @@
 						<MenuItem Header="Open _With..." Name="OpenWithMenu"/>
 						<MenuItem Header="_New" Name="NewMenu">
 							<MenuItem Header="_Item" Name="Menu_New_Item"></MenuItem>
+							<MenuItem Header="_Scalable Relative Image" Name="Menu_New_SRI"></MenuItem>
 							<MenuItem Header="Fol_der"></MenuItem>
 						</MenuItem>
 						<MenuItem Name="GitMenu" Header="Git">

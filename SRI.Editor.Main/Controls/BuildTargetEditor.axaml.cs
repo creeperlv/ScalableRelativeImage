@@ -3,21 +3,24 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ScalableRelativeImage;
 using SRI.Editor.Core.Projects;
+using SRI.Localization;
 
 namespace SRI.Editor.Main.Controls
 {
-    public partial class BuildTargetEditor : Grid
+    public partial class BuildTargetEditor : Grid,ILocalizable
     {
         public BuildTargetEditor()
         {
             InitializeComponent();
             InitEvents();
+            ApplyLocal();
         }
         public BuildTargetEditor(BuildTarget target)
         {
 
             InitializeComponent();
             InitEvents();
+            ApplyLocal();
             {
 
                 NameBox.Text = target.Name;
@@ -72,6 +75,8 @@ namespace SRI.Editor.Main.Controls
         TextBox BackgroundBox;
         TextBox WidthBox;
         TextBox HeightBox;
+
+        TextBlock Symbols_Text;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -84,9 +89,15 @@ namespace SRI.Editor.Main.Controls
             BackgroundBox = this.FindControl<TextBox>("BackgroundBox");
             WidthBox = this.FindControl<TextBox>("WidthBox");
             HeightBox = this.FindControl<TextBox>("HeightBox");
+            Symbols_Text = this.FindControl<TextBlock>("Symbols_Text");
             this.FindControl<Button>("RemoveButton").Click += (_, _) => {
                 (Parent as StackPanel).Children.Remove(this);
             };
+        }
+        static LocalizedString LSymbols = new LocalizedString("Symbols", "Symbols");
+        public void ApplyLocal()
+        {
+            Symbols_Text.Text = LSymbols;
         }
     }
 }
