@@ -27,6 +27,13 @@
 					<Menu Margin="8">
 						<MenuItem Header="_File" Name="File_">
 							<MenuItem Header="_Open" Name="File_Open">
+								<MenuItem.Icon>
+									<Viewbox Width="16" Height="16">
+										<Canvas Width="24" Height="24">
+											<Path Fill="#50A0FF" Data="M6.1,10L4,18V8H21A2,2 0 0,0 19,6H12L10,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H19C19.9,20 20.7,19.4 20.9,18.5L23.2,10H6.1M19,18H6L7.6,12H20.6L19,18Z" />
+										</Canvas>
+									</Viewbox>
+								</MenuItem.Icon>
 								<MenuItem Header="_File" Name="File_Open_File">
 									<MenuItem.Icon>
 										<Viewbox Width="16" Height="16">
@@ -59,8 +66,14 @@
 								</MenuItem.Icon>
 							</MenuItem>
 							<Separator/>
-							<MenuItem Header="_New">
-
+							<MenuItem Header="_New" Name="File_New">
+								<MenuItem.Icon>
+									<Viewbox Width="16" Height="16">
+										<Canvas Width="24" Height="24">
+											<Path Fill="#FFC070" Data="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+										</Canvas>
+									</Viewbox>
+								</MenuItem.Icon>
 								<MenuItem Header="_Scalable Relative Image"  Name="File_New_SRI">
 									<MenuItem.Icon>
 										<Viewbox Width="16" Height="16">
@@ -92,12 +105,27 @@
 								</MenuItem.Icon>
 							</MenuItem>
 						</MenuItem>
-						<MenuItem Header="Build">
-							<MenuItem Header="Build _Project"></MenuItem>
-							<MenuItem Header="_Export Current File"></MenuItem>
+						<MenuItem Header="Build" Name="Menu_Build">
+							<MenuItem Header="Build _Project" Name="Build_BuildProject">
+								<MenuItem.Icon>
+									<Viewbox Width="16" Height="16">
+										<Canvas Width="24" Height="24">
+											<Path Fill="#00AA00" Data="M22.61,19L13.53,9.91C14.46,7.57 14,4.81 12.09,2.91C9.79,0.61 6.21,0.4 3.66,2.26L7.5,6.11L6.08,7.5L2.25,3.69C0.39,6.23 0.6,9.82 2.9,12.11C4.76,13.97 7.47,14.46 9.79,13.59L18.9,22.7C19.29,23.09 19.92,23.09 20.31,22.7L22.61,20.4C23,20 23,19.39 22.61,19M19.61,20.59L10.15,11.13C9.54,11.58 8.86,11.85 8.15,11.95C6.79,12.15 5.36,11.74 4.32,10.7C3.37,9.76 2.93,8.5 3,7.26L6.09,10.35L10.33,6.11L7.24,3C8.5,2.95 9.73,3.39 10.68,4.33C11.76,5.41 12.17,6.9 11.92,8.29C11.8,9 11.5,9.66 11.04,10.25L20.5,19.7L19.61,20.59Z" />
+										</Canvas>
+									</Viewbox>
+								</MenuItem.Icon>
+							</MenuItem>
 						</MenuItem>
 						<MenuItem Header="Help">
-							<MenuItem Header="View GitHub" Name="Help_GH"></MenuItem>
+							<MenuItem Header="View GitHub" Name="Help_GH">
+								<MenuItem.Icon>
+									<Viewbox Width="16" Height="16">
+										<Canvas Width="24" Height="24">
+											<Path Fill="White" Data="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+										</Canvas>
+									</Viewbox>
+								</MenuItem.Icon>
+							</MenuItem>
 							<MenuItem Header="About" Name="Help_About">
 								<MenuItem.Icon>
 									<Viewbox Width="16" Height="16">

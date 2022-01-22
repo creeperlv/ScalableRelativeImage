@@ -18,6 +18,8 @@ namespace SRI.Editor.Main
         static LocalizedString LFile_Save = new LocalizedString("Menu.File_Save", "_Save");
         static LocalizedString LFile_SaveAs = new LocalizedString("Menu.File_SaveAs", "Save _As");
         static LocalizedString LExit = new LocalizedString("Menu.File_Exit", "_Exit");
+        static LocalizedString LNew = new LocalizedString("Menu.File_New", "_New");
+        static LocalizedString LBuild = new LocalizedString("Menu.Build", "_Build");
         public void ApplyLocal()
         {
             File_.Header = SFile_.ToString();
@@ -30,6 +32,9 @@ namespace SRI.Editor.Main
             File_Save.Header = LFile_Save;
             File_SaveAs.Header = LFile_SaveAs;
             File_Exit.Header = LExit;
+            Build_BuildProject.Header = LMBProject;
+            Menu_Build.Header = LBuild;
+            File_New.Header = LNew;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace SRI.Editor.Main
             File_Exit.Click += async (a, b) => { await __Close(); };
             this.Closing += async (a, b) =>
              {
-                 b.Cancel = true; 
+                 b.Cancel = true;
                  await __Close();
              };
             Help_About.Click += (_, _) =>
@@ -102,51 +102,13 @@ namespace SRI.Editor.Main
               {
                   Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = "https://github.com/creeperlv/ScalableRelativeImage" });
               };
+            Build_BuildProject.Click += (_, _) =>
+                {
+                    Build();
+                };
             BuildButton_Toolbar.Click += (_, _) =>
               {
-
-                  this.SetProgress(0, 100, 0);
-                  int Total = 0;
-                  var P = ProjectEngine.BuildAsync(OpenedProject,
-                        (ConfigurationBox.SelectedItem as ComboBoxItem).Content as string,
-
-                      (_0_c, _0_t) =>
-                      {
-                          Dispatcher.UIThread.InvokeAsync(() =>
-                          {
-                              this.SetProgress(_0_c);
-                              this.SetProgressDescription($"Building target \"{_0_t.Name}\"...({_0_c}/{Total})");
-                          });
-                      },
-
-                      (_0_c, _0_t) =>
-                      {
-                          Dispatcher.UIThread.InvokeAsync(() =>
-                          {
-                              this.SetProgress(_0_c);
-                              this.SetProgressDescription($"Building target \"{_0_t.Name}\"...({_0_c}/{Total})...Done!");
-                          });
-                      }, () =>
-                      {
-                          Dispatcher.UIThread.InvokeAsync(() =>
-                          {
-                              this.EndProgressMask();
-                          });
-                      },
-                      (Exception e) =>
-                      {
-                          Dispatcher.UIThread.InvokeAsync(() =>
-                          {
-                              this.EndProgressMask();
-                              this.ShowDialog("Error Happened", e.Message);
-                          });
-                      }, (_c, _w) =>
-                      {
-                      }
-                      );
-                  Total = P.Item1.TotalCount;
-                  this.ShowProgressMask("Building...", false);
-                  this.SetProgress(0, P.Item1.TotalCount, P.Item1.Current);
+                  Build();
               };
             SaveAsButton_Toolbar.Click += (_, _) =>
               {
@@ -186,7 +148,52 @@ namespace SRI.Editor.Main
             LoadShapeList();
             CheckAssociatedOpen();
         }
+        public void Build()
+        {
 
+            this.SetProgress(0, 100, 0);
+            int Total = 0;
+            var P = ProjectEngine.BuildAsync(OpenedProject,
+                  (ConfigurationBox.SelectedItem as ComboBoxItem).Content as string,
+
+                (_0_c, _0_t) =>
+                {
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        this.SetProgress(_0_c);
+                        this.SetProgressDescription($"Building target \"{_0_t.Name}\"...({_0_c}/{Total})");
+                    });
+                },
+
+                (_0_c, _0_t) =>
+                {
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        this.SetProgress(_0_c);
+                        this.SetProgressDescription($"Building target \"{_0_t.Name}\"...({_0_c}/{Total})...Done!");
+                    });
+                }, () =>
+                {
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        this.EndProgressMask();
+                    });
+                },
+                (Exception e) =>
+                {
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        this.EndProgressMask();
+                        this.ShowDialog("Error Happened", e.Message);
+                    });
+                }, (_c, _w) =>
+                {
+                }
+                );
+            Total = P.Item1.TotalCount;
+            this.ShowProgressMask("Building...", false);
+            this.SetProgress(0, P.Item1.TotalCount, P.Item1.Current);
+        }
         async Task __Close()
         {
             int cannot = 0;
@@ -208,13 +215,17 @@ namespace SRI.Editor.Main
                     {
                         cannot++;
                     }
+                    else
+                    {
+                        waits--;
+                    }
                 }
             }
             while (waits > 0)
             {
                 await Task.Delay(100);
             }
-            if(cannot > 0)
+            if (cannot > 0)
             {
 
             }

@@ -34,11 +34,11 @@
 	</Grid>
 	<StackPanel Margin="8" IsVisible="{Binding #Toggle.IsChecked}" Grid.Row="1">
 
-		<TextBlock Text="Name"/>
+		<TextBlock Text="Name" Name="NameB"/>
 		<TextBox Name="NameBox"/>
-		<TextBlock Text="File"/>
+		<TextBlock Text="Source File" Name="SourceB"/>
 		<TextBox Name="FileBox"/>
-		<TextBlock Text="Output"/>
+		<TextBlock Text="Output File" Name="OutputB"/>
 		<TextBox Name="OutputBox"/>
 		<Grid>
 			<Grid.ColumnDefinitions>

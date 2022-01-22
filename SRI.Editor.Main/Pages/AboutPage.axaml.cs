@@ -10,11 +10,14 @@ namespace SRI.Editor.Main.Pages
 {
     public partial class AboutPage : UserControl,ITabPage,ILocalizable
     {
+        static LocalizedString LVersion0 =new LocalizedString("About.Version","Version:{0}");
+        static LocalizedString LVersion1 =new LocalizedString("About.CoreVersion","Core Version:{0}");
         public AboutPage()
         {
             InitializeComponent();
-            VersionBlock.Text = $"Version:{typeof(MainWindow).Assembly.GetName().Version}";
-            CoreVersionBlock.Text = $"Core Version:{typeof(SRIEngine).Assembly.GetName().Version}";
+            VersionBlock.Text = string.Format(LVersion0.ToString(), typeof(MainWindow).Assembly.GetName().Version);// $"Version:{}";
+            CoreVersionBlock.Text = string.Format(LVersion1.ToString(), typeof(SRIEngine).Assembly.GetName().Version);// $"Version:{}";
+            //CoreVersionBlock.Text = $"Core Version:{typeof(SRIEngine).Assembly.GetName().Version}";
 
             ApplyLocal();
         }

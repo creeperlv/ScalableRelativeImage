@@ -1,8 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using SRI.Editor.Core;
 using SRI.Editor.Extension;
+using System;
 using System.IO;
 
 namespace SRI.Editor.Main.Editors
@@ -12,56 +15,119 @@ namespace SRI.Editor.Main.Editors
         public ImageViewer()
         {
             InitializeComponent();
+            {
+                ViewPortZoomIn.Click += (_, _) =>
+                {
+                    {
+                        float v = float.Parse(ViewPortZoomBox.Text);
+                        v += 10;
+                        ViewPortZoomBox.Text = "" + v;
+                        ApplyZoomBox();
+                    }
+                };
+            }
+            {
+                ViewPortZoomOut.Click += (_, _) =>
+                {
+                    {
+                        float v = float.Parse(ViewPortZoomBox.Text);
+                        if (v - 10 > 0)
+                            v -= 10;
+                        ViewPortZoomBox.Text = "" + v;
+                        ApplyZoomBox();
+                    }
+                };
+            }
+            {
+                ViewPortZoomApply.Click += (_, _) =>
+                {
+                    ApplyZoomBox();
+                };
+            }
         }
 
+        void ApplyZoomBox()
+        {
+            try
+            {
+                float v = float.Parse(ViewPortZoomBox.Text);
+                PreviewScale = v / 100f;
+                ApplyPreviewZoom();
+            }
+            catch (Exception)
+            {
+            }
+        }
+        FileInfo __file=null;
         public void Dispose()
         {
-            throw new System.NotImplementedException();
         }
 
         public string GetTitle()
         {
-            throw new System.NotImplementedException();
+            if (__file != null)
+                return __file.Name;
+            else return "Image Viewer";
         }
 
         public void Insert(string Content)
         {
-            throw new System.NotImplementedException();
         }
-
+        Size S;
         public void OpenFile(FileInfo file)
         {
-            throw new System.NotImplementedException();
+            __file = file;
+            var B= new Bitmap(__file.FullName);
+            ImagePreview.Source = B;
+            S = B.Size;
+            button0.SetTitle(GetTitle());
         }
 
         public void Preview()
         {
-            throw new System.NotImplementedException();
         }
 
         public void Save()
         {
-            throw new System.NotImplementedException();
         }
 
         public void Save(FileInfo Path)
         {
-            throw new System.NotImplementedException();
         }
-
+        ITabPageButton button0;
         public void SetButton(ITabPageButton button)
         {
-            throw new System.NotImplementedException();
+            button0= button;
         }
 
         public void SetContent(string content)
         {
-            throw new System.NotImplementedException();
+        }
+        Image ImagePreview;
+        Button ViewPortZoomIn;
+        Button ViewPortZoomOut;
+        Button ViewPortZoomApply;
+        TextBox ViewPortZoomBox;
+
+        float PreviewScale = 1;
+
+        public void ApplyPreviewZoom()
+        {
+            {
+                ImagePreview.Width = S.Width * PreviewScale;
+                ImagePreview.Height = S.Height * PreviewScale;
+            }
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            ImagePreview = this.FindControl<Image>("ImagePreview");
+            ViewPortZoomIn = this.FindControl<Button>("ViewPortZoomIn");
+            ViewPortZoomOut = this.FindControl<Button>("ViewPortZoomOut");
+            ViewPortZoomApply = this.FindControl<Button>("ViewPortZoomApply");
+            ViewPortZoomBox = this.FindControl<TextBox>("ViewPortZoomBox");
+
         }
     }
 }

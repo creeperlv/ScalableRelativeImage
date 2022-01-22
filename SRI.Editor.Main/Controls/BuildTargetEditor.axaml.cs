@@ -76,6 +76,9 @@ namespace SRI.Editor.Main.Controls
         TextBox WidthBox;
         TextBox HeightBox;
 
+        TextBlock NameB;
+        TextBlock SourceB;
+        TextBlock OutputB;
         TextBlock Symbols_Text;
         private void InitializeComponent()
         {
@@ -90,14 +93,23 @@ namespace SRI.Editor.Main.Controls
             WidthBox = this.FindControl<TextBox>("WidthBox");
             HeightBox = this.FindControl<TextBox>("HeightBox");
             Symbols_Text = this.FindControl<TextBlock>("Symbols_Text");
+            NameB = this.FindControl<TextBlock>("NameB");
+            SourceB = this.FindControl<TextBlock>("SourceB");
+            OutputB = this.FindControl<TextBlock>("OutputB");
             this.FindControl<Button>("RemoveButton").Click += (_, _) => {
                 (Parent as StackPanel).Children.Remove(this);
             };
         }
         static LocalizedString LSymbols = new LocalizedString("Symbols", "Symbols");
+        static LocalizedString LName = new LocalizedString("Project.Name", "Name");
+        static LocalizedString LSource= new LocalizedString("Project.Source", "Source File");
+        static LocalizedString LOutput= new LocalizedString("Project.Output", "Output File");
         public void ApplyLocal()
         {
             Symbols_Text.Text = LSymbols;
+            NameB.Text = LName;
+            SourceB.Text = LSource;
+            OutputB.Text = LOutput;
         }
     }
 }

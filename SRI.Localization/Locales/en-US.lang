@@ -11,6 +11,8 @@ Menu.File_SaveAs=Save _As
 Menu.File_Open=_Open
 Menu.File_Open_File=_File
 Menu.File_Exit=_Exit
+Menu.File_New=_New
+Menu.Build=_Build
 MenuBar.Project=_Project
 
 Menu.Open=Open
@@ -18,11 +20,19 @@ Menu.Open=Open
 SRI.Editor.SRIEditor=SRI Editor
 SRI.Editor.BaseEditor=Basic Editor
 SRI.Editor.ProjectEditor=Project Editor
+SRI.Editor.ImageViewer=Image Viewer
 
 SRIEditor.Title=SRI Editor
 
+About.Version=Version:{0}
+About.CoreVersion=Core Version:{0}
+
 About=About
 Project=Project
+
+Project.Name=Name
+Project.Source=Source File
+Project.Output=Output File
 
 Symbols=Symbols
 BuildTargets=Build Targets

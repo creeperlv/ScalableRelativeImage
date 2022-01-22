@@ -11,6 +11,8 @@ Menu.File_SaveAs=另存为(_A)
 Menu.File_Open=打开(_O)
 Menu.File_Open_File=文件(_F)
 Menu.File_Exit=退出(_E)
+Menu.File_New=新建(_N)
+Menu.Build=构建(_B)
 MenuBar.Project=项目(_P)
 
 Menu.Open=打开
@@ -18,11 +20,19 @@ Menu.Open=打开
 SRI.Editor.SRIEditor=SRI 编辑器
 SRI.Editor.BaseEditor=基础编辑器
 SRI.Editor.ProjectEditor=项目编辑器
+SRI.Editor.ImageViewer=图像查看器
 
 SRIEditor.Title=SRI 编辑器
 
+About.Version=版本:{0}
+About.CoreVersion=核心版本:{0}
+
 About=关于
 Project=项目
+
+Project.Name=名称
+Project.Source=源文件
+Project.Output=输出文件
 
 Symbols=符号
 BuildTargets=构建目标
