@@ -59,6 +59,7 @@ namespace ScalableRelativeImage
             renderProfile.TargetHeight = TargetHeight;
             renderProfile.TargetWidth = TargetWidth;
             renderProfile.root = Root;
+            renderProfile.CurrentSymbols= CurrentSymbols;
             renderProfile.WorkingDirectory = Environment.CurrentDirectory;
             return renderProfile;
         }
