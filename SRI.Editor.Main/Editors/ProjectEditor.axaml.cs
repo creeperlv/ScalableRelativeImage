@@ -6,6 +6,7 @@ using SRI.Editor.Core.Projects;
 using SRI.Editor.Extension;
 using SRI.Editor.Main.Controls;
 using SRI.Localization;
+using System.Collections.Generic;
 using System.IO;
 
 namespace SRI.Editor.Main.Editors
@@ -106,6 +107,11 @@ namespace SRI.Editor.Main.Editors
                     bce.ApplyLocal();
                 }
             }
+        }
+
+        public List<FileDialogFilter> ObtainExtensionFilters()
+        {
+            return new List<FileDialogFilter> { new FileDialogFilter() { Extensions = new List<string> { "sri-proj" }, Name = "SRI Project" } };
         }
     }
 }

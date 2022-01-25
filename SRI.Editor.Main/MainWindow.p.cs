@@ -25,6 +25,7 @@ namespace SRI.Editor.Main
         Grid ProgressRoot;
         ProgressBar Progress_Bar;
         TextBlock Progress_Description;
+        TextBlock TitleBlock;
         MenuItem Help_About;
         MenuItem File_New_PF;
         MenuItem File_New_Proj;
@@ -40,6 +41,7 @@ namespace SRI.Editor.Main
         MenuItem Menu_Build;
         MenuItem Help_GH;
         MenuItem Build_BuildProject;
+        MenuItem Menu_Help;
         Button BuildButton_Toolbar;
         Button PreviewButton_Toolbar;
         Button SaveButton_Toolbar;
@@ -77,6 +79,7 @@ namespace SRI.Editor.Main
             File_New_SRI = this.FindControl<MenuItem>("File_New_SRI");
             File_Open_Project = this.FindControl<MenuItem>("File_Open_Project");
             Build_BuildProject = this.FindControl<MenuItem>("Build_BuildProject");
+            Menu_Help = this.FindControl<MenuItem>("Menu_Help");
             File_Exit = this.FindControl<MenuItem>("File_Exit");
             File_Save = this.FindControl<MenuItem>("File_Save");
             Help_GH = this.FindControl<MenuItem>("Help_GH");
@@ -89,6 +92,7 @@ namespace SRI.Editor.Main
             SaveButton_Toolbar = this.FindControl<Button>("SaveButton_Toolbar");
             SaveAsButton_Toolbar = this.FindControl<Button>("SaveAsButton_Toolbar");
             Project_Block = this.FindControl<TextBlock>("Project_Block");
+            TitleBlock = this.FindControl<TextBlock>("TitleBlock");
         }
         public void ShowProgressMask(string description, bool IsIndeterminate)
         {

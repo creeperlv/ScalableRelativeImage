@@ -12,10 +12,14 @@ Menu.File_Open=_Open
 Menu.File_Open_File=_File
 Menu.File_Exit=_Exit
 Menu.File_New=_New
+Menu.File_New_SRI=_Scalable Relative Image
 Menu.Build=_Build
+Menu.Help=_Help
+Menu.New_Folder=Fol_der
 MenuBar.Project=_Project
 
-Menu.Open=Open
+Menu.Open=_Open
+Menu.OpenWith=Open _With...
 
 SRI.Editor.SRIEditor=SRI Editor
 SRI.Editor.BaseEditor=Basic Editor

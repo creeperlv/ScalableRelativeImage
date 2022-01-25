@@ -11,7 +11,7 @@ using System.IO;
 
 namespace SRI.Editor.Main.Controls
 {
-    public partial class FileTreeNode : UserControl,ILocalizable
+    public partial class FileTreeNode : UserControl, ILocalizable
     {
         FileSystemInfo controlledItem;
         ITabPageContainer HostedContainer;
@@ -45,14 +45,31 @@ namespace SRI.Editor.Main.Controls
                 this.FindControl<MenuItem>("Menu_New_Item").Click += (a, b) =>
                 {
                     //MainWindow.CurrentWindow.ShowNewItemDialog(item.FullName);
-                    Globals.CurrentMainWindow.ShowInputDialog("Mew Item", "Input File Name", (___fileName) => {
+                    Globals.CurrentMainWindow.ShowInputDialog("New Item", "Input File Name", (___fileName) =>
+                    {
                         if (___fileName != null)
                         {
                             var __full_file = Path.Combine(item.FullName, ___fileName);
                             File.Create(__full_file).Close();
-                            var __file_info=new FileInfo(__full_file);
+                            var __file_info = new FileInfo(__full_file);
                             var node = new FileTreeNode(HostedContainer);
                             node.SetFileSystemInfo(__file_info);
+                            SubNodes.Children.Add(node);
+                            node.CheckBox.IsVisible = CheckBox.IsVisible;
+                        }
+                    });
+                };
+                Menu_New_Folder.Click += (a, b) =>
+                {
+                    Globals.CurrentMainWindow.ShowInputDialog("New Folder", "Input Folder Name", (___fileName) =>
+                    {
+                        if (___fileName != null)
+                        {
+                            var __full_folder_path = Path.Combine(item.FullName, ___fileName);
+
+                            var __directory_info = Directory.CreateDirectory(__full_folder_path);
+                            var node = new FileTreeNode(HostedContainer);
+                            node.SetFileSystemInfo(__directory_info);
                             SubNodes.Children.Add(node);
                             node.CheckBox.IsVisible = CheckBox.IsVisible;
                         }
@@ -61,12 +78,17 @@ namespace SRI.Editor.Main.Controls
                 this.FindControl<MenuItem>("Menu_New_SRI").Click += (a, b) =>
                 {
                     //MainWindow.CurrentWindow.ShowNewItemDialog(item.FullName);
-                    Globals.CurrentMainWindow.ShowInputDialog("Mew Scalable Relative Image", "Input File Name (Ends with .sri)", (___fileName) => {
+                    Globals.CurrentMainWindow.ShowInputDialog("New Scalable Relative Image", "Input File Name", (___fileName) =>
+                    {
                         if (___fileName != null)
                         {
                             var __full_file = Path.Combine(item.FullName, ___fileName);
+                            if (!__full_file.ToUpper().EndsWith(".SRI"))
+                            {
+                                __full_file = __full_file + ".sri";
+                            }
                             File.WriteAllText(__full_file, ProjectEngine.NewSRIDocument());
-                            var __file_info=new FileInfo(__full_file);
+                            var __file_info = new FileInfo(__full_file);
                             var node = new FileTreeNode(HostedContainer);
                             node.SetFileSystemInfo(__file_info);
                             SubNodes.Children.Add(node);
@@ -249,19 +271,31 @@ namespace SRI.Editor.Main.Controls
         TextBlock NameBlock;
         public StackPanel SubNodes;
         public ToggleButton CheckBox;
+        MenuItem Menu_New_Folder;
+        MenuItem OpenWithMenu;
+        MenuItem NewMenu;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
             CentralButton = this.FindControl<Button>("CentralButton");
             Menu_Open = this.FindControl<MenuItem>("Menu_Open");
+            OpenWithMenu = this.FindControl<MenuItem>("OpenWithMenu");
             NameBlock = this.FindControl<TextBlock>("NameBlock");
             SubNodes = this.FindControl<StackPanel>("SubNodes");
             CheckBox = this.FindControl<ToggleButton>("CheckBox");
+            Menu_New_Folder = this.FindControl<MenuItem>("Menu_New_Folder");
+            NewMenu = this.FindControl<MenuItem>("NewMenu");
         }
-
+        static LocalizedString LFolder = new LocalizedString("Menu.New_Folder", "Fol_der");
+        static LocalizedString LOpenWithMenu = new LocalizedString("Menu.OpenWith", "Open _With...");
+        static LocalizedString LNew = new LocalizedString("Menu.File_New", "_New");
+        static LocalizedString LOpen = new LocalizedString("Menu.File_Open", "_Open");
         public void ApplyLocal()
         {
-            Menu_Open.Header = new LocalizedString("Menu.Open", "Open");
+            Menu_Open.Header = LOpen;
+            Menu_New_Folder.Header = LFolder;
+            NewMenu.Header = LNew;
+            OpenWithMenu.Header = LOpenWithMenu;
         }
     }
 }

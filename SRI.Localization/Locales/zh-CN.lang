@@ -3,7 +3,7 @@
 Dialog.Yes=是
 Dialog.No=否
 Dialog.Cancel=取消
-Dialog.OK=OK
+Dialog.OK=确认
 
 Menu.File=文件(_F)
 Menu.File_Save=保存(_S)
@@ -12,10 +12,14 @@ Menu.File_Open=打开(_O)
 Menu.File_Open_File=文件(_F)
 Menu.File_Exit=退出(_E)
 Menu.File_New=新建(_N)
+Menu.File_New_SRI=可缩放相对图像(_S)
 Menu.Build=构建(_B)
+Menu.Help=帮助(_H)
+Menu.New_Folder=文件夹(_d)
 MenuBar.Project=项目(_P)
 
-Menu.Open=打开
+Menu.Open=打开(_O)
+Menu.OpenWith=打开方式(_W)
 
 SRI.Editor.SRIEditor=SRI 编辑器
 SRI.Editor.BaseEditor=基础编辑器

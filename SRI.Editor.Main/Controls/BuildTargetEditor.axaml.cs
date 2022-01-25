@@ -7,7 +7,7 @@ using SRI.Localization;
 
 namespace SRI.Editor.Main.Controls
 {
-    public partial class BuildTargetEditor : Grid,ILocalizable
+    public partial class BuildTargetEditor : Grid, ILocalizable
     {
         public BuildTargetEditor()
         {
@@ -43,6 +43,11 @@ namespace SRI.Editor.Main.Controls
             {
                 Symbols.Children.Add(new KVBox());
             };
+            DuplicateButton.Click += (_, _) =>
+            {
+
+                (Parent as StackPanel).Children.Add(new BuildTargetEditor(this.ObtainBuildTarget()));
+            };
         }
         public BuildTarget ObtainBuildTarget()
         {
@@ -66,6 +71,7 @@ namespace SRI.Editor.Main.Controls
             return __target;
         }
         Button AddSymbols;
+        Button DuplicateButton;
         StackPanel Symbols;
 
         TextBox FileBox;
@@ -84,6 +90,7 @@ namespace SRI.Editor.Main.Controls
         {
             AvaloniaXamlLoader.Load(this);
             AddSymbols = this.FindControl<Button>("AddSymbols");
+            DuplicateButton = this.FindControl<Button>("DuplicateButton");
             Symbols = this.FindControl<StackPanel>("Symbols");
             FileBox = this.FindControl<TextBox>("FileBox");
             NameBox = this.FindControl<TextBox>("NameBox");
@@ -96,14 +103,15 @@ namespace SRI.Editor.Main.Controls
             NameB = this.FindControl<TextBlock>("NameB");
             SourceB = this.FindControl<TextBlock>("SourceB");
             OutputB = this.FindControl<TextBlock>("OutputB");
-            this.FindControl<Button>("RemoveButton").Click += (_, _) => {
+            this.FindControl<Button>("RemoveButton").Click += (_, _) =>
+            {
                 (Parent as StackPanel).Children.Remove(this);
             };
         }
         static LocalizedString LSymbols = new LocalizedString("Symbols", "Symbols");
         static LocalizedString LName = new LocalizedString("Project.Name", "Name");
-        static LocalizedString LSource= new LocalizedString("Project.Source", "Source File");
-        static LocalizedString LOutput= new LocalizedString("Project.Output", "Output File");
+        static LocalizedString LSource = new LocalizedString("Project.Source", "Source File");
+        static LocalizedString LOutput = new LocalizedString("Project.Output", "Output File");
         public void ApplyLocal()
         {
             Symbols_Text.Text = LSymbols;

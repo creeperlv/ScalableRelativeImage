@@ -253,6 +253,11 @@ namespace SRI.Editor.Main
                 {
 
                     SaveFileDialog __dialog = new SaveFileDialog();
+                    var f = editor.ObtainExtensionFilters();
+                    foreach (var item in f)
+                    {
+                        __dialog.Filters.Add(item);
+                    }
                     __dialog.InitialFileName = editor.GetSuggestedFileName();
                     var t = await __dialog.ShowAsync(this);
                     if (t != null)

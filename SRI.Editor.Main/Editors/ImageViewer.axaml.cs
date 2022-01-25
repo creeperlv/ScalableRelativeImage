@@ -6,6 +6,7 @@ using Avalonia.Media.Imaging;
 using SRI.Editor.Core;
 using SRI.Editor.Extension;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace SRI.Editor.Main.Editors
@@ -128,6 +129,11 @@ namespace SRI.Editor.Main.Editors
             ViewPortZoomApply = this.FindControl<Button>("ViewPortZoomApply");
             ViewPortZoomBox = this.FindControl<TextBox>("ViewPortZoomBox");
 
+        }
+
+        public List<FileDialogFilter> ObtainExtensionFilters()
+        {
+            return new List<FileDialogFilter>();
         }
     }
 }

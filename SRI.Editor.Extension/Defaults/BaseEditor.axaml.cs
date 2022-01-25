@@ -176,5 +176,10 @@ namespace SRI.Editor.Extension.Defaults
         {
             CentralEditor.Text = content;
         }
+
+        public List<FileDialogFilter> ObtainExtensionFilters()
+        {
+            return new List<FileDialogFilter> { new FileDialogFilter() { Extensions = new List<string> { "*" }, Name = "All Formats" } };
+        }
     }
 }

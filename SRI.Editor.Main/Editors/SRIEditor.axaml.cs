@@ -10,6 +10,7 @@ using SRI.Editor.Core.Utilities;
 using SRI.Editor.Extension;
 using SRI.Editor.Extension.Utilities;
 using SRI.Editor.Styles;
+using SRI.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -283,6 +284,11 @@ namespace SRI.Editor.Main.Editors
         public void SetContent(string content)
         {
             CentralEditor.Text = content;
+        }
+        static LocalizedString LSri = new LocalizedString("SRI.Title", "Scalable Relative Image");
+        public List<FileDialogFilter> ObtainExtensionFilters()
+        {
+            return new List<FileDialogFilter> { new FileDialogFilter() { Extensions = new List<string> { "sri" }, Name = LSri } };
         }
     }
 }

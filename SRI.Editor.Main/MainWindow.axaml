@@ -116,7 +116,7 @@
 								</MenuItem.Icon>
 							</MenuItem>
 						</MenuItem>
-						<MenuItem Header="Help">
+						<MenuItem Header="Help" Name="Menu_Help">
 							<MenuItem Header="View GitHub" Name="Help_GH">
 								<MenuItem.Icon>
 									<Viewbox Width="16" Height="16">
@@ -139,7 +139,7 @@
 					</Menu>
 				</Grid>
 				<Grid Background="#A333" Grid.Column="1" IsHitTestVisible="False">
-					<TextBlock Text="SRI Editor" Foreground="#8FFF" VerticalAlignment="Center"/>
+					<TextBlock Text="SRI Editor" Name="TitleBlock" Foreground="#8FFF" VerticalAlignment="Center"/>
 				</Grid>
 			</Grid>
 			<Grid Grid.Row="1" Background="#A333">

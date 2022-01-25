@@ -41,6 +41,11 @@ namespace SRI.Editor.Main.Controls
             {
                 Symbols.Children.Add(new KVBox());
             };
+            DuplicateButton.Click += (_, _) =>
+            {
+
+                (Parent as StackPanel).Children.Add(new BuildConfigurationEditor(this.ObtainConfiguration()));
+            };
         }
 
         public BuildConfiguration ObtainConfiguration()
@@ -67,6 +72,7 @@ namespace SRI.Editor.Main.Controls
         }
 
         Button AddConfiguration;
+        Button DuplicateButton;
         Button AddSymbol;
 
         TextBox NameBox;
@@ -81,6 +87,7 @@ namespace SRI.Editor.Main.Controls
         {
             AvaloniaXamlLoader.Load(this);
             AddConfiguration = this.FindControl<Button>("AddConfiguration");
+            DuplicateButton = this.FindControl<Button>("DuplicateButton");
             AddSymbol = this.FindControl<Button>("AddSymbol");
             Configurations = this.FindControl<StackPanel>("Configurations");
             Symbols = this.FindControl<StackPanel>("Symbols");

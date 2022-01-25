@@ -20,6 +20,9 @@ namespace SRI.Editor.Main
         static LocalizedString LExit = new LocalizedString("Menu.File_Exit", "_Exit");
         static LocalizedString LNew = new LocalizedString("Menu.File_New", "_New");
         static LocalizedString LBuild = new LocalizedString("Menu.Build", "_Build");
+        static LocalizedString LHelp = new LocalizedString("Menu.Help", "_Help");
+        static LocalizedString LNSRI = new LocalizedString("Menu.File_New_SRI", "_Scalable Relative Image");
+        static LocalizedString LSRIEditor = new LocalizedString("SRIEditor.Title", "SRI Editor");
         public void ApplyLocal()
         {
             File_.Header = SFile_.ToString();
@@ -35,6 +38,9 @@ namespace SRI.Editor.Main
             Build_BuildProject.Header = LMBProject;
             Menu_Build.Header = LBuild;
             File_New.Header = LNew;
+            File_New_SRI.Header = LNSRI;
+            Menu_Help.Header = LHelp;
+            TitleBlock.Text = LSRIEditor;
         }
     }
 }

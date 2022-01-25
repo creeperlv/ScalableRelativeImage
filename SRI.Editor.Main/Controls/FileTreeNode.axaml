@@ -20,7 +20,7 @@
 						<MenuItem Header="_New" Name="NewMenu">
 							<MenuItem Header="_Item" Name="Menu_New_Item"></MenuItem>
 							<MenuItem Header="_Scalable Relative Image" Name="Menu_New_SRI"></MenuItem>
-							<MenuItem Header="Fol_der"></MenuItem>
+							<MenuItem Header="Fol_der" Name="Menu_New_Folder"></MenuItem>
 						</MenuItem>
 						<MenuItem Name="GitMenu" Header="Git">
 							<MenuItem Header="Pull"/>

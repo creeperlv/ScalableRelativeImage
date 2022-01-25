@@ -1,4 +1,5 @@
-﻿using SRI.Editor.Core;
+﻿using Avalonia.Controls;
+using SRI.Editor.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,5 +17,6 @@ namespace SRI.Editor.Extension
         {
             return "New File.txt";
         }
+        List<FileDialogFilter> ObtainExtensionFilters();
     }
 }

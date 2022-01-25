@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "SRI.CLI": {
+      "commandName": "Project"
+    }
+  }
+}
