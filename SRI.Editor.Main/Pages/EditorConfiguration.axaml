@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SRI.Editor.Main.Pages.EditorConfiguration">
+	<Grid>
+		<Grid.Styles>
+			<Style Selector="TextBlock.H1">
+				<Setter Property="FontSize" Value="24"/>
+				<Setter Property="FontWeight" Value="Bold"/>
+			</Style>
+		</Grid.Styles>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<ScrollViewer VerticalScrollBarVisibility="Auto" Background="#80333333">
+			<ScrollViewer.Styles>
+				<Style Selector="Button">
+					<Setter Property="HorizontalAlignment" Value="Stretch"/>
+					<Setter Property="HorizontalContentAlignment" Value="Left"/>
+					<Setter Property="Padding" Value="15,10"/>
+				</Style>
+			</ScrollViewer.Styles>
+			<StackPanel>
+				<Button Content="Visual"/>
+				<Button Content="Localization"/>
+			</StackPanel>
+		</ScrollViewer>
+		<ScrollViewer Grid.Column="1" Background="#80222222" Padding="10,0">
+			<Grid>
+				<StackPanel Name="VisualPanel">
+					<TextBlock Classes="H1" Name="VisualB" Text="Visual"/>
+					<ToggleSwitch Content="Use Mica/Blur where possible" Name="UseBlurSwitch" Grid.Column="1"/>
+					<ToggleSwitch Content="Use Transparent instead of Blur/Mica" Name="UseTransparentSwitch" Grid.Column="1"/>
+				</StackPanel>
+			</Grid>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

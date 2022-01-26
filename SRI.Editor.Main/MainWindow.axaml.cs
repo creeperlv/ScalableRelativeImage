@@ -59,6 +59,9 @@ namespace SRI.Editor.Main
                  b.Cancel = true;
                  await __Close();
              };
+            Tools_Options.Click += (_, _) => {
+                AddPage(new EditorConfiguration());
+            };
             Help_About.Click += (_, _) =>
               {
                   AddPage(new AboutPage());

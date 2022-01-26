@@ -19,6 +19,7 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.11" />
     <PackageReference Include="Avalonia.Direct2D1" Version="0.10.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SRI.Editor.Core\SRI.Editor.Core.csproj" />

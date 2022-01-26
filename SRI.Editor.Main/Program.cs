@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using SRI.Editor.Extension;
 using SRI.Editor.Extension.Defaults;
+using SRI.Editor.Main.Data;
 using SRI.Editor.Main.Editors;
 using SRI.Editor.Styles;
 using SRI.Localization;
@@ -19,6 +20,7 @@ namespace SRI.Editor.Main
         public static void Main(string[] args)
         {
             new StyleLib();
+            EditorConfiguration.Init();
             LanguageLib.InitLocal();
             IconProviders.RegisterProvider(new DefaultIconProvider());
             {
