@@ -18,7 +18,46 @@ namespace SRI.Editor.Main.Data
         }
         public static void Save()
         {
+            Save("SRI.Editor.Configuration.json", "SRI.Editor");
+        }
 
+        public static void Save(string SettingFileName, string ProductName)
+        {
+
+            var configuration = JsonConvert.SerializeObject(CurrentConfiguration);
+            if (File.Exists("./" + SettingFileName))
+            {
+                File.Delete("./" + SettingFileName);
+                File.WriteAllText("./" + SettingFileName, configuration);
+            }
+            else
+            {
+                string text = Path.Combine(new FileInfo(typeof(Language).Assembly.Location).Directory!.FullName, SettingFileName);
+                if (File.Exists(text))
+                {
+                    File.Delete(text);
+                    File.WriteAllText(text, configuration);
+                }
+                else
+                {
+                    string text2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ProductName);
+                    if (!Directory.Exists(text2))
+                    {
+                        Directory.CreateDirectory(text2);
+                    }
+
+                    string text3 = Path.Combine(text2, SettingFileName);
+                    if (File.Exists(text3))
+                    {
+                        File.Delete(text3);
+                        File.WriteAllText(text3, configuration);
+                    }
+                    else
+                    {
+                        File.WriteAllText(text3, configuration);
+                    }
+                }
+            }
         }
         public static string ObtainInstalled(string SettingFileName, string ProductName)
         {
@@ -26,7 +65,7 @@ namespace SRI.Editor.Main.Data
             string configuration = "";
             if (File.Exists("./" + SettingFileName))
             {
-                configuration = File.ReadAllLines("./" + SettingFileName)[0];
+                configuration = File.ReadAllText("./" + SettingFileName);
             }
             else
             {

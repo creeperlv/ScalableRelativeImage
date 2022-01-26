@@ -34,7 +34,6 @@ namespace SRI.Editor.Main
             this.AttachDevTools();
 #endif
             if (Program.isDesign) return;
-            InitializeWindow();
             File_New_Proj.Click += async (_, _) =>
             {
 
@@ -60,7 +59,7 @@ namespace SRI.Editor.Main
                  await __Close();
              };
             Tools_Options.Click += (_, _) => {
-                AddPage(new EditorConfiguration());
+                AddPage(new EditorConfigurationEditor());
             };
             Help_About.Click += (_, _) =>
               {
@@ -130,12 +129,11 @@ namespace SRI.Editor.Main
             {
                 Save();
             };
-            ApplyLocal();
             Task.Run(async () =>
             {
                 while (true)
                 {
-                    await Task.Delay(3000);
+                    await Task.Delay(1000);
                     lock (OpenFileBind)
                     {
                         foreach (var item in OpenFileBind.Keys)
@@ -150,6 +148,7 @@ namespace SRI.Editor.Main
             });
             LoadShapeList();
             CheckAssociatedOpen();
+            ApplyConfiguration();
         }
         public void Build()
         {

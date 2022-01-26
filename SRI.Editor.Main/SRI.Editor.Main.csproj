@@ -27,4 +27,9 @@
     <ProjectReference Include="..\SRI.Editor.Styles\SRI.Editor.Styles.csproj" />
     <ProjectReference Include="..\SRI.Localization\SRI.Localization.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\EditorConfigurationEditor.axaml.cs">
+      <DependentUpon>EditorConfigurationEditor.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

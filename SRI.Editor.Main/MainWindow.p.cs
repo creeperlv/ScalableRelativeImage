@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
 using SRI.Editor.Core;
+using SRI.Editor.Main.Data;
 using SRI.Editor.Main.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -51,11 +52,30 @@ namespace SRI.Editor.Main
 
         TextBlock Project_Block;
 
-        void InitializeWindow()
+        void ApplyVisualConfiguration()
         {
             ExtendClientAreaChromeHints = Avalonia.Platform.ExtendClientAreaChromeHints.PreferSystemChrome;
             ExtendClientAreaToDecorationsHint = true;
-            TransparencyLevelHint = WindowTransparencyLevel.Blur;
+            if (EditorConfiguration.CurrentConfiguration.isBlurEnabled)
+            {
+                if (EditorConfiguration.CurrentConfiguration.TransparentInsteadOfBlur)
+                {
+                    TransparencyLevelHint = WindowTransparencyLevel.Transparent;
+                }
+                else
+                {
+                    TransparencyLevelHint = WindowTransparencyLevel.Mica;
+                    if (ActualTransparencyLevel != WindowTransparencyLevel.Mica)
+                    {
+                        TransparencyLevelHint = WindowTransparencyLevel.Blur;
+                    }
+
+                }
+            }
+            else
+            {
+                TransparencyLevelHint = WindowTransparencyLevel.None;
+            }
             Background = new SolidColorBrush(Colors.Transparent);
         }
         void __find_all_controls()
@@ -96,6 +116,12 @@ namespace SRI.Editor.Main
             Project_Block = this.FindControl<TextBlock>("Project_Block");
             TitleBlock = this.FindControl<TextBlock>("TitleBlock");
         }
+        public void ApplyConfiguration()
+        {
+
+            ApplyVisualConfiguration();
+            ApplyLocal();
+        }
         public void ShowProgressMask(string description, bool IsIndeterminate)
         {
             Main_Root.IsEnabled = false;
@@ -127,7 +153,7 @@ namespace SRI.Editor.Main
         {
             OpenedDialogs.Remove(dialog);
             DialogRoot.Children.Remove(dialog as SRIDialog);
-            if(OpenedDialogs.Count > 0)
+            if (OpenedDialogs.Count > 0)
             {
 
             }
@@ -167,7 +193,7 @@ namespace SRI.Editor.Main
                         else
                         {
 
-                        OpenFileEditor(new FileInfo(FILE));
+                            OpenFileEditor(new FileInfo(FILE));
                         }
                     }
                 }
@@ -176,7 +202,7 @@ namespace SRI.Editor.Main
             {
             }
         }
-        public void ShowDialog(string title, string content, DialogButton button0=null, DialogButton button1=null, DialogButton button2=null)
+        public void ShowDialog(string title, string content, DialogButton button0 = null, DialogButton button1 = null, DialogButton button2 = null)
         {
             SRIDialog dialog = new SRIDialog();
             OpenedDialogs.Add(dialog);
