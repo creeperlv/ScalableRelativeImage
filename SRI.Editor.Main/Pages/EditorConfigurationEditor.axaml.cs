@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CLUNL.Localization;
 using SRI.Editor.Core;
 using SRI.Editor.Extension;
 using SRI.Editor.Main.Data;
@@ -15,14 +16,46 @@ namespace SRI.Editor.Main.Pages
         {
             InitializeComponent();
             LoadFromSettings();
+            InitEvents();
+        }
+        void InitEvents()
+        {
+            SaveButton.Click += (_, _) => { Save(); };
+            LocalizationButton.Click += (_, _) => { HideAllPages(); LocalizationPanel.IsVisible = true; };
+            VisualButton.Click += (_, _) => { HideAllPages(); VisualPanel.IsVisible = true; };
+        }
+        void HideAllPages()
+        {
+            LocalizationPanel.IsVisible = false;
+            VisualPanel.IsVisible = false;
         }
         public void LoadFromSettings()
         {
-            UseBlurSwitch.IsChecked=EditorConfiguration.CurrentConfiguration.isBlurEnabled;
+            UseBlurSwitch.IsChecked = EditorConfiguration.CurrentConfiguration.isBlurEnabled;
+            UseTransparentSwitch.IsChecked = EditorConfiguration.CurrentConfiguration.TransparentInsteadOfBlur;
+            {
+                var CODES = Language.EnumerateLanguageCodes();
+                List<ComboBoxItem> Items = new List<ComboBoxItem>();
+                var USING = Language.ObtainLanguageInUse();
+
+                int i = 0;
+                int TARGET = 0;
+                foreach (var item in CODES)
+                {
+                    if (item == USING)
+                    {
+                        TARGET = i;
+                    };
+                    Items.Add(new ComboBoxItem { Content = item });
+                    i++;
+                }
+                LanguageBox.Items = Items;
+                LanguageBox.SelectedIndex = TARGET;
+            }
         }
         public void Dispose()
         {
-            
+
         }
 
         public string GetTitle()
@@ -50,6 +83,9 @@ namespace SRI.Editor.Main.Pages
         public void Save()
         {
             EditorConfiguration.CurrentConfiguration.isBlurEnabled = UseBlurSwitch.IsChecked.Value;
+            EditorConfiguration.CurrentConfiguration.TransparentInsteadOfBlur = UseTransparentSwitch.IsChecked.Value;
+            var CODE = (LanguageBox.SelectedItem as ComboBoxItem).Content as string;
+            Language.SetLanguageCode(CODE);
             EditorConfiguration.Save();
             (Globals.CurrentMainWindow as MainWindow).ApplyConfiguration();
         }
@@ -66,10 +102,24 @@ namespace SRI.Editor.Main.Pages
         {
         }
         ToggleSwitch UseBlurSwitch;
+        ToggleSwitch UseTransparentSwitch;
+        ComboBox LanguageBox;
+        Button VisualButton;
+        Button LocalizationButton;
+        Button SaveButton;
+        StackPanel VisualPanel;
+        StackPanel LocalizationPanel;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            LanguageBox = this.FindControl<ComboBox>("LanguageBox");
             UseBlurSwitch = this.FindControl<ToggleSwitch>("UseBlurSwitch");
+            UseTransparentSwitch = this.FindControl<ToggleSwitch>("UseTransparentSwitch");
+            VisualButton = this.FindControl<Button>("VisualButton");
+            SaveButton = this.FindControl<Button>("SaveButton");
+            LocalizationButton = this.FindControl<Button>("LocalizationButton");
+            VisualPanel = this.FindControl<StackPanel>("VisualPanel");
+            LocalizationPanel = this.FindControl<StackPanel>("LocalizationPanel");
         }
     }
 }

@@ -24,7 +24,7 @@
 				</Grid.ColumnDefinitions>
 				<Grid  Background="#A333">
 
-					<Menu Margin="8">
+					<Menu Margin="8" Name="MainMenu">
 						<MenuItem Header="_File" Name="File_">
 							<MenuItem Header="_Open" Name="File_Open">
 								<MenuItem.Icon>

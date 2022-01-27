@@ -25,10 +25,10 @@ namespace SRI.Editor.Main
         static LocalizedString LSRIEditor = new LocalizedString("SRIEditor.Title", "SRI Editor");
         public void ApplyLocal()
         {
-            File_.Header = SFile_.ToString();
-            File_Open.Header = SFile_Open.ToString();
-            File_Open_File.Header = SFile_Open_File.ToString();
-            Help_About.Header = LAbout.ToString();
+            File_.Header = SFile_;
+            File_Open.Header = SFile_Open;
+            File_Open_File.Header = SFile_Open_File;
+            Help_About.Header = LAbout;
             File_Open_Project.Header = LMBProject;
             File_New_Proj.Header = LMBProject;
             Project_Block.Text = LProject;
@@ -41,6 +41,13 @@ namespace SRI.Editor.Main
             File_New_SRI.Header = LNSRI;
             Menu_Help.Header = LHelp;
             TitleBlock.Text = LSRIEditor;
+            foreach (var item in TabPageContent.Children)
+            {
+                if(item is ILocalizable l)
+                {
+                    l.ApplyLocal();
+                }
+            }
         }
     }
 }

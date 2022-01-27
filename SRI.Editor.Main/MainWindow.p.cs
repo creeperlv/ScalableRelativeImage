@@ -44,6 +44,7 @@ namespace SRI.Editor.Main
         MenuItem Help_GH;
         MenuItem Build_BuildProject;
         MenuItem Menu_Help;
+        Menu MainMenu;
         Button BuildButton_Toolbar;
         Button PreviewButton_Toolbar;
         Button SaveButton_Toolbar;
@@ -56,6 +57,7 @@ namespace SRI.Editor.Main
         {
             ExtendClientAreaChromeHints = Avalonia.Platform.ExtendClientAreaChromeHints.PreferSystemChrome;
             ExtendClientAreaToDecorationsHint = true;
+            TransparencyBackgroundFallback = new SolidColorBrush(Colors.Black);
             if (EditorConfiguration.CurrentConfiguration.isBlurEnabled)
             {
                 if (EditorConfiguration.CurrentConfiguration.TransparentInsteadOfBlur)
@@ -108,6 +110,7 @@ namespace SRI.Editor.Main
             Menu_Build = this.FindControl<MenuItem>("Menu_Build");
             File_SaveAs = this.FindControl<MenuItem>("File_SaveAs");
             Tools_Options = this.FindControl<MenuItem>("Tools_Options");
+            MainMenu = this.FindControl<Menu>("MainMenu");
             ShapesListRefreshButton = this.FindControl<Button>("ShapesListRefreshButton");
             BuildButton_Toolbar = this.FindControl<Button>("BuildButton_Toolbar");
             PreviewButton_Toolbar = this.FindControl<Button>("PreviewButton_Toolbar");
