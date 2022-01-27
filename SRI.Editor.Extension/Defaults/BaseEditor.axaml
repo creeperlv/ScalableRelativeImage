@@ -13,10 +13,11 @@
 							InputMethod.IsInputMethodEnabled="True"
 						    FontFamily="Sarasa Mono CL"
 							Foreground="White"
-							SyntaxHighlighting="XML" ShowLineNumbers="True"
+							SyntaxHighlighting="C++" ShowLineNumbers="True"
 							HorizontalScrollBarVisibility="Auto"
 							VerticalScrollBarVisibility="Visible"
 							TextBlock.FontSize="12" x:Name="CentralEditor">
+		
 	</AvalonEdit:TextEditor>
 
 </Grid>

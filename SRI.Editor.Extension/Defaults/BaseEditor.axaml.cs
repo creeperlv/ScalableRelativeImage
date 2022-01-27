@@ -17,17 +17,13 @@ namespace SRI.Editor.Extension.Defaults
 {
     public partial class BaseEditor : Grid, ITabPage, IEditor
     {
+        string baseDirectory=null;
         public BaseEditor()
         {
             InitializeComponent();
-            XshdSyntaxDefinition xshd;
             FileInfo fi = new(typeof(StyleLib).Assembly.Location);
             //new XmlReader()
-            using (XmlReader reader = XmlReader.Create(System.IO.Path.Combine(fi.Directory.FullName, "Resources/Theme.xml")))
-            {
-                xshd = HighlightingLoader.LoadXshd(reader);
-                CentralEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
-            }
+            baseDirectory = fi.Directory.FullName;
             CentralEditor.TextChanged += CentralEditor_TextChanged;
             CentralEditor.ContextMenu = new ContextMenu();
             ContextMenuHelper.ApplyEditorContextMenu(CentralEditor);
@@ -91,17 +87,37 @@ namespace SRI.Editor.Extension.Defaults
             OpenedFile = Path;
             if (button != null)
                 button.SetTitle(Path.Name);
-            var __Name = Path.Name.ToUpper();
-            if (__Name.EndsWith(".MD"))
+            CentralEditor.Text = File.ReadAllText(Path.FullName);
+            CentralEditor.Document.UndoStack.ClearAll();
+            OriginalHash = HashTool.HashString(CentralEditor.Text);
+            ApplyHighlight();
+            isChanged = false;
+        }
+        public void ApplyHighlight()
+        {
+
+            var __Name = OpenedFile.Name;
+            if (StringHelper.IsEndsWithCaseInsensitive(__Name, ".MD"))
             {
                 var DEF = HighlightingManager.Instance.GetDefinition("Markdown");
                 if (DEF != null)
                     CentralEditor.SyntaxHighlighting = DEF;
+            }else if (StringHelper.IsEndsWithCaseInsensitive(__Name, ".cxx", ".cpp"))
+            {
+                var DEF = HighlightingManager.Instance.GetDefinition("C++");
+                if (DEF != null)
+                    CentralEditor.SyntaxHighlighting = DEF;
             }
-            CentralEditor.Text = File.ReadAllText(Path.FullName);
-            CentralEditor.Document.UndoStack.ClearAll();
-            OriginalHash = HashTool.HashString(CentralEditor.Text);
-            isChanged = false;
+            else if (StringHelper.IsEndsWithCaseInsensitive(__Name, ".sri-proj", ".xml", ".html", ".sri", ".csproj", ".xaml", ".axaml"))
+            {
+
+                XshdSyntaxDefinition xshd;
+                using (XmlReader reader = XmlReader.Create(System.IO.Path.Combine(baseDirectory, "Resources/Theme.xml")))
+                {
+                    xshd = HighlightingLoader.LoadXshd(reader);
+                    CentralEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
+                }
+            }
         }
         public void Save()
         {
@@ -122,6 +138,7 @@ namespace SRI.Editor.Extension.Defaults
             button.ParentContainer.SetOpenFileBind(button, Path);
             isChanged = false;
             OriginalHash = HashTool.HashString(CentralEditor.Text);
+            ApplyHighlight();
         }
         ITabPageButton button;
         public void SetButton(ITabPageButton button)
