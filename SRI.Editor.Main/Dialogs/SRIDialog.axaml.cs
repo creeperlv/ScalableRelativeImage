@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CLUNL.Localization;
 using SRI.Editor.Core;
 using SRI.Localization;
 using System;

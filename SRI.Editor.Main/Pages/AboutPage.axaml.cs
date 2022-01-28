@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CLUNL.Localization;
 using ScalableRelativeImage;
 using SRI.Editor.Core;
 using SRI.Localization;
@@ -8,10 +9,10 @@ using System.IO;
 
 namespace SRI.Editor.Main.Pages
 {
-    public partial class AboutPage : UserControl,ITabPage,ILocalizable
+    public partial class AboutPage : UserControl, ITabPage, ILocalizable
     {
-        static LocalizedString LVersion0 =new LocalizedString("About.Version","Version:{0}");
-        static LocalizedString LVersion1 =new LocalizedString("About.CoreVersion","Core Version:{0}");
+        static LocalizedString LVersion0 = new LocalizedString("About.Version", "Version:{0}");
+        static LocalizedString LVersion1 = new LocalizedString("About.CoreVersion", "Core Version:{0}");
         public AboutPage()
         {
             InitializeComponent();
@@ -19,13 +20,13 @@ namespace SRI.Editor.Main.Pages
             CoreVersionBlock.Text = string.Format(LVersion1.ToString(), typeof(SRIEngine).Assembly.GetName().Version);// $"Version:{}";
             //CoreVersionBlock.Text = $"Core Version:{typeof(SRIEngine).Assembly.GetName().Version}";
 
-            ApplyLocal();
+            ApplyLocalization();
         }
 
         public void Dispose()
         {
         }
-        LocalizedString LAboutTitle=new LocalizedString("About", "About");
+        static LocalizedString LAboutTitle = new LocalizedString("About", "About");
         public string GetTitle() => LAboutTitle.ToString();
 
         public void Preview()
@@ -60,10 +61,10 @@ namespace SRI.Editor.Main.Pages
         public void Insert(string Content)
         {
         }
-        LocalizedString LTitle=new LocalizedString("SRIEditor.Title","SRI Editor");
-        public void ApplyLocal()
+        LocalizedString LTitle = new LocalizedString("SRIEditor.Title", "SRI Editor");
+        public void ApplyLocalization()
         {
-            this.FindControl<TextBlock>("Title").Text = LTitle.ToString() ;
+            this.FindControl<TextBlock>("Title").Text = LTitle.ToString();
         }
     }
 }

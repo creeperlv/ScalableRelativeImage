@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using CLUNL.Localization;
 using SRI.Editor.Core;
 using SRI.Editor.Extension;
 using SRI.Localization;
@@ -19,13 +20,13 @@ namespace SRI.Editor.Main.Controls
         {
             HostedContainer = Container;
             InitializeComponent();
-            ApplyLocal();
+            ApplyLocalization();
         }
         public FileTreeNode()
         {
             HostedContainer = null;
             InitializeComponent();
-            ApplyLocal();
+            ApplyLocalization();
 
         }
 
@@ -290,7 +291,7 @@ namespace SRI.Editor.Main.Controls
         static LocalizedString LOpenWithMenu = new LocalizedString("Menu.OpenWith", "Open _With...");
         static LocalizedString LNew = new LocalizedString("Menu.File_New", "_New");
         static LocalizedString LOpen = new LocalizedString("Menu.File_Open", "_Open");
-        public void ApplyLocal()
+        public void ApplyLocalization()
         {
             Menu_Open.Header = LOpen;
             Menu_New_Folder.Header = LFolder;

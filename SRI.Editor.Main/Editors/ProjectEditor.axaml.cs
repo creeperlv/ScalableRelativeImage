@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CLUNL.Localization;
 using SRI.Editor.Core;
 using SRI.Editor.Core.Projects;
 using SRI.Editor.Extension;
@@ -16,7 +17,7 @@ namespace SRI.Editor.Main.Editors
         public ProjectEditor()
         {
             InitializeComponent();
-            ApplyLocal();
+            ApplyLocalization();
             AddConfiguration.Click += (_, _) =>
             {
                 BuildConfigurationEditor buildConfigurationEditor = new BuildConfigurationEditor();
@@ -97,14 +98,14 @@ namespace SRI.Editor.Main.Editors
         {
         }
         static LocalizedString LBuildConfigurations = new LocalizedString("BuildConfigurations", "Build Configurations");
-        public void ApplyLocal()
+        public void ApplyLocalization()
         {
             BuildConfigurations.Text = LBuildConfigurations;
             foreach (var item in Configurations.Children)
             {
                 if (item is BuildConfigurationEditor bce)
                 {
-                    bce.ApplyLocal();
+                    bce.ApplyLocalization();
                 }
             }
         }

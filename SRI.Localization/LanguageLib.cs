@@ -19,8 +19,4 @@ namespace SRI.Localization
             return locales;
         }
     }
-    public interface ILocalizable
-    {
-        void ApplyLocal();
-    }    
 }

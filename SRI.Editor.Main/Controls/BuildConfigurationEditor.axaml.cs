@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CLUNL.Localization;
 using ScalableRelativeImage;
 using SRI.Editor.Core.Projects;
 using SRI.Localization;
@@ -13,13 +14,13 @@ namespace SRI.Editor.Main.Controls
         {
             InitializeComponent();
             InitEvents();
-            ApplyLocal();
+            ApplyLocalization();
         }
         public BuildConfigurationEditor(BuildConfiguration config)
         {
             InitializeComponent();
             InitEvents();
-            ApplyLocal();
+            ApplyLocalization();
             NameBox.Text = config.Name;
             OutputBox.Text = config.OutputDirectory;
             foreach (var item in config.Symbols)
@@ -102,7 +103,7 @@ namespace SRI.Editor.Main.Controls
 
         static LocalizedString LSymbols = new LocalizedString("Symbols", "Symbols");
         static LocalizedString LBuildTargets_Text = new LocalizedString("BuildTargets", "BuildTargets");
-        public void ApplyLocal()
+        public void ApplyLocalization()
         {
 
             Symbols_Text.Text = LSymbols;
@@ -111,7 +112,7 @@ namespace SRI.Editor.Main.Controls
             {
                 if (item is BuildTargetEditor bte)
                 {
-                    bte.ApplyLocal();
+                    bte.ApplyLocalization();
                 }
             }
         }

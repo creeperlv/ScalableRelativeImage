@@ -123,7 +123,7 @@ namespace SRI.Editor.Main
         {
 
             ApplyVisualConfiguration();
-            ApplyLocal();
+            ApplyLocalization();
         }
         public void ShowProgressMask(string description, bool IsIndeterminate)
         {

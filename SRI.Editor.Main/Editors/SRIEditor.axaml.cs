@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
+using CLUNL.Localization;
 using ScalableRelativeImage;
 using SRI.Editor.Core;
 using SRI.Editor.Core.Utilities;

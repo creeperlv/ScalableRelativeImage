@@ -1,4 +1,5 @@
-﻿using SRI.Localization;
+﻿using CLUNL.Localization;
+using SRI.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace SRI.Editor.Main
         static LocalizedString LHelp = new LocalizedString("Menu.Help", "_Help");
         static LocalizedString LNSRI = new LocalizedString("Menu.File_New_SRI", "_Scalable Relative Image");
         static LocalizedString LSRIEditor = new LocalizedString("SRIEditor.Title", "SRI Editor");
-        public void ApplyLocal()
+        public void ApplyLocalization()
         {
             File_.Header = SFile_;
             File_Open.Header = SFile_Open;
@@ -45,7 +46,7 @@ namespace SRI.Editor.Main
             {
                 if(item is ILocalizable l)
                 {
-                    l.ApplyLocal();
+                    l.ApplyLocalization();
                 }
             }
         }
