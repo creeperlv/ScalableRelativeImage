@@ -107,6 +107,14 @@ namespace SRI.Editor.Extension.Defaults
                 var DEF = HighlightingManager.Instance.GetDefinition("C++");
                 if (DEF != null)
                     CentralEditor.SyntaxHighlighting = DEF;
+            }else if (StringHelper.IsEndsWithCaseInsensitive(__Name, ".cs"))
+            {
+                XshdSyntaxDefinition xshd;
+                using (XmlReader reader = XmlReader.Create(System.IO.Path.Combine(baseDirectory, "Resources/CSharp.xml")))
+                {
+                    xshd = HighlightingLoader.LoadXshd(reader);
+                    CentralEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
+                }
             }
             else if (StringHelper.IsEndsWithCaseInsensitive(__Name, ".sri-proj", ".xml", ".html", ".sri", ".csproj", ".xaml", ".axaml"))
             {

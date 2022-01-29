@@ -19,7 +19,7 @@ using System.Xml;
 
 namespace SRI.Editor.Main.Editors
 {
-    public partial class SRIEditor : Grid, ITabPage, IEditor
+    public partial class SRIEditor : Grid, ITabPage, IEditor,ILocalizable
     {
         public SRIEditor()
         {
@@ -40,6 +40,7 @@ namespace SRI.Editor.Main.Editors
             ContextMenuHelper.ApplyEditorContextMenu(CentralEditor);
             RowButtonClick();
             EditorHelper.KeyBind(CentralEditor, this);
+            ApplyLocalization();
         }
         void Init00()
         {
@@ -275,10 +276,12 @@ namespace SRI.Editor.Main.Editors
             return true;
         }
         TextEditor CentralEditor;
+        TextBlock ApplyDesignSymbolB;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
             CentralEditor = this.FindControl<TextEditor>("CentralEditor");
+            ApplyDesignSymbolB = this.FindControl<TextBlock>("ApplyDesignSymbolB");
             InitControls();
         }
 
@@ -290,6 +293,11 @@ namespace SRI.Editor.Main.Editors
         public List<FileDialogFilter> ObtainExtensionFilters()
         {
             return new List<FileDialogFilter> { new FileDialogFilter() { Extensions = new List<string> { "sri" }, Name = LSri } };
+        }
+        static LocalizedString LApplyDesignSymbol = new LocalizedString("ApplyDesignSymbol", "ApplyDesignSymbol");
+        public void ApplyLocalization()
+        {
+            ApplyDesignSymbolB.Text = LApplyDesignSymbol;
         }
     }
 }

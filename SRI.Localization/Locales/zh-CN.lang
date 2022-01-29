@@ -16,6 +16,7 @@ Menu.File_New_SRI=可缩放相对图像(_S)
 Menu.Build=构建(_B)
 Menu.Help=帮助(_H)
 Menu.New_Folder=文件夹(_d)
+Menu.Tools=工具(_T)
 MenuBar.Project=项目(_P)
 
 Menu.Open=打开(_O)
@@ -41,3 +42,5 @@ Project.Output=输出文件
 Symbols=符号
 BuildTargets=构建目标
 BuildConfigurations=构建配置
+
+ApplyDesignSymbol=应用"DESIGN"符号

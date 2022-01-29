@@ -44,6 +44,7 @@ namespace SRI.Editor.Main
         MenuItem Help_GH;
         MenuItem Build_BuildProject;
         MenuItem Menu_Help;
+        MenuItem Menu_Tools;
         Menu MainMenu;
         Button BuildButton_Toolbar;
         Button PreviewButton_Toolbar;
@@ -109,6 +110,7 @@ namespace SRI.Editor.Main
             File_New = this.FindControl<MenuItem>("File_New");
             Menu_Build = this.FindControl<MenuItem>("Menu_Build");
             File_SaveAs = this.FindControl<MenuItem>("File_SaveAs");
+            Menu_Tools = this.FindControl<MenuItem>("Menu_Tools");
             Tools_Options = this.FindControl<MenuItem>("Tools_Options");
             MainMenu = this.FindControl<Menu>("MainMenu");
             ShapesListRefreshButton = this.FindControl<Button>("ShapesListRefreshButton");

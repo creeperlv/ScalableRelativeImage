@@ -64,7 +64,7 @@
 				<TextBox Watermark="Height" VerticalAlignment="Center" Name="HeightBox"/>
 				<TextBox Watermark="Scale" VerticalAlignment="Center" Name="ScaleBox" Text="1.0"/>
 				<Border Width="1" Background="#888" Margin="5,3"/>
-				<TextBlock Text="Apply Design Symbol" VerticalAlignment="Center"/>
+				<TextBlock Text="Apply 'DESIGN' Symbol" Name="ApplyDesignSymbolB" VerticalAlignment="Center"/>
 				<ToggleSwitch Name="ApplyDesignSymbol"/>
 			</StackPanel>
 			<Grid Grid.Row="1">

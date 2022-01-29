@@ -23,6 +23,7 @@ namespace SRI.Editor.Main
         static LocalizedString LBuild = new LocalizedString("Menu.Build", "_Build");
         static LocalizedString LHelp = new LocalizedString("Menu.Help", "_Help");
         static LocalizedString LNSRI = new LocalizedString("Menu.File_New_SRI", "_Scalable Relative Image");
+        static LocalizedString LTools = new LocalizedString("Menu.Tools", "_Tools");
         static LocalizedString LSRIEditor = new LocalizedString("SRIEditor.Title", "SRI Editor");
         public void ApplyLocalization()
         {
@@ -40,6 +41,7 @@ namespace SRI.Editor.Main
             Menu_Build.Header = LBuild;
             File_New.Header = LNew;
             File_New_SRI.Header = LNSRI;
+            Menu_Tools.Header = LTools;
             Menu_Help.Header = LHelp;
             TitleBlock.Text = LSRIEditor;
             foreach (var item in TabPageContent.Children)

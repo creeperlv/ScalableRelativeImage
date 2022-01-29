@@ -16,6 +16,7 @@ Menu.File_New_SRI=_Scalable Relative Image
 Menu.Build=_Build
 Menu.Help=_Help
 Menu.New_Folder=Fol_der
+Menu.Tools=_Tools
 MenuBar.Project=_Project
 
 Menu.Open=_Open
@@ -41,3 +42,5 @@ Project.Output=Output File
 Symbols=Symbols
 BuildTargets=Build Targets
 BuildConfigurations=Build Configurations
+
+ApplyDesignSymbol=Apply "DESIGN" Symbol
