@@ -42,7 +42,9 @@ namespace ScalableRelativeImage.Nodes
         }
         public void RemoveChild(INode n)
         {
-            Children.Remove(n);
+            var node = (n as GraphicNode);
+            node.Parent = this;
+            Children.Remove(node);
         }
         public override List<INode> ListNodes()
         {

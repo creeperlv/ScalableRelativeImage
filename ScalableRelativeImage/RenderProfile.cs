@@ -9,12 +9,12 @@ namespace ScalableRelativeImage
 {
     public class RenderProfile
     {
-        public SymbolHelper CurrentSymbols=new SymbolHelper();
+        public SymbolHelper CurrentSymbols = new SymbolHelper();
         public float TargetWidth;
         public float TargetHeight;
         public Color? DefaultForeground = null;
         public Color? DefaultBackground = null;
-        public InterpolationMode InterpolationMode= InterpolationMode.HighQualityBicubic;
+        public InterpolationMode InterpolationMode = InterpolationMode.HighQualityBicubic;
         public TextRenderingHint TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
         public SmoothingMode SmoothingMode = SmoothingMode.HighQuality;
         internal IContainer root;
@@ -32,7 +32,7 @@ namespace ScalableRelativeImage
                 {
                     var d =
                     item.GetValueSet();
-                    if(item is SubImage)
+                    if (item is SubImage)
                     {
 
                         if (d.ContainsKey("Name"))
@@ -42,9 +42,10 @@ namespace ScalableRelativeImage
                                 return item as SubImage;
                             }
                         }
-                    }else if(item is IContainer || item is Group)
+                    }
+                    else if (item is IContainer || item is Group)
                     {
-                        var a=Ref(item, Name);
+                        var a = Ref(item, Name);
                         if (a is not null) return a;
                     }
                 }
@@ -59,7 +60,7 @@ namespace ScalableRelativeImage
             renderProfile.TargetHeight = TargetHeight;
             renderProfile.TargetWidth = TargetWidth;
             renderProfile.root = Root;
-            renderProfile.CurrentSymbols= CurrentSymbols;
+            renderProfile.CurrentSymbols = CurrentSymbols;
             renderProfile.WorkingDirectory = Environment.CurrentDirectory;
             return renderProfile;
         }
@@ -68,15 +69,54 @@ namespace ScalableRelativeImage
             var path0 = System.IO.Path.Combine(WorkingDirectory, FileName);
             if (File.Exists(path0)) return new FileInfo(path0); else if (File.Exists(FileName)) return new FileInfo(FileName); else return null;
         }
-        public PointF FindTargetPoint(float RX, float RY)
+        public SizeF FindSize(GraphicNode node, float W, float H)
+        {
+            if (node.Parent == null)
+            {
+                return new SizeF(W / root.RelativeWidth * TargetWidth, H / root.RelativeHeight * TargetHeight);
+            }
+            else
+            {
+                SizeF s = new SizeF(W / root.RelativeWidth * TargetWidth, H / root.RelativeHeight * TargetHeight);
+                if (node.Parent is IScalable sc)
+                {
+                    s.Width *= sc.ScaledW;
+                    s.Height *= sc.ScaledH;
+                }
+                return s;
+            }
+        }
+        public PointF FindTargetPoint(float RX, float RY, GraphicNode node = null)
         {
             PointF p = new(((RX / root.RelativeWidth) * TargetWidth), ((RY / root.RelativeWidth) * TargetHeight));
+            if (node != null)
+            {
+                if (node.Parent != null)
+                {
+                    if (node.Parent is ILayoutable l)
+                    {
+                        p = new((((RX + l.X) / root.RelativeWidth) * TargetWidth), (((RY + l.Y) / root.RelativeWidth) * TargetHeight));
+                    }
+                }
+
+            }
             return p;
         }
-        public float FindAbsoluteSize(float RelativeSize)
+        public float FindAbsoluteSize(float RelativeSize, GraphicNode node = null)
         {
             if (RelativeSize > 0)
             {
+                if (node != null)
+                {
+                    if (node.Parent != null)
+                    {
+                        if (node.Parent is IScalable s)
+                        {
+
+                            return (RelativeSize / (MathF.Sqrt(root.RelativeArea) * MathF.Sqrt(s.ScaledH * s.ScaledW))) * MathF.Sqrt(TargetWidth * TargetHeight);
+                        }
+                    }
+                }
                 return (RelativeSize / MathF.Sqrt(root.RelativeArea)) * MathF.Sqrt(TargetWidth * TargetHeight);
             }
             else

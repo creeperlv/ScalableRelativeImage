@@ -10,8 +10,8 @@ namespace ScalableRelativeImage.Nodes
     public class SubImage : GraphicNode, IContainer
     {
         public List<GraphicNode> Children = new();
-        public float X;
-        public float Y;
+        public float X { get; set; }
+        public float Y { get; set; }
         public float Width;
         public float Height;
         public float ScaledWidthRatio = 1f;
@@ -49,7 +49,9 @@ namespace ScalableRelativeImage.Nodes
         }
         public void RemoveChild(INode n)
         {
-            Children.Remove(n as GraphicNode);
+            var node = (n as GraphicNode);
+            node.Parent = this;
+            Children.Remove(node);
         }
         public override List<INode> ListNodes()
         {
@@ -111,11 +113,14 @@ namespace ScalableRelativeImage.Nodes
             var LT = profile.FindTargetPoint(X, Y);
             var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
                     (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight)));
+            //Assumed size of the image.
             var _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
                     (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
+            //Scaled size of the image.
             //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var b = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            var subProfile = profile.Copy(this);
+            var subProfile = profile.Copy(profile.root);
+            //Keep the references.
             subProfile.TargetWidth = rect.Width;
             subProfile.TargetHeight = rect.Height;
             {

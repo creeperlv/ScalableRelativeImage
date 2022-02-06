@@ -117,7 +117,8 @@ namespace ScalableRelativeImage.Nodes
                     pR.RelativeWidth = profile.root.RelativeWidth;
                     pR.RelativeHeight = profile.root.RelativeHeight;
                 }
-                var p = profile.Copy(pR);
+                //var p = profile.Copy(pR);
+                var p = profile.Copy(profile.root);//Keep reference
                 p.TargetWidth = profile.TargetWidth * wR;
                 p.TargetHeight = profile.TargetHeight * hR;
                 var _LT = p.FindTargetPoint(sub.X, sub.Y);

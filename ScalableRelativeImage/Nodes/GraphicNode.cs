@@ -10,6 +10,7 @@ namespace ScalableRelativeImage.Nodes
     /// </summary>
     public class GraphicNode : INode
     {
+        public INode Parent=null;
         public ImageNodeRoot root;
         public virtual void AddNode(INode node,ref List<ExecutionWarning> executionWarnings)
         {

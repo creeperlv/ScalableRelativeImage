@@ -28,10 +28,25 @@ namespace ScalableRelativeImage.Nodes
         void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings);
         Dictionary<string, string> GetValueSet();
     }
+    public interface IPivottable
+    {
+        float PivotX { get; set; }
+        float PivotY { get; set; }
+    }
+    public interface IScalable
+    {
+        float ScaledW { get; set; }
+        float ScaledH { get; set; }
+    }
+    public interface ILayoutable
+    {
+        float X { get; set; }
+        float Y { get; set; }
+    }
     /// <summary>
     /// Relative Container interface.
     /// </summary>
-    public interface IContainer:INode
+    public interface IContainer : INode
     {
         float RelativeWidth { get; set; }
         float RelativeHeight { get; set; }
@@ -50,7 +65,7 @@ namespace ScalableRelativeImage.Nodes
         internal float _RelativeHeight = 0;
         internal Color _PreferredBackground = Color.White;
         internal Color _PreferredForeground = Color.Transparent;
-        public SymbolHelper Symbols=new SymbolHelper();
+        public SymbolHelper Symbols = new SymbolHelper();
         public float RelativeArea { get; internal set; }
         public List<GraphicNode> Children = new();
         public ImageNodeRoot()
@@ -125,10 +140,10 @@ namespace ScalableRelativeImage.Nodes
             Dictionary<string, string> dict = new();
             dict.Add("RelativeWidth", _RelativeWidth.ToString());
             dict.Add("RelativeHeight", _RelativeHeight.ToString());
-            
+
             dict.Add("Foreground", "#" + _PreferredForeground.ToArgb().ToString("X"));
             dict.Add("Background", "#" + _PreferredBackground.ToArgb().ToString("X"));
-            
+
             return dict;
         }
     }
