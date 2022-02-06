@@ -90,7 +90,7 @@ namespace ScalableRelativeImage.Core
             return Fallback;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public string Getstring(SymbolHelper s, string Fallback = "")
+        public string GetString(SymbolHelper s, string Fallback = "")
         {
             if (Value.StartsWith("#"))
             {

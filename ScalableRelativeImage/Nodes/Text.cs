@@ -12,7 +12,7 @@ namespace ScalableRelativeImage.Nodes
     public class Text : GraphicNode
     {
         public string Content = "";
-        public string FontFamily = "";
+        public IntermediateValue FontFamily = null;
         public string FontStyle = "Regular";
         public float RelativeFontSize = -12;
         public IntermediateValue Foreground = null;
@@ -33,7 +33,8 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "FontFamily":
                     {
-                        FontFamily = Value;
+                        FontFamily = new IntermediateValue();
+                        FontFamily.Value = Value;
                     }
                     break;
                 case "FontStyle":
@@ -86,7 +87,9 @@ namespace ScalableRelativeImage.Nodes
         {
             Dictionary<string, string> result = new();
             result.Add("Content", Content);
-            result.Add("FontFamily", FontFamily);
+            if (FontFamily != null)
+                result.Add("FontFamily", FontFamily.ToString());
+            else result.Add("FontFamily", "Arial");
             result.Add("FontStyle", FontStyle);
             result.Add("Size", RelativeFontSize.ToString());
             result.Add("X", X.ToString());
@@ -108,7 +111,7 @@ namespace ScalableRelativeImage.Nodes
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
             TargetGraphics.DrawString(Content,
-                new Font(FontFamily, FS, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle))
+                new Font(FontFamily.GetString(profile.CurrentSymbols, "Arial"), FS, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle))
                 , new SolidBrush(Color), new RectangleF(p0, new SizeF(AW, AH)), new StringFormat { Alignment = Align });
         }
     }
