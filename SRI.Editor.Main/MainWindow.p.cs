@@ -137,6 +137,9 @@ namespace SRI.Editor.Main
             {
                 Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = "https://github.com/creeperlv/ScalableRelativeImage" });
             };
+        }
+        void ApplyEvents_02()
+        {
             Build_BuildProject.Click += (_, _) =>
             {
                 Build();
@@ -149,9 +152,6 @@ namespace SRI.Editor.Main
             {
                 SaveAs();
             };
-        }
-        void ApplyEvents_02()
-        {
             File_Save.Click += (_, _) =>
             {
                 Save();
@@ -164,6 +164,11 @@ namespace SRI.Editor.Main
             {
                 Save();
             };
+            StartModificationDetection();
+        }
+
+        private void StartModificationDetection()
+        {
             Task.Run(async () =>
             {
                 while (true)
@@ -182,6 +187,7 @@ namespace SRI.Editor.Main
                 }
             });
         }
+
         void ApplyVisualConfiguration()
         {
             ExtendClientAreaChromeHints = Avalonia.Platform.ExtendClientAreaChromeHints.PreferSystemChrome;
