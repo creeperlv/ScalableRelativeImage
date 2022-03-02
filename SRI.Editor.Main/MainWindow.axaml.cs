@@ -34,118 +34,7 @@ namespace SRI.Editor.Main
             this.AttachDevTools();
 #endif
             if (Program.isDesign) return;
-            File_New_Proj.Click += async (_, _) =>
-            {
-
-
-                SaveFileDialog __dialog = new SaveFileDialog();
-                __dialog.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "sri-proj" }, Name = "SRI Editor Project" });
-                __dialog.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "*" }, Name = "All Formats" });
-                var __target_location = await __dialog.ShowAsync(this);
-                if (__target_location != null)
-                {
-                    if (__target_location != "")
-                    {
-                        File.WriteAllText(__target_location, ProjectEngine.NewEmptyProject());
-                        OpenProject(__target_location);
-                        OpenFileEditor(new FileInfo(__target_location));
-                    }
-                }
-            };
-            File_Exit.Click += async (a, b) => { await __Close(); };
-            this.Closing += async (a, b) =>
-             {
-                 b.Cancel = true;
-                 await __Close();
-             };
-            Tools_Options.Click += (_, _) => {
-                AddPage(new EditorConfigurationEditor());
-            };
-            Help_About.Click += (_, _) =>
-              {
-                  AddPage(new AboutPage());
-              };
-            File_New_SRI.Click += (_, _) =>
-              {
-                  var __editor = new SRIEditor();
-                  __editor.SetContent(ProjectEngine.NewSRIDocument());
-                  AddPage(__editor);
-              };
-            File_New_PF.Click += (_, _) =>
-              {
-                  AddPage(new BaseEditor());
-              };
-            File_Open_File.Click += async (_, _) =>
-            {
-                OpenFileDialog __dialog = new();
-                var file = await __dialog.ShowAsync(this);
-                if (file != null)
-                    foreach (var item in file)
-                    {
-                        OpenFileEditor(new FileInfo(item));
-                    }
-            };
-            PreviewButton_Toolbar.Click += (_, _) =>
-              {
-                  if (CurrentPage() != null)
-                  {
-                      CurrentPage().ControlledPage.Preview();
-                  }
-              };
-            ShapesListRefreshButton.Click += (_, _) =>
-              {
-                  LoadShapeList();
-              };
-            File_Open_Project.Click += async (_, _) =>
-              {
-                  await OpenProjectDialog();
-              };
-            Help_GH.Click += (_, _) =>
-              {
-                  Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = "https://github.com/creeperlv/ScalableRelativeImage" });
-              };
-            Build_BuildProject.Click += (_, _) =>
-                {
-                    Build();
-                };
-            BuildButton_Toolbar.Click += (_, _) =>
-              {
-                  Build();
-              };
-            SaveAsButton_Toolbar.Click += (_, _) =>
-              {
-
-                  SaveAs();
-              };
-            File_Save.Click += (_, _) =>
-            {
-                Save();
-            };
-            File_SaveAs.Click += (_, _) =>
-            {
-                SaveAs();
-            };
-            SaveButton_Toolbar.Click += (_, _) =>
-            {
-                Save();
-            };
-            Task.Run(async () =>
-            {
-                while (true)
-                {
-                    await Task.Delay(1000);
-                    lock (OpenFileBind)
-                    {
-                        foreach (var item in OpenFileBind.Keys)
-                        {
-                            Dispatcher.UIThread.InvokeAsync(() =>
-                            {
-                                item.SetTitle(item.ControlledPage.GetTitle());
-                            });
-                        }
-                    }
-                }
-            });
+            ApplyEvents();
             LoadShapeList();
             CheckAssociatedOpen();
             ApplyConfiguration();
@@ -229,7 +118,6 @@ namespace SRI.Editor.Main
             }
             if (cannot > 0)
             {
-
             }
             else
             {
@@ -291,8 +179,6 @@ namespace SRI.Editor.Main
                 FileInfo Proj = new FileInfo(file);
                 if (Proj.Directory != null)
                 {
-                    //try
-                    //{
                     Trace.WriteLine("Try to laod.");
                     var __proj = ProjectEngine.Load(Proj);
                     Trace.WriteLine("Load Completed.");
@@ -321,12 +207,7 @@ namespace SRI.Editor.Main
                     {
                         Trace.WriteLine("Open Failed.");
                     }
-                    //}
-                    //catch (Exception)
-                    //{
-                    //}
                 }
-
             }
             catch (Exception e)
             {
@@ -372,7 +253,6 @@ namespace SRI.Editor.Main
                                         {
                                         }
                                     }
-
                     }
                 }
             }
