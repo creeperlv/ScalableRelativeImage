@@ -9,33 +9,6 @@ using System.Xml;
 
 namespace ScalableRelativeImage
 {
-    public class ImageReference
-    {
-        public string Namespace;
-        public string DLLFile = null;
-    }
-    public record ShapeDisposedWarning : ExecutionWarning
-    {
-        public ShapeDisposedWarning(INode node) : base("SRI005", $"Shape \"{node.GetType().Name}\" has been disposed.") { }
-    }
-    public record ShapeMismatchWarning : ExecutionWarning
-    {
-        public ShapeMismatchWarning(object receieved, Type Target) : base("SRI004", $"Shape {receieved.GetType().Name} does not match required shape \"{Target.Name}\"") { }
-    }
-    public record DataDisposedWarning : ExecutionWarning
-    {
-        public DataDisposedWarning(string Key, string Value) : base("SRI003", $"Data \"{Value}\"(\"{Key}\") has been disposed.") { }
-    }
-    public record ExecutionWarning
-    {
-        public string ID;
-        public string Message;
-        public ExecutionWarning(string ID, string Message)
-        {
-            this.ID = ID;
-            this.Message = Message;
-        }
-    }
     public class SRIAnalyzer
     {
         internal static ColorConverter cc = new ColorConverter();
@@ -123,8 +96,6 @@ namespace ScalableRelativeImage
                         }
                     }
                     symbols.Set(symbol);
-
-
                 }
             }
             references.Add(new ImageReference() { Namespace = "ScalableRelativeImage.Nodes" });
@@ -137,7 +108,6 @@ namespace ScalableRelativeImage
                     bool v = false;
                     foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
                     {
-
                         try
                         {
                             FileInfo fi = new(asm.FullName);
