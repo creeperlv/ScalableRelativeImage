@@ -63,6 +63,7 @@ namespace SRI.Editor.Main
             ApplyEvents_00();
             ApplyEvents_01();
             ApplyEvents_02();
+            StartModificationDetection();
         }
         void ApplyEvents_00()
         {
@@ -110,13 +111,7 @@ namespace SRI.Editor.Main
         {
             File_Open_File.Click += async (_, _) =>
             {
-                OpenFileDialog __dialog = new();
-                var file = await __dialog.ShowAsync(this);
-                if (file != null)
-                    foreach (var item in file)
-                    {
-                        OpenFileEditor(new FileInfo(item));
-                    }
+                await OpenFile();
             };
             PreviewButton_Toolbar.Click += (_, _) =>
             {
@@ -138,6 +133,18 @@ namespace SRI.Editor.Main
                 Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = "https://github.com/creeperlv/ScalableRelativeImage" });
             };
         }
+
+        private async Task OpenFile()
+        {
+            OpenFileDialog __dialog = new();
+            var file = await __dialog.ShowAsync(this);
+            if (file != null)
+                foreach (var item in file)
+                {
+                    OpenFileEditor(new FileInfo(item));
+                }
+        }
+
         void ApplyEvents_02()
         {
             Build_BuildProject.Click += (_, _) =>
@@ -164,7 +171,6 @@ namespace SRI.Editor.Main
             {
                 Save();
             };
-            StartModificationDetection();
         }
 
         private void StartModificationDetection()
@@ -206,7 +212,6 @@ namespace SRI.Editor.Main
                     {
                         TransparencyLevelHint = WindowTransparencyLevel.Blur;
                     }
-
                 }
             }
             else
@@ -217,7 +222,6 @@ namespace SRI.Editor.Main
         }
         void __find_all_controls()
         {
-
             TabPageButtons = this.FindControl<StackPanel>("TabPageButtons");
             ShapesList = this.FindControl<StackPanel>("ShapesList");
             FileList = this.FindControl<StackPanel>("FileList");
@@ -257,7 +261,6 @@ namespace SRI.Editor.Main
         }
         public void ApplyConfiguration()
         {
-
             ApplyVisualConfiguration();
             ApplyLocalization();
         }
@@ -294,11 +297,9 @@ namespace SRI.Editor.Main
             DialogRoot.Children.Remove(dialog as SRIDialog);
             if (OpenedDialogs.Count > 0)
             {
-
             }
             else
             {
-
                 DialogRoot.IsVisible = false;
                 Main_Root.IsEnabled = true;
             }
@@ -331,7 +332,6 @@ namespace SRI.Editor.Main
                         }
                         else
                         {
-
                             OpenFileEditor(new FileInfo(FILE));
                         }
                     }
