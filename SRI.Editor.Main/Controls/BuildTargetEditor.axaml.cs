@@ -18,15 +18,12 @@ namespace SRI.Editor.Main.Controls
         }
         public BuildTargetEditor(BuildTarget target)
         {
-
             InitializeComponent();
             InitEvents();
             ApplyLocalization();
             {
-
                 NameBox.Text = target.Name;
                 OutputBox.Text = target.OutputName;
-
                 FileBox.Text = target.File;
                 ForegroundBox.Text = target.Foreground;
                 BackgroundBox.Text = target.Background;
@@ -46,7 +43,6 @@ namespace SRI.Editor.Main.Controls
             };
             DuplicateButton.Click += (_, _) =>
             {
-
                 (Parent as StackPanel).Children.Add(new BuildTargetEditor(this.ObtainBuildTarget()));
             };
         }
@@ -60,7 +56,6 @@ namespace SRI.Editor.Main.Controls
             __target.Background = BackgroundBox.Text;
             __target.Width = int.Parse(WidthBox.Text);
             __target.Height = int.Parse(HeightBox.Text);
-
             foreach (var item in Symbols.Children)
             {
                 if (item is KVBox kv)
@@ -87,6 +82,10 @@ namespace SRI.Editor.Main.Controls
         TextBlock SourceB;
         TextBlock OutputB;
         TextBlock Symbols_Text;
+        TextBlock ForegroundBlock;
+        TextBlock BackgroundBlock;
+        TextBlock WidthBlock;
+        TextBlock HeightBlock;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -104,6 +103,10 @@ namespace SRI.Editor.Main.Controls
             NameB = this.FindControl<TextBlock>("NameB");
             SourceB = this.FindControl<TextBlock>("SourceB");
             OutputB = this.FindControl<TextBlock>("OutputB");
+            ForegroundBlock = this.FindControl<TextBlock>("ForegroundBlock");
+            BackgroundBlock = this.FindControl<TextBlock>("BackgroundBlock");
+            WidthBlock = this.FindControl<TextBlock>("WidthBlock");
+            HeightBlock = this.FindControl<TextBlock>("HeightBlock");
             this.FindControl<Button>("RemoveButton").Click += (_, _) =>
             {
                 (Parent as StackPanel).Children.Remove(this);
@@ -113,12 +116,20 @@ namespace SRI.Editor.Main.Controls
         static LocalizedString LName = new LocalizedString("Project.Name", "Name");
         static LocalizedString LSource = new LocalizedString("Project.Source", "Source File");
         static LocalizedString LOutput = new LocalizedString("Project.Output", "Output File");
+        static LocalizedString LForegroundBlock = new LocalizedString("Foreground", "Foreground");
+        static LocalizedString LBackgroundBlock = new LocalizedString("Background", "Background");
+        static LocalizedString LWidthBlock = new LocalizedString("Width", "Width");
+        static LocalizedString LHeightBlock = new LocalizedString("Height", "Background");
         public void ApplyLocalization()
         {
             Symbols_Text.Text = LSymbols;
             NameB.Text = LName;
             SourceB.Text = LSource;
             OutputB.Text = LOutput;
+            ForegroundBlock.Text = LForegroundBlock;
+            BackgroundBlock.Text = LBackgroundBlock;
+            WidthBlock.Text = LWidthBlock;
+            HeightBlock.Text = LHeightBlock;
         }
     }
 }

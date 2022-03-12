@@ -36,7 +36,7 @@ namespace SRI.Editor.Main
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
-                .UsePlatformDetect().UseDirect2D1()
+                .UsePlatformDetect()
                 .LogToTrace();
     }
 }

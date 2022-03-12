@@ -108,7 +108,7 @@ namespace ScalableRelativeImage.Nodes
                 var Name = Source.Substring(4);
                 var sub = profile.Ref(Name);
                 var __LT = profile.FindTargetPoint(sub.X, sub.Y);
-                var ___rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)__LT.X, (int)__LT.Y), 
+                var ___rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)__LT.X, (int)__LT.Y),
                     new Size((int)(sub.Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(sub.Height / profile.root.RelativeHeight * profile.TargetHeight)));
                 var wR = ((float)_rect.Width) / (float)___rect.Width;
                 var hR = ((float)_rect.Height) / (float)___rect.Height;
@@ -129,7 +129,7 @@ namespace ScalableRelativeImage.Nodes
                 if (Background is not null)
                     g.FillRectangle(new SolidBrush(Background.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
                 else
-                g.FillRectangle(new SolidBrush(p.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
+                    g.FillRectangle(new SolidBrush(p.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
                 g.SmoothingMode = profile.SmoothingMode;
                 g.TextRenderingHint = profile.TextRenderingHint;
                 g.InterpolationMode = profile.InterpolationMode;

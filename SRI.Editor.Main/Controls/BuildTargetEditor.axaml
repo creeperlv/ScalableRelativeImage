@@ -58,13 +58,13 @@
 				<RowDefinition/>
 				<RowDefinition/>
 			</Grid.RowDefinitions>
-			<TextBlock Text="Foreground" VerticalAlignment="Center"/>
+			<TextBlock Text="Foreground" Name="ForegroundBlock" VerticalAlignment="Center"/>
 			<TextBox Name="ForegroundBox" Grid.Column="1"/>
-			<TextBlock Text="Background" VerticalAlignment="Center" Grid.Row="1"/>
+			<TextBlock Text="Background" Name="BackgroundBlock" VerticalAlignment="Center" Grid.Row="1"/>
 			<TextBox Name="BackgroundBox" Grid.Column="1" Grid.Row="1"/>
-			<TextBlock Text="Width" VerticalAlignment="Center" Grid.Row="2"/>
+			<TextBlock Text="Width" Name="WidthBlock" VerticalAlignment="Center" Grid.Row="2"/>
 			<TextBox Name="WidthBox" Grid.Column="1" Grid.Row="2"/>
-			<TextBlock Text="Height" VerticalAlignment="Center" Grid.Row="3"/>
+			<TextBlock Text="Height" Name="HeightBlock" VerticalAlignment="Center" Grid.Row="3"/>
 			<TextBox Name="HeightBox" Grid.Column="1" Grid.Row="3"/>
 		</Grid>
 		<Grid>

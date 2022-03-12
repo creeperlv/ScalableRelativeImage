@@ -44,3 +44,8 @@ BuildTargets=构建目标
 BuildConfigurations=构建配置
 
 ApplyDesignSymbol=应用"DESIGN"符号
+
+Background=背景
+Foreground=前景
+Width=宽
+Height=高

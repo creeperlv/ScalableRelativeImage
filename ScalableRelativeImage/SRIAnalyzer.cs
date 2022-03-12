@@ -118,7 +118,6 @@ namespace ScalableRelativeImage
                             }
                             else
                             {
-
                             }
                         }
                         catch (Exception)

@@ -371,7 +371,6 @@ namespace SRI.Editor.Main
             }
             catch (Exception e)
             {
-
             }
         }
 

@@ -66,8 +66,6 @@ namespace ScalableRelativeImage.Nodes
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-
-
             List<PointF> Points = new();
             List<byte> Types = new();
             //foreach (var item in this.Points)

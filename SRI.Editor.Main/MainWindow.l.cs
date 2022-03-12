@@ -1,4 +1,5 @@
-﻿using CLUNL.Localization;
+﻿using Avalonia.Controls;
+using CLUNL.Localization;
 using SRI.Localization;
 using System;
 using System.Collections.Generic;

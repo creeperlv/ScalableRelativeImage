@@ -88,17 +88,16 @@ namespace ScalableRelativeImage
         }
         public PointF FindTargetPoint(float RX, float RY, GraphicNode node = null)
         {
-            PointF p = new(((RX / root.RelativeWidth) * TargetWidth), ((RY / root.RelativeWidth) * TargetHeight));
+            PointF p = new(((RX / root.RelativeWidth) * TargetWidth), ((RY / root.RelativeHeight) * TargetHeight));
             if (node != null)
             {
                 if (node.Parent != null)
                 {
                     if (node.Parent is ILayoutable l)
                     {
-                        p = new((((RX + l.X) / root.RelativeWidth) * TargetWidth), (((RY + l.Y) / root.RelativeWidth) * TargetHeight));
+                        p = new((((RX + l.X) / root.RelativeWidth) * TargetWidth), (((RY + l.Y) / root.RelativeHeight) * TargetHeight));
                     }
                 }
-
             }
             return p;
         }

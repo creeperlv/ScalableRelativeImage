@@ -44,3 +44,8 @@ BuildTargets=Build Targets
 BuildConfigurations=Build Configurations
 
 ApplyDesignSymbol=Apply "DESIGN" Symbol
+
+Background=Background
+Foreground=Foreground
+Width=Width
+Height=Height
