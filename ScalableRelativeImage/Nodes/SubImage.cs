@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
-    public class SubImage : GraphicNode, IContainer
+    public class SubImage : GraphicNode, IContainer, ISoftCopyable
     {
         public List<GraphicNode> Children = new();
         public float X { get; set; }
@@ -163,12 +164,32 @@ namespace ScalableRelativeImage.Nodes
                     g.RotateTransform(-Rotation);
                     g.TranslateTransform(-(float)W / 2, -(float)H / 2);
                 }
-                int _W = (int)(W / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio);
-                int _H = (int)(H / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio);
-                _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)(LT.X-(_W- _rect.Width)/2), (int)(LT.Y-(_H-_rect.Height)/2)), new Size(_W,_H));
-                TargetGraphics.DrawImage(FB, _rect, 0, 0, W,H, GraphicsUnit.Pixel);
+                int _W = (int)(W / 1 * ScaledWidthRatio);
+                int _H = (int)(H / 1 * ScaledHeightRatio);
+                Trace.WriteLine($"Rotated:{W}x{H},{_W}x{_H}");
+                _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)(LT.X - (_W - _rect.Width) / 2), (int)(LT.Y - (_H - _rect.Height) / 2)), new Size(_W, _H));
+                TargetGraphics.DrawImage(FB, _rect, 0, 0, W, H, GraphicsUnit.Pixel);
             }
             b.Dispose();
+        }
+
+        public ISoftCopyable SoftCopy()
+        {
+            return new SubImage
+            {
+                Background = Background,
+                Children = Children,
+                Height = Height,
+                Width = Width,
+                Name = Name,
+                Parent = Parent,
+                root = root,
+                Rotation = Rotation,
+                ScaledHeightRatio = ScaledHeightRatio,
+                ScaledWidthRatio = ScaledWidthRatio,
+                X = X,
+                Y = Y,
+            };
         }
     }
 }

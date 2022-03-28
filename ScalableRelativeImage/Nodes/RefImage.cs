@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScalableRelativeImage.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -16,7 +17,8 @@ namespace ScalableRelativeImage.Nodes
         public float Height;
         public float ScaledWidthRatio = 1f;
         public float ScaledHeightRatio = 1f;
-        public Color? Background;
+        public IntermediateValue Rotation = null;
+        public IntermediateValue Background = null;
         public string Source = "";
         public override Dictionary<string, string> GetValueSet()
         {
@@ -28,9 +30,10 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("ScaledWidthRatio", ScaledWidthRatio.ToString());
             dict.Add("ScaledHeightRatio", ScaledHeightRatio.ToString());
             dict.Add("Source", Source.ToString());
+            if (Rotation is not null)
+                dict.Add("Rotation", Rotation.Value);
             if (Background is not null)
-                if (Background.HasValue is true)
-                    dict.Add("Background", "#" + Background.Value.ToArgb().ToString("X"));
+                dict.Add("Background", Background.Value);
             return dict;
         }
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
@@ -57,7 +60,14 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "Background":
                     {
-                        Background = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                        Background = new IntermediateValue();
+                        Background.Value = Value;
+                    }
+                    break;
+                case "Rotation":
+                    {
+                        Rotation = new IntermediateValue();
+                        Rotation.Value = Value;
                     }
                     break;
                 case "Source":
@@ -106,7 +116,11 @@ namespace ScalableRelativeImage.Nodes
             if (Source.StartsWith("Ref:"))
             {
                 var Name = Source.Substring(4);
-                var sub = profile.Ref(Name);
+                var sub = profile.Ref(Name).SoftCopy() as SubImage;
+                if (Rotation is not null)
+                {
+                    sub.Rotation = Rotation.GetFloat(profile.CurrentSymbols, 0f);
+                }
                 var __LT = profile.FindTargetPoint(sub.X, sub.Y);
                 var ___rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)__LT.X, (int)__LT.Y),
                     new Size((int)(sub.Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(sub.Height / profile.root.RelativeHeight * profile.TargetHeight)));
@@ -127,7 +141,7 @@ namespace ScalableRelativeImage.Nodes
                 Bitmap Bit = new Bitmap((int)p.TargetWidth, (int)p.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
                 Graphics g = Graphics.FromImage(Bit);
                 if (Background is not null)
-                    g.FillRectangle(new SolidBrush(Background.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
+                    g.FillRectangle(new SolidBrush(Background.GetColor(profile.CurrentSymbols)), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
                 else
                     g.FillRectangle(new SolidBrush(p.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
                 g.SmoothingMode = profile.SmoothingMode;
@@ -144,7 +158,7 @@ namespace ScalableRelativeImage.Nodes
 
                 var sri = SRIEngine.Deserialize(profile.FindFile(Source));
                 var p = profile.Copy(sri);
-                if (Background is not null) p.DefaultBackground = Background;
+                if (Background is not null) p.DefaultBackground = Background.GetColor(profile.CurrentSymbols);
                 p.TargetWidth = rect.Width;
                 p.TargetHeight = rect.Height;
                 var img = sri.Render(p);

@@ -24,17 +24,14 @@ namespace ScalableRelativeImage.Nodes
         {
             return null;
         }
-
         public virtual List<INode> ListNodes()
         {
             return null;
         }
-
         public virtual void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
 
         }
-
         public virtual void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             executionWarnings.Add(new DataDisposedWarning(Key, Value));
