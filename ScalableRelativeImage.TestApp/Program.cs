@@ -47,7 +47,7 @@ namespace ScalableRelativeImage.TestApp
                     text.Width = 15;
                     text.Height = 5;
                     text.Content = "Hello, world!";
-                    text.FontFamily = "Arial";
+                    text.FontFamily = new Core.IntermediateValue() { Value= "Arial" };
                     text.RelativeFontSize=0.2f;
                     image.AddNode(text,ref warnings);
                 }

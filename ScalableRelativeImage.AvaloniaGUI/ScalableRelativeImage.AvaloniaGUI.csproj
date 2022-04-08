@@ -20,7 +20,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
    </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScalableRelativeImage\ScalableRelativeImage.csproj" />
+    <ProjectReference Include="..\ScalableRelativeImage\SRI.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Global.Designer.cs">

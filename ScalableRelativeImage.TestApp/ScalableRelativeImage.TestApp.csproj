@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScalableRelativeImage\ScalableRelativeImage.csproj" />
+    <ProjectReference Include="..\ScalableRelativeImage\SRI.Core.csproj" />
   </ItemGroup>
 
 </Project>
