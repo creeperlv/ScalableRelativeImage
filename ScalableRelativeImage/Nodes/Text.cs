@@ -21,6 +21,7 @@ namespace ScalableRelativeImage.Nodes
         public float Width;
         public float Height;
         public StringAlignment Align = StringAlignment.Near;
+        public StringAlignment VerticalAlign = StringAlignment.Near;
 
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
@@ -78,6 +79,11 @@ namespace ScalableRelativeImage.Nodes
                         Align = Enum.Parse<StringAlignment>(Value);
                     }
                     break;
+                case "VerticalAlign":
+                    {
+                        Align = Enum.Parse<StringAlignment>(Value);
+                    }
+                    break;
                 default:
                     base.SetValue(Key, Value, ref executionWarnings);
                     break;
@@ -97,6 +103,7 @@ namespace ScalableRelativeImage.Nodes
             result.Add("Width", Width.ToString());
             result.Add("Height", Height.ToString());
             result.Add("Align", Align.ToString());
+            result.Add("VerticalAlign", Align.ToString());
             if (Foreground is not null)
                 result.Add("Color", Foreground.Value);
             return result;
@@ -106,13 +113,13 @@ namespace ScalableRelativeImage.Nodes
             var p0 = profile.FindTargetPoint(X, Y);
             var AW = Width / profile.root.RelativeWidth * profile.TargetWidth;
             var AH = Height / profile.root.RelativeHeight * profile.TargetHeight;
-            float FS = RelativeFontSize > 0 ? RelativeFontSize * (profile.TargetHeight / profile.root.RelativeWidth) : -RelativeFontSize;
+            float FS =  RelativeFontSize > 0 ? profile.FindAbsoluteSize(RelativeFontSize) : -RelativeFontSize;
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
             TargetGraphics.DrawString(Content,
                 new Font(FontFamily.GetString(profile.CurrentSymbols, "Arial"), FS, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle))
-                , new SolidBrush(Color), new RectangleF(p0, new SizeF(AW, AH)), new StringFormat { Alignment = Align });
+                , new SolidBrush(Color), new RectangleF(p0, new SizeF(AW, AH)), new StringFormat { Alignment = Align,LineAlignment= VerticalAlign });
         }
     }
 }
