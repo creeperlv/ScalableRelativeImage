@@ -81,7 +81,7 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "VerticalAlign":
                     {
-                        Align = Enum.Parse<StringAlignment>(Value);
+                        VerticalAlign = Enum.Parse<StringAlignment>(Value);
                     }
                     break;
                 default:
@@ -103,7 +103,7 @@ namespace ScalableRelativeImage.Nodes
             result.Add("Width", Width.ToString());
             result.Add("Height", Height.ToString());
             result.Add("Align", Align.ToString());
-            result.Add("VerticalAlign", Align.ToString());
+            result.Add("VerticalAlign", VerticalAlign.ToString());
             if (Foreground is not null)
                 result.Add("Color", Foreground.Value);
             return result;
