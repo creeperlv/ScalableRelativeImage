@@ -26,27 +26,56 @@ namespace SRI.CLI
                 Output.OutLine(new WarnMsg { ID = "CONFIG_NOT_SPEC", Fallback = "Target Configuration is not specified, using first configuration." });
                 __configuration = PE.CoreProject.BuildConfigurations.First().Name;
             }
-
-            ProjectEngine.BuildSync(PE, __configuration, (i, t) =>
+            if (__configuration.ToUpper() == "(ALL)")
             {
-                Output.OutLine($"[{i}]Building:{t.Name}");
-            }, (i, t) =>
-            {
-                Output.OutLine($"[{i}]Done:{t.Name}");
-            }, () =>
-            {
-                Output.OutLine("Done");
-            }, (e) =>
-            {
-                Output.OutLine(new ErrorMsg { ID = "Failed.RDM", Fallback = $"Failed:{e}" });
-            }, (i, w) =>
-            {
-                foreach (var item in w)
+                foreach (var item in PE.CoreProject.BuildConfigurations)
                 {
-                    Output.OutLine(new WarnMsg { ID = "Exec.Warn." + item.ID, Fallback = $"Warn:{item.Message}" });
 
+                    ProjectEngine.BuildSync(PE, item.Name, (i, t) =>
+                    {
+                        Output.OutLine($"[{i}]Building:{t.Name}");
+                    }, (i, t) =>
+                    {
+                        Output.OutLine($"[{i}]Done:{t.Name}");
+                    }, () =>
+                    {
+                        Output.OutLine("Done");
+                    }, (e) =>
+                    {
+                        Output.OutLine(new ErrorMsg { ID = "Failed.RDM", Fallback = $"Failed:{e}" });
+                    }, (i, w) =>
+                    {
+                        foreach (var item in w)
+                        {
+                            Output.OutLine(new WarnMsg { ID = "Exec.Warn." + item.ID, Fallback = $"Warn:{item.Message}" });
+
+                        }
+                    });
                 }
-            });
+            }
+            else
+            {
+                ProjectEngine.BuildSync(PE, __configuration, (i, t) =>
+                {
+                    Output.OutLine($"[{i}]Building:{t.Name}");
+                }, (i, t) =>
+                {
+                    Output.OutLine($"[{i}]Done:{t.Name}");
+                }, () =>
+                {
+                    Output.OutLine("Done");
+                }, (e) =>
+                {
+                    Output.OutLine(new ErrorMsg { ID = "Failed.RDM", Fallback = $"Failed:{e}" });
+                }, (i, w) =>
+                {
+                    foreach (var item in w)
+                    {
+                        Output.OutLine(new WarnMsg { ID = "Exec.Warn." + item.ID, Fallback = $"Warn:{item.Message}" });
+
+                    }
+                });
+            }
         }
     }
 }

@@ -16,7 +16,7 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<ToggleButton Name="Toggle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-					  IsChecked="True" Content="{Binding #NameBox.Text}"></ToggleButton>
+					  IsChecked="False" Content="{Binding #NameBox.Text}"></ToggleButton>
 		<Button Grid.Column="1" Classes="Toolbar" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="DuplicateButton">
 			<Viewbox Width="18" Height="18">
 				<Canvas Width="24" Height="24">
