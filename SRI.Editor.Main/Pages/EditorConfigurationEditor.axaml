@@ -41,6 +41,7 @@
 			<StackPanel>
 				<Button Content="Visual" Name="VisualButton"/>
 				<Button Content="Localization" Name="LocalizationButton"/>
+				<Button Content="Hardware Acceleration" Name="AccelerationButton"/>
 			</StackPanel>
 		</ScrollViewer>
 		<ScrollViewer Grid.Column="1" Background="#80222222">
@@ -53,7 +54,11 @@
 					</StackPanel>
 					<StackPanel Name="LocalizationPanel" IsVisible="false">
 						<TextBlock Text="Language code in use:"/>
-						<ComboBox Name="LanguageBox"></ComboBox>	
+						<ComboBox Name="LanguageBox"></ComboBox>
+					</StackPanel>
+					<StackPanel Name="AccelerationPanel" IsVisible="false">
+						<TextBlock Text="Accleration Platform (CLUNL.Imaging)"/>
+						<ComboBox Name="CLUNLAP"></ComboBox>
 					</StackPanel>
 				</Grid>
 			</Border>

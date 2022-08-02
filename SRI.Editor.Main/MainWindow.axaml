@@ -207,11 +207,12 @@
 			<Border Grid.Row="2" BorderThickness="8" Padding="0" BorderBrush="#A333">
 				<Grid>
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="200"/>
+						<ColumnDefinition Width="2"/>
 						<ColumnDefinition Width="Auto"/>
 						<ColumnDefinition/>
 					</Grid.ColumnDefinitions>
-					<Grid Width="200" Background="#A333" IsVisible="{Binding #ProjectBrowserToggle.IsChecked}">
+					<Grid Background="#A333" IsVisible="{Binding #ProjectBrowserToggle.IsChecked}">
 						<!--Project Browser-->
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto"/>
@@ -227,7 +228,8 @@
 							</ScrollViewer>
 						</Grid>
 					</Grid>
-					<Grid Width="220" Grid.Column="1" Background="#A333"  IsVisible="{Binding #ShapesListToggle.IsChecked}">
+					<GridSplitter Grid.Column="1" Background="#A0404040" Foreground="#A0404040"/>
+					<Grid Width="220" Grid.Column="2" Background="#A333"  IsVisible="{Binding #ShapesListToggle.IsChecked}">
 						<!--Shapes-->
 
 						<Grid.RowDefinitions>
@@ -248,7 +250,7 @@
 							<StackPanel Name="ShapesList"></StackPanel>
 						</ScrollViewer>
 					</Grid>
-					<Grid Background="#8222" Grid.Column="2">
+					<Grid Background="#8222" Grid.Column="3">
 						<!--Content Area-->
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto"/>

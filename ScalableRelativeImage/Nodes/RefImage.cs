@@ -139,6 +139,7 @@ namespace ScalableRelativeImage.Nodes
                 var __rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)_LT.X, (int)_LT.Y), new Size(
                         (int)(sub.Width / p.root.RelativeWidth * p.TargetWidth), (int)(sub.Height / p.root.RelativeHeight * p.TargetHeight)));
                 Bitmap Bit = new Bitmap((int)p.TargetWidth, (int)p.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                p.WorkingBitmap = Bit;
                 Graphics g = Graphics.FromImage(Bit);
                 if (Background is not null)
                     g.FillRectangle(new SolidBrush(Background.GetColor(profile.CurrentSymbols)), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));

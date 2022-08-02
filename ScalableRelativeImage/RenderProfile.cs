@@ -19,6 +19,8 @@ namespace ScalableRelativeImage
         public SmoothingMode SmoothingMode = SmoothingMode.HighQuality;
         internal IContainer root;
         public string WorkingDirectory = Environment.CurrentDirectory;
+        public int RendererOptions=3;
+        public Bitmap WorkingBitmap;
         public SubImage Ref(string Name)
         {
             return Ref(root, Name);

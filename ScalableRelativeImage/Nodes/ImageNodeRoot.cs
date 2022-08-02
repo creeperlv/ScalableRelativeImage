@@ -106,6 +106,7 @@ namespace ScalableRelativeImage.Nodes
             g.SmoothingMode = profile.SmoothingMode;
             g.TextRenderingHint = profile.TextRenderingHint;
             g.InterpolationMode = profile.InterpolationMode;
+            profile.WorkingBitmap = Bit;
             foreach (var item in Children)
             {
                 item.Paint(ref g, profile);

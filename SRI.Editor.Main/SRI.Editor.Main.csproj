@@ -13,12 +13,12 @@
     <AvaloniaResource Include="Icon-1024.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.15" />
+    <PackageReference Include="Avalonia" Version="0.10.17" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.12.2" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.17" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.11" />
-    <PackageReference Include="Avalonia.Direct2D1" Version="0.10.15" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.17" />
+    <PackageReference Include="Avalonia.Direct2D1" Version="0.10.17" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta1" />
    </ItemGroup>
   <ItemGroup>

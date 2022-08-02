@@ -103,6 +103,7 @@ namespace SRI.Editor.Main.Data
         }
         public static EditorConfiguration CurrentConfiguration = new EditorConfiguration();
         public bool isBlurEnabled = true;
+        public int ComputeMode = 0;
         public bool TransparentInsteadOfBlur = false;
     }
 }

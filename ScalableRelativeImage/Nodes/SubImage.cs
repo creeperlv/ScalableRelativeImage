@@ -124,6 +124,7 @@ namespace ScalableRelativeImage.Nodes
             //Keep the references.
             subProfile.TargetWidth = rect.Width;
             subProfile.TargetHeight = rect.Height;
+            subProfile.WorkingBitmap = b;
             {
                 Graphics g = Graphics.FromImage(b);
                 {
@@ -132,7 +133,7 @@ namespace ScalableRelativeImage.Nodes
                     g.InterpolationMode = profile.InterpolationMode;
                     foreach (var item in Children)
                     {
-                        item.Paint(ref g, profile);
+                        item.Paint(ref g, subProfile);
                     }
                     if (Background is not null)
                     {
