@@ -28,9 +28,10 @@ namespace SRI.CLI
             }
             if (__configuration.ToUpper() == "(ALL)")
             {
+                int CI = 0;
                 foreach (var item in PE.CoreProject.BuildConfigurations)
                 {
-
+                    Output.OutLine($"<{CI}>Configuration:{item.Name}");
                     ProjectEngine.BuildSync(PE, item.Name, (i, t) =>
                     {
                         Output.OutLine($"[{i}]Building:{t.Name}");
@@ -51,6 +52,7 @@ namespace SRI.CLI
 
                         }
                     });
+                    CI++;
                 }
             }
             else
