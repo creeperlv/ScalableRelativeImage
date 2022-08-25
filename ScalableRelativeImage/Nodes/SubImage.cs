@@ -122,8 +122,8 @@ namespace ScalableRelativeImage.Nodes
             var b = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var subProfile = profile.Copy(profile.root);
             //Keep the references.
-            subProfile.TargetWidth = rect.Width;
-            subProfile.TargetHeight = rect.Height;
+            //subProfile.TargetWidth = rect.Width;
+            //subProfile.TargetHeight = rect.Height;
             subProfile.WorkingBitmap = b;
             {
                 Graphics g = Graphics.FromImage(b);
