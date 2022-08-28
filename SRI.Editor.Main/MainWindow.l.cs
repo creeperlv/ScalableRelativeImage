@@ -3,6 +3,7 @@ using CLUNL.Localization;
 using SRI.Localization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,22 +29,22 @@ namespace SRI.Editor.Main
         static LocalizedString LSRIEditor = new LocalizedString("SRIEditor.Title", "SRI Editor");
         public void ApplyLocalization()
         {
-            File_.Header = SFile_;
-            File_Open.Header = SFile_Open;
-            File_Open_File.Header = SFile_Open_File;
-            Help_About.Header = LAbout;
-            File_Open_Project.Header = LMBProject;
-            File_New_Proj.Header = LMBProject;
+            File_.Header = SFile_.ToString();
+            File_Open.Header = SFile_Open.ToString();
+            File_Open_File.Header = SFile_Open_File.ToString();
+            Help_About.Header = LAbout.ToString();
+            File_Open_Project.Header = LMBProject.ToString();
+            File_New_Proj.Header = LMBProject.ToString();
             Project_Block.Text = LProject;
-            File_Save.Header = LFile_Save;
-            File_SaveAs.Header = LFile_SaveAs;
-            File_Exit.Header = LExit;
-            Build_BuildProject.Header = LMBProject;
-            Menu_Build.Header = LBuild;
-            File_New.Header = LNew;
-            File_New_SRI.Header = LNSRI;
-            Menu_Tools.Header = LTools;
-            Menu_Help.Header = LHelp;
+            File_Save.Header = LFile_Save.ToString();
+            File_SaveAs.Header = LFile_SaveAs.ToString();
+            File_Exit.Header = LExit.ToString();
+            Build_BuildProject.Header = LMBProject.ToString();
+            Menu_Build.Header = LBuild.ToString();
+            File_New.Header = LNew.ToString();
+            File_New_SRI.Header = LNSRI.ToString();
+            Menu_Tools.Header = LTools.ToString();
+            Menu_Help.Header = LHelp.ToString();
             TitleBlock.Text = LSRIEditor;
             foreach (var item in TabPageContent.Children)
             {
