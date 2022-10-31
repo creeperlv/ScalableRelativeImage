@@ -59,17 +59,24 @@ namespace SRI.Editor.Main.Pages
             }
             if (GPU.Count == 0)
             {
-                var gpus = CommonGPUAcceleration.EnumerateGPUs();
-                GPU.Add("Software");
-                foreach (var item in gpus)
+                try
                 {
-                    ErrorCode ec;
-                    string Name = Cl.GetDeviceInfo(item, DeviceInfo.Name, out ec)
-                        + "," +
-                        Cl.GetPlatformInfo(Cl.GetDeviceInfo(item, DeviceInfo.Platform, out ec).CastTo<Platform>(), PlatformInfo.Name, out ec) +
-                         "," +
-                        Cl.GetPlatformInfo(Cl.GetDeviceInfo(item, DeviceInfo.Platform, out ec).CastTo<Platform>(), PlatformInfo.Version, out ec);
-                    GPU.Add(Name);
+                    var gpus = CommonGPUAcceleration.EnumerateGPUs();
+                    GPU.Add("Software");
+                    foreach (var item in gpus)
+                    {
+                        ErrorCode ec;
+                        string Name = Cl.GetDeviceInfo(item, DeviceInfo.Name, out ec)
+                            + "," +
+                            Cl.GetPlatformInfo(Cl.GetDeviceInfo(item, DeviceInfo.Platform, out ec).CastTo<Platform>(), PlatformInfo.Name, out ec) +
+                             "," +
+                            Cl.GetPlatformInfo(Cl.GetDeviceInfo(item, DeviceInfo.Platform, out ec).CastTo<Platform>(), PlatformInfo.Version, out ec);
+                        GPU.Add(Name);
+                    }
+                }
+                catch (System.Exception)
+                {
+
                 }
             }
             CLUNLAP.Items = GPU;

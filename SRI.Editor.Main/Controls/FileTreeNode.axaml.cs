@@ -293,10 +293,10 @@ namespace SRI.Editor.Main.Controls
         static LocalizedString LOpen = new LocalizedString("Menu.File_Open", "_Open");
         public void ApplyLocalization()
         {
-            Menu_Open.Header = LOpen;
-            Menu_New_Folder.Header = LFolder;
-            NewMenu.Header = LNew;
-            OpenWithMenu.Header = LOpenWithMenu;
+            Menu_Open.Header = LOpen.ToString();
+            Menu_New_Folder.Header = LFolder.ToString();
+            NewMenu.Header = LNew.ToString();
+            OpenWithMenu.Header = LOpenWithMenu.ToString();
         }
     }
 }
