@@ -4,4 +4,8 @@
     {
         ISoftCopyable SoftCopy();
     }
+    public interface ISoftCopyable<T>
+    {
+        T SoftCopy();
+    }
 }

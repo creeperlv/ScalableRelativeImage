@@ -116,7 +116,7 @@ namespace ScalableRelativeImage.Nodes
             if (Source.StartsWith("Ref:"))
             {
                 var Name = Source.Substring(4);
-                var sub = profile.Ref(Name).SoftCopy() as SubImage;
+                var sub = profile.Ref(Name).SoftCopy();
                 if (Rotation is not null)
                 {
                     sub.Rotation = Rotation.GetFloat(profile.CurrentSymbols, 0f);

@@ -23,9 +23,11 @@ namespace ScalableRelativeImage.Nodes
         }
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> dict = new();
-            dict.Add("X", X.ToString());
-            dict.Add("Y", Y.ToString());
+            Dictionary<string, string> dict = new()
+            {
+                { "X", X.ToString() },
+                { "Y", Y.ToString() }
+            };
             return dict;
         }
     }

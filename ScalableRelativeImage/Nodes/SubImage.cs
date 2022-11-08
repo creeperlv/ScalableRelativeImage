@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
-    public class SubImage : GraphicNode, IContainer, ISoftCopyable
+    public class SubImage : GraphicNode, IContainer, ISoftCopyable<SubImage>
     {
         public List<GraphicNode> Children = new();
         public float X { get; set; }
@@ -174,7 +174,7 @@ namespace ScalableRelativeImage.Nodes
             b.Dispose();
         }
 
-        public ISoftCopyable SoftCopy()
+        public SubImage SoftCopy()
         {
             return new SubImage
             {

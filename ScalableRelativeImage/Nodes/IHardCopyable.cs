@@ -2,6 +2,6 @@
 {
     public interface IHardCopyable
     {
-        ISoftCopyable HardCopy();
+        IHardCopyable HardCopy();
     }
 }
