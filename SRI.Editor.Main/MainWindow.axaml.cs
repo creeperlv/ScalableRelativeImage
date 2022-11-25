@@ -369,7 +369,7 @@ namespace SRI.Editor.Main
                     ShowPage(t);
                 }
             }
-            catch (Exception e)
+            catch 
             {
             }
         }

@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
 	  <ApplicationIcon>Icon-1024.ico</ApplicationIcon>
-	  <Version>0.0.1</Version>
+	  <Version>0.0.2</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
@@ -19,7 +19,7 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />
     <PackageReference Include="Avalonia.Direct2D1" Version="0.10.18" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SRI.Editor.Core\SRI.Editor.Core.csproj" />
