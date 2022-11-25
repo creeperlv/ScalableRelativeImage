@@ -4,22 +4,27 @@ using System.Drawing;
 
 namespace ScalableRelativeImage.Nodes
 {
+    /// <summary>
+    /// A line from x0,y0 to x1,y1 with s size.
+    /// </summary>
     public class Line : GraphicNode
     {
-        public float StartX = 0;
-        public float StartY = 0;
-        public float EndX = 0;
-        public float EndY = 0;
-        public float Size = 0;
-        public IntermediateValue Foreground=null;
+        public IntermediateValue StartX = new IntermediateValue() { Value = "0" };
+        public IntermediateValue StartY = new IntermediateValue() { Value = "0" };
+        public IntermediateValue EndX = new IntermediateValue() { Value = "0" };
+        public IntermediateValue EndY = new IntermediateValue() { Value = "0" };
+        public IntermediateValue Size = new IntermediateValue() { Value = "0" };
+        public IntermediateValue Foreground = null;
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> dict = new();
-            dict.Add("StartX", StartX.ToString());
-            dict.Add("StartY", StartY.ToString());
-            dict.Add("EndX", EndX.ToString());
-            dict.Add("EndY", EndY.ToString());
-            dict.Add("Size", Size.ToString());
+            Dictionary<string, string> dict = new()
+            {
+                { "StartX", StartX.ToString() },
+                { "StartY", StartY.ToString() },
+                { "EndX", EndX.ToString() },
+                { "EndY", EndY.ToString() },
+                { "Size", Size.ToString() }
+            };
             if (Foreground is not null)
                 dict.Add("Color", Foreground.Value);
             return dict;
@@ -29,19 +34,19 @@ namespace ScalableRelativeImage.Nodes
             switch (Key)
             {
                 case "StartX":
-                    StartX = float.Parse(Value);
+                    StartX.Value=Value;
                     break;
                 case "StartY":
-                    StartY = float.Parse(Value);
+                    StartY.Value = Value;
                     break;
                 case "EndX":
-                    EndX = float.Parse(Value);
+                    EndX.Value = Value;
                     break;
                 case "EndY":
-                    EndY = float.Parse(Value);
+                    EndY.Value = Value;
                     break;
                 case "Size":
-                    Size = float.Parse(Value);
+                    Size.Value = Value;
                     break;
                 case "Color":
                     {
@@ -50,7 +55,7 @@ namespace ScalableRelativeImage.Nodes
                     }
                     break;
                 default:
-                    base.SetValue(Key, Value,ref executionWarnings);
+                    base.SetValue(Key, Value, ref executionWarnings);
                     break;
             }
         }
@@ -59,8 +64,10 @@ namespace ScalableRelativeImage.Nodes
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            float RealWidth = profile.FindAbsoluteSize(Size);
-            TargetGraphics.DrawLine(new Pen(Color, RealWidth), profile.FindTargetPoint(StartX, StartY), profile.FindTargetPoint(EndX, EndY));
+            float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
+            TargetGraphics.DrawLine(new Pen(Color, RealWidth),
+                profile.FindTargetPoint(StartX.GetFloat(profile.CurrentSymbols),StartY.GetFloat(profile.CurrentSymbols)), 
+                profile.FindTargetPoint(EndX.GetFloat(profile.CurrentSymbols), EndY.GetFloat(profile.CurrentSymbols)));
         }
     }
 }

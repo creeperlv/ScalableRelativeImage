@@ -63,7 +63,7 @@ namespace ScalableRelativeImage.Nodes
             foreach (var item in this.Points)
             {
                 var P = item as Point;
-                Points.Add(profile.FindTargetPoint(P.X, P.Y));
+                Points.Add(profile.FindTargetPoint(P.X.GetFloat(profile.CurrentSymbols), P.Y.GetFloat(profile.CurrentSymbols)));
             }
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));

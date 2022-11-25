@@ -27,7 +27,8 @@
                 },
                 Convert = (a, s) =>
                 {
-                    return IntermediateValue.GetFloat(a, s);
+                    var b=IntermediateValue.TryGetFloat(a, s,out var f);
+                    return new TResult<float> (f,b);
                 }
             };
             DoubleCalcuator = new CalcuatorTypeHelper<double>
@@ -50,7 +51,8 @@
                 },
                 Convert = (a, s) =>
                 {
-                    return IntermediateValue.GetDouble(a, s);
+                    var b=IntermediateValue.TryGetDouble(a, s,out var f);
+                    return new TResult<double> (f,b);    
                 }
             };
             IntCalcuator= new CalcuatorTypeHelper<int>
@@ -73,7 +75,8 @@
                 },
                 Convert = (a, s) =>
                 {
-                    return IntermediateValue.GetInt(a, s);
+                    var b = IntermediateValue.TryGetInt(a, s, out var f);
+                    return new TResult<int>(f, b);
                 }
             };
         }

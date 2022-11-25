@@ -12,7 +12,7 @@ namespace ScalableRelativeImage.Nodes
 {
     public class Lines : GraphicNode
     {
-        public float Size = 0;
+        public IntermediateValue Size = new IntermediateValue { Value = "0" };
         public IntermediateValue Foreground = null;
         public List<INode> Points = new List<INode>();
 
@@ -21,7 +21,7 @@ namespace ScalableRelativeImage.Nodes
             switch (Key)
             {
                 case "Size":
-                    Size = float.Parse(Value);
+                    Size.Value = Value;
                     break;
                 case "Color":
                     {
@@ -56,12 +56,12 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            float RealWidth = profile.FindAbsoluteSize(Size);
+            float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
             List<PointF> Points = new();
             foreach (var item in this.Points)
             {
                 var P = item as Point;
-                Points.Add(profile.FindTargetPoint(P.X, P.Y));
+                Points.Add(profile.FindTargetPoint(P.X.GetFloat(profile.CurrentSymbols), P.Y.GetFloat(profile.CurrentSymbols)));
             }
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));

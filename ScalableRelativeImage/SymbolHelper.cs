@@ -30,7 +30,7 @@ namespace ScalableRelativeImage
             else
                 return Fallback;
         }
-        public bool TryLookup(string Symbol, string Fallback = "", out string Result)
+        public bool TryLookup(string Symbol, out string Result, string Fallback = "")
         {
             if (Symbols.ContainsKey(Symbol))
             {

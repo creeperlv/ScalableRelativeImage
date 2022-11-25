@@ -14,16 +14,18 @@ namespace ScalableRelativeImage.Nodes
     }
     public class PathNode : GraphicNode
     {
-        public float X;
-        public float Y;
+        public IntermediateValue X="0";
+        public IntermediateValue Y="0";
         public PathNodeType NodeType = PathNodeType.Line;
 
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> _result = new();
-            _result.Add("X", X.ToString());
-            _result.Add("Y", X.ToString());
-            _result.Add("Type", NodeType.ToString());
+            Dictionary<string, string> _result = new()
+            {
+                { "X", X.ToString() },
+                { "Y", X.ToString() },
+                { "Type", NodeType.ToString() }
+            };
             return _result;
         }
 
@@ -37,10 +39,10 @@ namespace ScalableRelativeImage.Nodes
             switch (Key)
             {
                 case "X":
-                    X = float.Parse(Value);
+                    X.Value = Value;
                     break;
                 case "Y":
-                    Y = float.Parse(Value);
+                    Y.Value = Value;
                     break;
                 case "Type":
                     {
@@ -56,7 +58,7 @@ namespace ScalableRelativeImage.Nodes
     public class Path : GraphicNode
     {
 
-        public float Size = 0;
+        public IntermediateValue Size = "0";
         public IntermediateValue Foreground = null;
         public bool Fill = false;
         public List<INode> Points = new List<INode>();
@@ -66,7 +68,7 @@ namespace ScalableRelativeImage.Nodes
             switch (Key)
             {
                 case "Size":
-                    Size = float.Parse(Value);
+                    Size.Value = Value;
                     break;
                 case "Fill":
                     Fill = bool.Parse(Value);
@@ -105,7 +107,7 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            float RealWidth = profile.FindAbsoluteSize(Size);
+            float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
@@ -115,7 +117,7 @@ namespace ScalableRelativeImage.Nodes
             foreach (var item in this.Points)
             {
                 var P = item as PathNode;
-                Points.Add(profile.FindTargetPoint(P.X, P.Y));
+                Points.Add(profile.FindTargetPoint(P.X.GetFloat(profile.CurrentSymbols), P.Y.GetFloat(profile.CurrentSymbols)));
                 Types.Add((byte)(int)P.NodeType);
             }
             if (Fill is false)

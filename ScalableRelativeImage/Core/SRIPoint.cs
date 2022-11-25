@@ -57,12 +57,12 @@ namespace ScalableRelativeImage.Core
     [Serializable]
     public class SRIFloatPoint
     {
-        public float X;
-        public float Y;
+        public IntermediateValue X;
+        public IntermediateValue Y;
         public SRIFloatPoint()
         {
-            X = 0.0f;
-            Y = 0.0f;
+            X =new IntermediateValue { Value = "0"};
+            Y = new IntermediateValue { Value = "0" };
         }
         /// <summary>
         /// Format: x,y. e.g: 1,2
@@ -76,14 +76,14 @@ namespace ScalableRelativeImage.Core
             var GRP = str.Split(',');
             if (GRP.Length == 1)
             {
-                p.X = float.Parse(GRP[0]);
+                p.X = new IntermediateValue { Value = GRP[0]};
                 p.Y = p.X;
             }
             else
             if (GRP.Length == 2)
             {
-                p.X = float.Parse(GRP[0]);
-                p.Y = float.Parse(GRP[1]);
+                p.X = new IntermediateValue { Value = GRP[0] };
+                p.Y = new IntermediateValue { Value = GRP[1] };
             }
             else
             {

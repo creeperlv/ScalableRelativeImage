@@ -16,7 +16,14 @@ namespace SRI.Editor.Main
             {
                 Close(null,null);
             };
-            NameAreaButton.Click += (_, _) => { ParentContainer.ShowPage(this); };
+            NameAreaButton.PointerReleased += (_, b) => {
+                if(b.InitialPressMouseButton== Avalonia.Input.MouseButton.Middle)
+                {
+                    Close(null,null);
+                }
+            };
+            NameAreaButton.Click += (_, b) => { 
+                ParentContainer.ShowPage(this); };
         }
         Button NameAreaButton;
         Button CloseButton;

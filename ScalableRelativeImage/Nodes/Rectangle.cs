@@ -10,22 +10,24 @@ namespace ScalableRelativeImage.Nodes
 {
     public class Rectangle : GraphicNode
     {
-        public float X;
-        public float Y;
-        public float Width;
-        public float Height;
-        public float Size;
+        public IntermediateValue X;
+        public IntermediateValue Y;
+        public IntermediateValue Width;
+        public IntermediateValue Height;
+        public IntermediateValue Size;
         public bool Fill = false;
         public IntermediateValue Foreground=null;
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> dict = new();
-            dict.Add("X", X.ToString());
-            dict.Add("Y", Y.ToString());
-            dict.Add("Width", Width.ToString());
-            dict.Add("Height", Height.ToString());
-            dict.Add("Size", Size.ToString());
-            dict.Add("Fill", Fill.ToString());
+            Dictionary<string, string> dict = new()
+            {
+                { "X", X.ToString() },
+                { "Y", Y.ToString() },
+                { "Width", Width.ToString() },
+                { "Height", Height.ToString() },
+                { "Size", Size.ToString() },
+                { "Fill", Fill.ToString() }
+            };
             if (Foreground is not null)
                 dict.Add("Color", Foreground.Value);
             return dict;
@@ -35,19 +37,19 @@ namespace ScalableRelativeImage.Nodes
             switch (Key)
             {
                 case "X":
-                    X = float.Parse(Value);
+                    X = new IntermediateValue { Value = Value };
                     break;
                 case "Y":
-                    Y = float.Parse(Value);
+                    Y = new IntermediateValue { Value = Value };
                     break;
                 case "Width":
-                    Width = float.Parse(Value);
+                    Width = new IntermediateValue { Value = Value };
                     break;
                 case "Height":
-                    Height = float.Parse(Value);
+                    Height = new IntermediateValue { Value = Value };
                     break;
                 case "Size":
-                    Size = float.Parse(Value);
+                    Size = new IntermediateValue { Value = Value };
                     break;
                 case "Fill":
                     Fill = bool.Parse(Value);
@@ -65,17 +67,17 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            float RealWidth = profile.FindAbsoluteSize(Size);
-            var LT = profile.FindTargetPoint(X, Y);
+            float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
+            var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
             if (Fill is not true)
                 TargetGraphics.DrawRectangle(new(Color, RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),
-                    new Size((int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight))));
+                    new Size((int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight))));
             else
                 TargetGraphics.FillRectangle(new SolidBrush(Color), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),
-                    new Size((int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight))));
+                    new Size((int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight))));
 
         }
     }

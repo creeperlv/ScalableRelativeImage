@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScalableRelativeImage.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -14,15 +15,15 @@ namespace ScalableRelativeImage.Nodes
     public class SubImage : GraphicNode, IContainer, ISoftCopyable<SubImage>
     {
         public List<GraphicNode> Children = new();
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Width;
-        public float Height;
-        public float ScaledWidthRatio = 1f;
-        public float ScaledHeightRatio = 1f;
+        public IntermediateValue X = 0;
+        public IntermediateValue Y = 0;
+        public float Width = 0;
+        public float Height = 0;
+        public IntermediateValue ScaledWidthRatio = 1f;
+        public IntermediateValue ScaledHeightRatio = 1f;
         public Color? Background;
         public string Name = null;
-        public float Rotation = 0;
+        public IntermediateValue Rotation = 0;
         public float RelativeWidth { get => Width; set => throw new NotImplementedException(); }
         public float RelativeHeight { get => Height; set => throw new NotImplementedException(); }
 
@@ -30,14 +31,16 @@ namespace ScalableRelativeImage.Nodes
 
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> dict = new();
-            dict.Add("X", X.ToString());
-            dict.Add("Y", Y.ToString());
-            dict.Add("Width", Width.ToString());
-            dict.Add("Height", Height.ToString());
-            dict.Add("ScaledWidthRatio", ScaledWidthRatio.ToString());
-            dict.Add("ScaledHeightRatio", ScaledHeightRatio.ToString());
-            dict.Add("Rotation", Rotation.ToString());
+            Dictionary<string, string> dict = new()
+            {
+                { "X", X.ToString() },
+                { "Y", Y.ToString() },
+                { "Width", Width.ToString() },
+                { "Height", Height.ToString() },
+                { "ScaledWidthRatio", ScaledWidthRatio.ToString() },
+                { "ScaledHeightRatio", ScaledHeightRatio.ToString() },
+                { "Rotation", Rotation.ToString() }
+            };
             if (Name is not null)
             {
                 dict.Add("Name", Name);
@@ -77,10 +80,10 @@ namespace ScalableRelativeImage.Nodes
             switch (Key)
             {
                 case "X":
-                    X = float.Parse(Value);
+                    X.Value = Value;
                     break;
                 case "Y":
-                    Y = float.Parse(Value);
+                    Y.Value=Value;
                     break;
                 case "Width":
                     Width = float.Parse(Value);
@@ -89,13 +92,13 @@ namespace ScalableRelativeImage.Nodes
                     Height = float.Parse(Value);
                     break;
                 case "ScaledHeightRatio":
-                    ScaledHeightRatio = float.Parse(Value);
+                    ScaledHeightRatio.Value = Value;
                     break;
                 case "ScaledWidthRatio":
-                    ScaledWidthRatio = float.Parse(Value);
+                    ScaledWidthRatio.Value = Value;
                     break;
                 case "Rotation":
-                    Rotation = float.Parse(Value);
+                    Rotation.Value = Value;
                     break;
                 case "Background":
                     {
@@ -119,12 +122,13 @@ namespace ScalableRelativeImage.Nodes
         /// <param name="profile"></param>
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            var LT = profile.FindTargetPoint(X, Y);
+            var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
             var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
                     (int)(Width / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight)));
             //Assumed size of the image.
             var _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio), (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio)));
+                    (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio.GetFloat(profile.CurrentSymbols)),
+                    (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio.GetFloat(profile.CurrentSymbols))));
             //Scaled size of the image.
             //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var b = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -150,13 +154,13 @@ namespace ScalableRelativeImage.Nodes
                     g.Dispose();
                 }
             }
-            if (Rotation == 0 || Rotation == 360)
+            if (Rotation.GetFloat(profile.CurrentSymbols) == 0 || Rotation.GetFloat(profile.CurrentSymbols) == 360)
             {
                 TargetGraphics.DrawImage(b, _rect, 0, 0, b.Width, b.Height, GraphicsUnit.Pixel);
             }
             else
             {
-                var The = MathHelper.Deg2Rad_P(Rotation);
+                var The = MathHelper.Deg2Rad_P(Rotation.GetFloat(profile.CurrentSymbols));
                 int W = (int)(Math.Abs(b.Width * Math.Cos(The)) + Math.Abs(b.Height * Math.Sin(The)));
                 int H = (int)(Math.Abs(b.Height * Math.Cos(The)) + Math.Abs(b.Width * Math.Sin(The)));
                 Bitmap FB = new Bitmap(W, H);
@@ -166,15 +170,15 @@ namespace ScalableRelativeImage.Nodes
                     g.TextRenderingHint = profile.TextRenderingHint;
                     g.InterpolationMode = profile.InterpolationMode;
                     g.TranslateTransform((float)W / 2, (float)H / 2);
-                    g.RotateTransform(Rotation);
+                    g.RotateTransform(Rotation.GetFloat(profile.CurrentSymbols));
                     g.TranslateTransform(-(float)W / 2, -(float)H / 2);
                     g.DrawImage(b, (W - b.Width) / 2, (H - b.Height) / 2);
                     g.TranslateTransform((float)W / 2, (float)H / 2);
-                    g.RotateTransform(-Rotation);
+                    g.RotateTransform(-Rotation.GetFloat(profile.CurrentSymbols));
                     g.TranslateTransform(-(float)W / 2, -(float)H / 2);
                 }
-                int _W = (int)(W / 1 * ScaledWidthRatio);
-                int _H = (int)(H / 1 * ScaledHeightRatio);
+                int _W = (int)(W / 1 * ScaledWidthRatio.GetFloat(profile.CurrentSymbols));
+                int _H = (int)(H / 1 * ScaledHeightRatio.GetFloat(profile.CurrentSymbols));
                 Trace.WriteLine($"Rotated:{W}x{H},{_W}x{_H}");
                 _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)(LT.X - (_W - _rect.Width) / 2), (int)(LT.Y - (_H - _rect.Height) / 2)), new Size(_W, _H));
                 TargetGraphics.DrawImage(FB, _rect, 0, 0, W, H, GraphicsUnit.Pixel);

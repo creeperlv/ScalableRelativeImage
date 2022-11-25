@@ -1,18 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ScalableRelativeImage.Core
 {
+
+    [System.Serializable]
+    public class ExpressionSegmentNotResolvableException : System.Exception
+    {
+        public ExpressionSegmentNotResolvableException() { }
+        protected ExpressionSegmentNotResolvableException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
     /// <summary>
     /// A simple calcuator that is able to perform +-*/ and ().
     /// </summary>
     public static class Calculator
     {
         static string pattern = @"([^\w\.])|[\w\.]+";
-        public static List<object> Resolve(string input)
+        public static List<object> Resolve(string input,SymbolHelper s)
         {
             var m = Regex.Matches(input, pattern);
+            if (m.Count == 1)
+            {
+                if (s.TryLookup(m[0].Value,out _) == false)
+                {
+                    throw new ExpressionSegmentNotResolvableException();
+                }
+            }
             List<object> result = new List<object>();
             foreach (Match item in m)
             {
@@ -22,11 +40,11 @@ namespace ScalableRelativeImage.Core
         }
         public static float CalcuateFloat(string input, SymbolHelper s)
         {
-            return CalcuateFloat(Resolve(input), s).Item1;
+            return CalcuateFloat(Resolve(input,s), s).Item1;
         }
         public static T Calcuate<T>(string input,CalcuatorTypeHelper<T>Helper, SymbolHelper s)
         {
-            return CalcuateT<T>(Resolve(input), s, Helper).Item1;
+            return CalcuateT<T>(Resolve(input,s), s, Helper).Item1;
         }
         public static (T, int) CalcuateT<T>(List<object> inputs, SymbolHelper s, CalcuatorTypeHelper<T> H, int Index = 0)
         {
@@ -74,7 +92,16 @@ namespace ScalableRelativeImage.Core
                                 }
                                 else
                                 {
-                                    LV = H.Convert(LS as string, s);// IntermediateValue.GetFloat(LS as string, s);
+                                    var res = H.Convert(LS as string, s);// IntermediateValue.GetFloat(LS as string, s);
+                                    if(res.Succeed)
+                                    {
+
+                                        LV = res.Value;
+                                    }
+                                    else
+                                    {
+                                        throw new ExpressionSegmentNotResolvableException();
+                                    }
                                 }
 
                                 T RV;
@@ -85,7 +112,16 @@ namespace ScalableRelativeImage.Core
                                 }
                                 else
                                 {
-                                    RV = H.Convert(RS as string, s);
+                                    var res = H.Convert(RS as string, s);
+                                    if (res.Succeed)
+                                    {
+
+                                        RV = res.Value;
+                                    }
+                                    else
+                                    {
+                                        throw new ExpressionSegmentNotResolvableException();
+                                    }
                                 }
                                 NewStack2[NewStack2.Count - 1] = H.Mul(LV, RV);
                                 i++;
@@ -102,7 +138,16 @@ namespace ScalableRelativeImage.Core
                                 }
                                 else
                                 {
-                                    LV = H.Convert(LS as string, s);
+                                    var res = H.Convert(LS as string, s);// IntermediateValue.GetFloat(LS as string, s);
+                                    if (res.Succeed)
+                                    {
+
+                                        LV = res.Value;
+                                    }
+                                    else
+                                    {
+                                        throw new ExpressionSegmentNotResolvableException();
+                                    }
                                 }
                                 T RV;
                                 var RS = NewStack[i + 1];
@@ -112,7 +157,16 @@ namespace ScalableRelativeImage.Core
                                 }
                                 else
                                 {
-                                    RV = H.Convert(RS as string, s);
+                                    var res = H.Convert(RS as string, s);
+                                    if (res.Succeed)
+                                    {
+
+                                        RV = res.Value;
+                                    }
+                                    else
+                                    {
+                                        throw new ExpressionSegmentNotResolvableException();
+                                    }
                                 }
                                 NewStack2[NewStack2.Count - 1] = H.Div(LV, RV);
                                 i++;
@@ -135,13 +189,25 @@ namespace ScalableRelativeImage.Core
                 count++;
             }
             T L = default;
+            //Console.WriteLine($"NewStack2:{NewStack2.Count}");
+            //NewStack2.ForEach((x) => Console.Write($"{x}({x.GetType()})\t"));
+            //Console.ReadLine();
             if (NewStack2[0] is T vvv)
             {
                 L = vvv;
             }
             else
             {
-                L = H.Convert(NewStack2[0] as string, s);
+                var res = H.Convert(NewStack2[0] as string, s);// IntermediateValue.GetFloat(LS as string, s);
+                //Console.WriteLine(res);
+                if (res.Succeed)
+                {
+                    L = res.Value;
+                }
+                else
+                {
+                    throw new ExpressionSegmentNotResolvableException();
+                }
             }
             for (int i = 1; i < NewStack2.Count; i++)
             {
@@ -162,7 +228,17 @@ namespace ScalableRelativeImage.Core
                                 else
                                 {
 
-                                    RV = H.Convert(RS as string, s);
+                                    //RV = H.Convert(RS as string, s);
+                                    var res = H.Convert(RS as string, s);
+                                    if (res.Succeed)
+                                    {
+
+                                        RV = res.Value;
+                                    }
+                                    else
+                                    {
+                                        throw new ExpressionSegmentNotResolvableException();
+                                    }
                                 }
                                 L = H.Add(L, RV);
                                 i++;
@@ -179,7 +255,18 @@ namespace ScalableRelativeImage.Core
                                 }
                                 else
                                 {
-                                    RV = H.Convert(RS as string, s);
+                                    //RV = H.Convert(RS as string, s);
+
+                                    var res = H.Convert(RS as string, s);
+                                    if (res.Succeed)
+                                    {
+
+                                        RV = res.Value;
+                                    }
+                                    else
+                                    {
+                                        throw new ExpressionSegmentNotResolvableException();
+                                    }
                                 }
                                 L = H.Sub(L, RV);
                                 i++;

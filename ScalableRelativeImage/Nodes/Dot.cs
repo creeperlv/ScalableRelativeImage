@@ -10,22 +10,22 @@ namespace ScalableRelativeImage.Nodes
 {
     public class Dot : GraphicNode
     {
-        public float X;
-        public float Y;
-        public float Size;
+        public IntermediateValue X=new IntermediateValue { Value = "0" };
+        public IntermediateValue Y=new IntermediateValue { Value = "0" };
+        public IntermediateValue Size = new IntermediateValue { Value = "0" };
         public IntermediateValue Foreground = null;
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
                 case "X":
-                    X = float.Parse(Value);
+                    X.Value = Value;
                     break;
                 case "Y":
-                    Y = float.Parse(Value);
+                    Y.Value = Value;
                     break;
                 case "Size":
-                    Size = float.Parse(Value);
+                    Size.Value = Value;
                     break;
                 case "Color":
                     {
@@ -50,8 +50,8 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            float _S = profile.FindAbsoluteSize(Size);
-            var LT = profile.FindTargetPoint(X, Y);
+            float _S = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
+            var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
             float D = _S / MathF.Sqrt(2);
             float R = D / 2;
             Color Color;

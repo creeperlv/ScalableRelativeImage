@@ -19,46 +19,62 @@ namespace ScalableRelativeImage.Core
         {
             return Value;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int GetInt(string Value, SymbolHelper s, int Fallback = 0)
+        public static bool TryGetInt(string Value, SymbolHelper s, out int result, int Fallback = 0)
         {
 
             if (int.TryParse(Value, out int i))
             {
-                return i;
+                result = i;
+                return true;
             }
             else
             {
-                var b = s.TryLookup(Value, Fallback.ToString(), out var I);
+                var b = s.TryLookup(Value, out var I, Fallback.ToString());
                 if (b == false)
                 {
                     try
                     {
-                        return Calculator.Calcuate(Value, CalcuatorFunctions.IntCalcuator, s);
+                        result = Calculator.Calcuate(Value, CalcuatorFunctions.IntCalcuator, s);
+                        return true;
                     }
                     catch (Exception)
                     {
                     }
 
                 }
-                if (int.TryParse(s.Lookup(Value, Fallback.ToString()), out int r))
-                {
-                    return r;
-                }
-
                 else
                 {
-                    try
+                    if (int.TryParse(I, out int r))
                     {
-                        return Calculator.Calcuate(I, CalcuatorFunctions.IntCalcuator, s);
+                        result =r;
+                        return true;
                     }
-                    catch (Exception)
+                    else
                     {
+                        try
+                        {
+
+                            result = Calculator.Calcuate(I, CalcuatorFunctions.IntCalcuator, s);
+                            return true;
+                            //return Calculator.Calcuate(I, CalcuatorFunctions.FloatCalcuator, s);
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                 }
 
             }
-            return Fallback;
+            result = Fallback;
+            return false;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetInt(string Value, SymbolHelper s, int Fallback = 0)
+        {
+
+            TryGetInt(Value, s, out var result, Fallback);
+            return result;
+
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetInt(SymbolHelper s, int Fallback = 0)
@@ -83,89 +99,122 @@ namespace ScalableRelativeImage.Core
             }
             return Fallback;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float GetFloat(string Value, SymbolHelper s, float Fallback = 0f)
+        public static bool TryGetFloat(string Value, SymbolHelper s, out float result, float Fallback = 0)
         {
+
             if (float.TryParse(Value, out float i))
             {
-                return i;
+                result = i;
+                return true;
             }
             else
             {
-                var b = s.TryLookup(Value, Fallback.ToString(), out var I);
+                var b = s.TryLookup(Value, out var I, Fallback.ToString());
+                //Console.WriteLine($"Hit:{b}\tValuie:{I}");
                 if (b == false)
                 {
                     try
                     {
-                        return Calculator.Calcuate(Value, CalcuatorFunctions.FloatCalcuator, s);
+                        result = Calculator.Calcuate(Value, CalcuatorFunctions.FloatCalcuator, s);
+                        return true;
                     }
                     catch (Exception)
                     {
                     }
 
                 }
-                if (float.TryParse(I, out float r))
-                {
-                    return r;
-                }
                 else
                 {
-                    try
+                    if (float.TryParse(I, out float r))
                     {
-                        return Calculator.Calcuate(I, CalcuatorFunctions.FloatCalcuator, s);
+                        result = r;
+                        return true;
                     }
-                    catch (Exception)
+                    else
                     {
+                        try
+                        {
+
+                            result = Calculator.Calcuate(I, CalcuatorFunctions.FloatCalcuator, s);
+                            return true;
+                            //return Calculator.Calcuate(I, CalcuatorFunctions.FloatCalcuator, s);
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                 }
 
             }
-            return Fallback;
+            result = Fallback;
+            return false;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float GetFloat(string Value, SymbolHelper s, float Fallback = 0f)
+        {
+            TryGetFloat(Value, s, out var result, Fallback);
+            return result;
+     
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float GetFloat(SymbolHelper s, float Fallback = 0f)
         {
             return GetFloat(Value, s, Fallback);
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDouble(string Value, SymbolHelper s, double Fallback = 0f)
+        public static bool TryGetDouble(string Value, SymbolHelper s, out double result, double Fallback = 0)
         {
 
-            if (double.TryParse(Value, out double i))
+            if (float.TryParse(Value, out float i))
             {
-                return i;
+                result = i;
+                return true;
             }
             else
             {
-                var b = s.TryLookup(Value, Fallback.ToString(), out var I);
+                var b = s.TryLookup(Value, out var I, Fallback.ToString());
                 if (b == false)
                 {
                     try
                     {
-                        return Calculator.Calcuate(Value, CalcuatorFunctions.DoubleCalcuator, s);
+                        result = Calculator.Calcuate(Value, CalcuatorFunctions.DoubleCalcuator, s);
+                        return true;
                     }
                     catch (Exception)
                     {
                     }
 
                 }
-                if (double.TryParse(I, out double r))
-                {
-                    return r;
-                }
                 else
                 {
-                    try
+                    if (double.TryParse(I, out double r))
                     {
-                        return Calculator.Calcuate(I, CalcuatorFunctions.DoubleCalcuator, s);
+                        result = r;
+                        return true;
                     }
-                    catch (Exception)
+                    else
                     {
+                        try
+                        {
+
+                            result = Calculator.Calcuate(I, CalcuatorFunctions.DoubleCalcuator, s);
+                            return true;
+                            //return Calculator.Calcuate(I, CalcuatorFunctions.FloatCalcuator, s);
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                 }
 
             }
-            return Fallback;
+            result = Fallback;
+            return false;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetDouble(string Value, SymbolHelper s, double Fallback = 0f)
+        {
+            TryGetDouble(Value, s, out var result, Fallback);
+            return result;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double Getdouble(SymbolHelper s, double Fallback = 0f)
@@ -202,6 +251,14 @@ namespace ScalableRelativeImage.Core
                 }
             }
             return (Color)SRIAnalyzer.cc.ConvertFromString(Fallback);
+        }
+        public static implicit operator IntermediateValue(string str)
+        {
+            return new IntermediateValue { Value = str };
+        }
+        public static implicit operator IntermediateValue(float v)
+        {
+            return new IntermediateValue { Value = v.ToString() };
         }
     }
 }

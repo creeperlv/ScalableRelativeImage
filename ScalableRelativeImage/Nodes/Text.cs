@@ -11,15 +11,15 @@ namespace ScalableRelativeImage.Nodes
 {
     public class Text : GraphicNode
     {
-        public string Content = "";
-        public IntermediateValue FontFamily = null;
-        public string FontStyle = "Regular";
-        public float RelativeFontSize = -12;
+        public IntermediateValue Content = "";
+        public IntermediateValue FontFamily = "Arial";
+        public IntermediateValue FontStyle = "Regular";
+        public IntermediateValue RelativeFontSize = -12;
         public IntermediateValue Foreground = null;
-        public float X;
-        public float Y;
-        public float Width;
-        public float Height;
+        public IntermediateValue X = 0;
+        public IntermediateValue Y = 0;
+        public IntermediateValue Width = 0;
+        public IntermediateValue Height = 0;
         public StringAlignment Align = StringAlignment.Near;
         public StringAlignment VerticalAlign = StringAlignment.Near;
 
@@ -34,38 +34,37 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "FontFamily":
                     {
-                        FontFamily = new IntermediateValue();
                         FontFamily.Value = Value;
                     }
                     break;
                 case "FontStyle":
                     {
-                        FontStyle = Value;
+                        FontStyle.Value = Value;
                     }
                     break;
                 case "Size":
                     {
-                        RelativeFontSize = float.Parse(Value);
+                        RelativeFontSize.Value=Value;
                     }
                     break;
                 case "X":
                     {
-                        X = float.Parse(Value);
+                        X.Value= Value;
                     }
                     break;
                 case "Y":
                     {
-                        Y = float.Parse(Value);
+                        Y.Value = Value;
                     }
                     break;
                 case "Width":
                     {
-                        Width = float.Parse(Value);
+                        Width.Value = Value;
                     }
                     break;
                 case "Height":
                     {
-                        Height = float.Parse(Value);
+                        Height.Value = Value;
                     }
                     break;
                 case "Color":
@@ -91,34 +90,34 @@ namespace ScalableRelativeImage.Nodes
         }
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> result = new();
-            result.Add("Content", Content);
-            if (FontFamily != null)
-                result.Add("FontFamily", FontFamily.ToString());
-            else result.Add("FontFamily", "Arial");
-            result.Add("FontStyle", FontStyle);
-            result.Add("Size", RelativeFontSize.ToString());
-            result.Add("X", X.ToString());
-            result.Add("Y", Y.ToString());
-            result.Add("Width", Width.ToString());
-            result.Add("Height", Height.ToString());
-            result.Add("Align", Align.ToString());
-            result.Add("VerticalAlign", VerticalAlign.ToString());
+            Dictionary<string, string> result = new()
+            {
+                { "Content", Content.ToString() },
+                { "FontFamily", FontFamily.ToString() },
+                { "FontStyle", FontStyle.ToString() },
+                { "Size", RelativeFontSize.ToString() },
+                { "X", X.ToString() },
+                { "Y", Y.ToString() },
+                { "Width", Width.ToString() },
+                { "Height", Height.ToString() },
+                { "Align", Align.ToString() },
+                { "VerticalAlign", VerticalAlign.ToString() }
+            };
             if (Foreground is not null)
                 result.Add("Color", Foreground.Value);
             return result;
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            var p0 = profile.FindTargetPoint(X, Y);
-            var AW = Width / profile.root.RelativeWidth * profile.TargetWidth;
-            var AH = Height / profile.root.RelativeHeight * profile.TargetHeight;
-            float FS =  RelativeFontSize > 0 ? profile.FindAbsoluteSize(RelativeFontSize) : -RelativeFontSize;
+            var p0 = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
+            var AW = Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth;
+            var AH = Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight;
+            float FS =  RelativeFontSize.GetFloat(profile.CurrentSymbols) > 0 ? profile.FindAbsoluteSize(RelativeFontSize.GetFloat(profile.CurrentSymbols)) : -RelativeFontSize.GetFloat(profile.CurrentSymbols);
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            TargetGraphics.DrawString(Content,
-                new Font(FontFamily.GetString(profile.CurrentSymbols, "Arial"), FS, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle))
+            TargetGraphics.DrawString(Content.GetString(profile.CurrentSymbols),
+                new Font(FontFamily.GetString(profile.CurrentSymbols, "Arial"), FS, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle.GetString(profile.CurrentSymbols)))
                 , new SolidBrush(Color), new RectangleF(p0, new SizeF(AW, AH)), new StringFormat { Alignment = Align,LineAlignment= VerticalAlign });
         }
     }

@@ -12,7 +12,7 @@ namespace ScalableRelativeImage.CLI
             ConsoleAppHelper.Init("SRI", "Scalable Relative Image CLI Tool");
             ConsoleAppHelper.Colorful = true;
             ConsoleAppHelper.PreExecution = () => {
-                Output.OutLine("Copyright (C) 2021 Creeper Lv");
+                Output.OutLine("Copyright (C) 2021-2022 Creeper Lv");
                 Output.OutLine("All rights reserved.");
                 Output.OutLine("");
                 Output.OutLine("Scalable Relative Image CLI Tool");
