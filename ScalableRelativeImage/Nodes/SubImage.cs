@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
+    /// <summary>
+    /// SubImage: A SRI container.
+    /// </summary>
     public class SubImage : GraphicNode, IContainer, ISoftCopyable<SubImage>
     {
         public List<GraphicNode> Children = new();
@@ -109,6 +112,11 @@ namespace ScalableRelativeImage.Nodes
                     break;
             }
         }
+        /// <summary>
+        /// Create a copy of current render profile and render all children to a new bitmap picture then draw it to parent picture(Graphics).
+        /// </summary>
+        /// <param name="TargetGraphics"></param>
+        /// <param name="profile"></param>
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
             var LT = profile.FindTargetPoint(X, Y);

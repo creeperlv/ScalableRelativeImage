@@ -9,8 +9,16 @@ using System.Xml;
 
 namespace ScalableRelativeImage
 {
+    /// <summary>
+    /// Convert to XML
+    /// </summary>
     public static class SRICompositor
     {
+        /// <summary>
+        /// Format a SRI to a XML string.
+        /// </summary>
+        /// <param name="nodeRoot"></param>
+        /// <returns></returns>
         public static string ToXMLString(ImageNodeRoot nodeRoot)
         {
             string _R = "";
@@ -43,6 +51,11 @@ namespace ScalableRelativeImage
             _R = SWriter.ToString();
             return _R;
         }
+        /// <summary>
+        /// Convert a SRI to XML and write to stream.
+        /// </summary>
+        /// <param name="nodeRoot"></param>
+        /// <param name="TargetStream"></param>
         public static void SerializeToStream(ImageNodeRoot nodeRoot, Stream TargetStream)
         {
 
@@ -78,6 +91,13 @@ namespace ScalableRelativeImage
             attr.Value = Value;
             return attr;
         }
+        /// <summary>
+        /// Convert a node to XML.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="xmlDocument"></param>
+        /// <param name="Parent"></param>
+        /// <param name="references"></param>
         static void DepthSerialize(INode node, ref XmlDocument xmlDocument, ref XmlNode Parent, ref List<ImageReference> references)
         {
             Type t = node.GetType();

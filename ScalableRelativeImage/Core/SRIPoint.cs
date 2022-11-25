@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Core
 {
+    /// <summary>
+    /// SRI Int point
+    /// </summary>
     [Serializable]
     public class SRIIntPoint
     {
@@ -16,6 +19,12 @@ namespace ScalableRelativeImage.Core
             X = 0;
             Y = 0;
         }
+        /// <summary>
+        /// Parse from x,y e.g: 1,2
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        /// <exception cref="FormatException"></exception>
         public static SRIIntPoint Parse(string str)
         {
             SRIIntPoint p = new SRIIntPoint();
@@ -42,6 +51,9 @@ namespace ScalableRelativeImage.Core
             return $"{X},{Y}";
         }
     }
+    /// <summary>
+    /// SRI Float Point
+    /// </summary>
     [Serializable]
     public class SRIFloatPoint
     {
@@ -52,6 +64,12 @@ namespace ScalableRelativeImage.Core
             X = 0.0f;
             Y = 0.0f;
         }
+        /// <summary>
+        /// Format: x,y. e.g: 1,2
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        /// <exception cref="FormatException"></exception>
         public static SRIFloatPoint Parse(string str)
         {
             SRIFloatPoint p = new SRIFloatPoint();

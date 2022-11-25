@@ -9,6 +9,11 @@ namespace ScalableRelativeImage
     public struct MathHelper
     {
         public static float RAD = 0.01745329252f;
+        /// <summary>
+        /// Convert Angle Degree to Radian Degree
+        /// </summary>
+        /// <param name="Angle"></param>
+        /// <returns></returns>
         public static float Deg2Rad(float Angle)
         {
             return Angle * RAD;

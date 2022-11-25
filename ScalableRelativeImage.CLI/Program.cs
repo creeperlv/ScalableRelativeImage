@@ -1,4 +1,5 @@
 ﻿using CLUNL.ConsoleAppHelper;
+using ScalableRelativeImage.Core;
 using System;
 using System.Reflection;
 

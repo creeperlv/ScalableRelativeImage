@@ -1,5 +1,8 @@
 ﻿namespace ScalableRelativeImage
 {
+    /// <summary>
+    /// Warning thrown during analysis and render.
+    /// </summary>
     public record ExecutionWarning
     {
         public string ID;
