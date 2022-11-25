@@ -63,7 +63,7 @@ namespace ScalableRelativeImage
             renderProfile.TargetWidth = TargetWidth;
             renderProfile.root = Root;
             renderProfile.CurrentSymbols = CurrentSymbols;
-            renderProfile.WorkingDirectory = Environment.CurrentDirectory;
+            renderProfile.WorkingDirectory = this.WorkingDirectory;
             return renderProfile;
         }
         public FileInfo FindFile(string FileName)
