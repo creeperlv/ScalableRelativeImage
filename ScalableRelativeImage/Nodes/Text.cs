@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
+    /// <summary>
+    /// Render a text
+    /// </summary>
     public class Text : GraphicNode
     {
         public IntermediateValue Content = "";

@@ -252,6 +252,10 @@ namespace ScalableRelativeImage.Core
             }
             return (Color)SRIAnalyzer.cc.ConvertFromString(Fallback);
         }
+        public static implicit operator string(IntermediateValue v)
+        {
+            return v.ToString();
+        }
         public static implicit operator IntermediateValue(string str)
         {
             return new IntermediateValue { Value = str };
