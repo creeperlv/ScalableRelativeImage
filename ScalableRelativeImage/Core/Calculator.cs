@@ -42,6 +42,14 @@ namespace ScalableRelativeImage.Core
         {
             return CalcuateFloat(Resolve(input,s), s).Item1;
         }
+        /// <summary>
+        /// Calcuate 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="input"></param>
+        /// <param name="Helper"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static T Calcuate<T>(string input,CalcuatorTypeHelper<T>Helper, SymbolHelper s)
         {
             return CalcuateT<T>(Resolve(input,s), s, Helper).Item1;

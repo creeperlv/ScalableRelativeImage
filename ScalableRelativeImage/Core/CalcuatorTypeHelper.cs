@@ -2,12 +2,16 @@
 
 namespace ScalableRelativeImage.Core
 {
+    /// <summary>
+    /// Basic operations for T.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class CalcuatorTypeHelper<T>
     {
-        public Func<Object, Object, T> Add;
-        public Func<Object, Object, T> Sub;
-        public Func<Object, Object, T> Mul;
-        public Func<Object, Object, T> Div;
+        public Func<T, T, T> Add;
+        public Func<T, T, T> Sub;
+        public Func<T, T, T> Mul;
+        public Func<T, T, T> Div;
         public Func<string, SymbolHelper, TResult<T>> Convert;
     }
     public struct TResult<T>

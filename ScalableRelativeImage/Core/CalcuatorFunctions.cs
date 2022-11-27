@@ -1,5 +1,8 @@
 ﻿namespace ScalableRelativeImage.Core
 {
+    /// <summary>
+    /// Pre-defined helpers for different types.
+    /// </summary>
     public static class CalcuatorFunctions
     {
         public static readonly CalcuatorTypeHelper<float> FloatCalcuator;
@@ -11,67 +14,67 @@
             {
                 Add = (a, b) =>
                 {
-                    return ((float)a) + (float)b;
+                    return a + b;
                 },
                 Sub = (a, b) =>
                 {
-                    return ((float)a) - (float)b;
+                    return a - b;
                 },
                 Mul = (a, b) =>
                 {
-                    return ((float)a) * (float)b;
+                    return a * b;
                 },
                 Div = (a, b) =>
                 {
-                    return ((float)a) / (float)b;
+                    return a / b;
                 },
                 Convert = (a, s) =>
                 {
-                    var b=IntermediateValue.TryGetFloat(a, s,out var f);
-                    return new TResult<float> (f,b);
+                    var b = IntermediateValue.TryGetFloat(a, s, out var f);
+                    return new TResult<float>(f, b);
                 }
             };
             DoubleCalcuator = new CalcuatorTypeHelper<double>
             {
                 Add = (a, b) =>
                 {
-                    return ((double)a) + (double)b;
+                    return a + b;
                 },
                 Sub = (a, b) =>
                 {
-                    return ((double)a) - (double)b;
+                    return a - b;
                 },
                 Mul = (a, b) =>
                 {
-                    return ((double)a) * (double)b;
+                    return a * b;
                 },
                 Div = (a, b) =>
                 {
-                    return ((double)a) / (double)b;
+                    return a / b;
                 },
                 Convert = (a, s) =>
                 {
-                    var b=IntermediateValue.TryGetDouble(a, s,out var f);
-                    return new TResult<double> (f,b);    
+                    var b = IntermediateValue.TryGetDouble(a, s, out var f);
+                    return new TResult<double>(f, b);
                 }
             };
-            IntCalcuator= new CalcuatorTypeHelper<int>
+            IntCalcuator = new CalcuatorTypeHelper<int>
             {
                 Add = (a, b) =>
                 {
-                    return ((int)a) + (int)b;
+                    return a + b;
                 },
                 Sub = (a, b) =>
                 {
-                    return ((int)a) - (int)b;
+                    return a - b;
                 },
                 Mul = (a, b) =>
                 {
-                    return ((int)a) * (int)b;
+                    return a * b;
                 },
                 Div = (a, b) =>
                 {
-                    return ((int)a) / (int)b;
+                    return a / b;
                 },
                 Convert = (a, s) =>
                 {
