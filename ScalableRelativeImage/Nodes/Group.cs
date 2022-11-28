@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
+    /// <summary>
+    /// Group a batch of nodes, if the Visible of a group is set to false, paint() in children will not be executed at all.
+    /// </summary>
     public class Group : GraphicNode
     {
         public List<INode> Children = new();
-        public IntermediateValue Visible = null;
+        public IntermediateValue Visible = true;
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {
             switch (Key)
             {
                 case "Visible":
                     {
-                        Visible = new IntermediateValue();
                         Visible.Value = Value;
                     }
                     break;
@@ -29,11 +31,10 @@ namespace ScalableRelativeImage.Nodes
         }
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> dict = new();
-            if(Visible is not null)
+            Dictionary<string, string> dict = new()
             {
-                dict.Add("Visible", Visible.ToString());
-            }
+                { "Visible", Visible.ToString() }
+            };
             return dict;
         }
         public void RemoveChildAt(int i)
@@ -66,8 +67,9 @@ namespace ScalableRelativeImage.Nodes
                         ((GraphicNode)item).Paint(ref TargetGraphics, profile);
                     }
                 }
-            }else
-            if (Visible.GetBool(profile.CurrentSymbols) == true)
+            }
+            else
+            if (Visible.GetBool(profile.CurrentSymbols,false) == true)
             {
                 foreach (var item in Children)
                 {

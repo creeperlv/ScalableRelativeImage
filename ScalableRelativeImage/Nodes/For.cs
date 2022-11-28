@@ -77,7 +77,7 @@ namespace ScalableRelativeImage.Nodes
             var L = InitialValue.GetFloat(profile.CurrentSymbols);
             var R = EndValue.GetFloat(profile.CurrentSymbols);
             var Delta = Step.GetFloat(profile.CurrentSymbols);
-            for (float i = L; i < R; i += Delta)
+            for (float i = L; i <= R; i += Delta)
             {
                 profile.CurrentSymbols.Set(Variable.GetString(profile.CurrentSymbols), i.ToString());
                 foreach (var item in Nodes)

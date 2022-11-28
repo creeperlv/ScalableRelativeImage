@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
+    /// <summary>
+    /// Draw multiple lines.
+    /// </summary>
     public class Lines : GraphicNode
     {
         public IntermediateValue Size = new IntermediateValue { Value = "0" };

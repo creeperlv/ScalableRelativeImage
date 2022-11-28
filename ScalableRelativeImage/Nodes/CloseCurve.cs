@@ -6,9 +6,9 @@ namespace ScalableRelativeImage.Nodes
 {
     public class CloseCurve : GraphicNode
     {
-        public float Size = 0;
+        public IntermediateValue Size = 0;
         public IntermediateValue Foreground = null;
-        public bool Fill = false;
+        public IntermediateValue Fill = false;
         public List<INode> Points = new List<INode>();
 
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
@@ -34,9 +34,11 @@ namespace ScalableRelativeImage.Nodes
         }
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> dict = new();
-            dict.Add("Size", Size.ToString());
-            dict.Add("Fill", Fill.ToString());
+            Dictionary<string, string> dict = new()
+            {
+                { "Size", Size.ToString() },
+                { "Fill", Fill.ToString() }
+            };
             if (Foreground is not null)
                 dict.Add("Color", Foreground.Value);
             return dict;
@@ -58,7 +60,7 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
         {
-            float RealWidth = profile.FindAbsoluteSize(Size);
+            float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
             List<PointF> Points = new();
             foreach (var item in this.Points)
             {
@@ -68,7 +70,7 @@ namespace ScalableRelativeImage.Nodes
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            if (Fill is false)
+            if (Fill.GetBool(profile.CurrentSymbols) is false)
                 TargetGraphics.DrawClosedCurve(new(Color, RealWidth), Points.ToArray());
             else
                 TargetGraphics.FillClosedCurve(new SolidBrush(Color), Points.ToArray());

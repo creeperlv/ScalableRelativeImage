@@ -14,6 +14,32 @@ namespace ScalableRelativeImage.Core
     {
         static readonly Type IntT = typeof(int);
         public string Value;
+        public T Get<T>(SymbolHelper s, T fallback = default)=> GetValue(s, fallback);
+        public T GetValue<T>(SymbolHelper s, T fallback = default)
+        {
+            T result = default;
+            switch (result)
+            {
+                case int:
+                    result = (T)(object)GetInt(s, (int)(object)fallback);
+                    break;
+                case float:
+                    result = (T)(object)GetFloat(s, (float)(object)fallback);
+                    break;
+                case double:
+                    result = (T)(object)GetDouble(s);
+                    break;
+                case string:
+                    result = (T)(object)GetString(s, (string)(object)fallback);
+                    break;
+                case bool:
+                    result = (T)(object)GetBool(s, (bool)(object)fallback);
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
@@ -46,7 +72,7 @@ namespace ScalableRelativeImage.Core
                 {
                     if (int.TryParse(I, out int r))
                     {
-                        result =r;
+                        result = r;
                         return true;
                     }
                     else
@@ -154,7 +180,7 @@ namespace ScalableRelativeImage.Core
         {
             TryGetFloat(Value, s, out var result, Fallback);
             return result;
-     
+
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float GetFloat(SymbolHelper s, float Fallback = 0f)
@@ -217,7 +243,7 @@ namespace ScalableRelativeImage.Core
             return result;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double Getdouble(SymbolHelper s, double Fallback = 0f)
+        public double GetDouble(SymbolHelper s, double Fallback = 0f)
         {
             return GetDouble(Value, s, Fallback);
         }
@@ -261,6 +287,10 @@ namespace ScalableRelativeImage.Core
             return new IntermediateValue { Value = str };
         }
         public static implicit operator IntermediateValue(float v)
+        {
+            return new IntermediateValue { Value = v.ToString() };
+        }
+        public static implicit operator IntermediateValue(bool v)
         {
             return new IntermediateValue { Value = v.ToString() };
         }

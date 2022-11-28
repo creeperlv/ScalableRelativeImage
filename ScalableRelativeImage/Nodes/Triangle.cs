@@ -14,8 +14,8 @@ namespace ScalableRelativeImage.Nodes
         public SRIFloatPoint Point1 = new();
         public SRIFloatPoint Point2 = new();
         public SRIFloatPoint Point3 = new();
-        public IntermediateValue Size=new IntermediateValue { Value = "0" };
-        public bool Fill = false;
+        public IntermediateValue Size = new IntermediateValue { Value = "0" };
+        public IntermediateValue Fill = false;
         public IntermediateValue Foreground = null;
 
         public override Dictionary<string, string> GetValueSet()
@@ -46,7 +46,7 @@ namespace ScalableRelativeImage.Nodes
                     Point3 = SRIFloatPoint.Parse(Value);
                     break;
                 case "Size":
-                    Size.Value=Value;
+                    Size.Value = Value;
                     break;
                 case "Fill":
                     Fill = bool.Parse(Value);
@@ -92,7 +92,7 @@ namespace ScalableRelativeImage.Nodes
                 Points.Add(profile.FindTargetPoint(Point1.X.GetFloat(profile.CurrentSymbols), Point1.Y.GetFloat(profile.CurrentSymbols)));
                 Types.Add((byte)PathPointType.Line);
             }
-            if (Fill is false)
+            if (Fill.GetBool(profile.CurrentSymbols, false) is false)
                 TargetGraphics.DrawPath(new(Color, RealWidth), new(Points.ToArray(), Types.ToArray()));
             else
                 TargetGraphics.FillPath(new SolidBrush(Color), new(Points.ToArray(), Types.ToArray()));

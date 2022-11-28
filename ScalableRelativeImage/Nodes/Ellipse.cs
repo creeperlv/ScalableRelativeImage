@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ScalableRelativeImage.Nodes
 {
+    /// <summary>
+    /// Draw a ellipse.
+    /// </summary>
     public class Ellipse : GraphicNode
     {
         public IntermediateValue X=0;
@@ -15,7 +18,7 @@ namespace ScalableRelativeImage.Nodes
         public IntermediateValue Width=0;
         public IntermediateValue Height = 0;
         public IntermediateValue Size = 0;
-        public bool Fill = false;
+        public IntermediateValue Fill = false;
         public IntermediateValue Foreground = null;
         public override Dictionary<string, string> GetValueSet()
         {
@@ -72,7 +75,7 @@ namespace ScalableRelativeImage.Nodes
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            if (Fill is not true)
+            if (Fill.GetBool(profile.CurrentSymbols) is not true)
                 TargetGraphics.DrawEllipse(new(Color, RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
                     (int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight))));
             else
