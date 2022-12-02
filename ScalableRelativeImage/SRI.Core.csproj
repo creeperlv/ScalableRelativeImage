@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
 		<Version>0.0.2</Version>
 		<Description>An implementation of vector image, using a markup language which is based on XML and the syntax is like XAML.</Description>
 		<Copyright>Copyright (C) 2022 Creeper Lv</Copyright>
@@ -26,7 +25,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="CLUNL.Imaging" Version="0.1.2" />
-		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+		<PackageReference Include="Magick.NET-Q16-HDRI-AnyCPU" Version="12.2.1" />
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
 	</ItemGroup>
 
 </Project>

@@ -1,35 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-	  <ApplicationIcon>Icon-1024.ico</ApplicationIcon>
-	  <Version>0.0.2</Version>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Remove="Icon-1024.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <AvaloniaResource Include="Icon-1024.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.18" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.12.2" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />
-    <PackageReference Include="Avalonia.Direct2D1" Version="0.10.18" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SRI.Editor.Core\SRI.Editor.Core.csproj" />
-    <ProjectReference Include="..\SRI.Editor.Extension\SRI.Editor.Extension.csproj" />
-    <ProjectReference Include="..\SRI.Editor.Styles\SRI.Editor.Styles.csproj" />
-    <ProjectReference Include="..\SRI.Localization\SRI.Localization.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Pages\EditorConfigurationEditor.axaml.cs">
-      <DependentUpon>EditorConfigurationEditor.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<ApplicationIcon>Icon-1024.ico</ApplicationIcon>
+		<Version>0.0.2</Version>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="Icon-1024.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Icon-1024.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="0.10.18" />
+		<PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.12.2" />
+		<PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />
+		<PackageReference Include="Avalonia.Direct2D1" Version="0.10.18" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SRI.Editor.Core\SRI.Editor.Core.csproj" />
+		<ProjectReference Include="..\SRI.Editor.Extension\SRI.Editor.Extension.csproj" />
+		<ProjectReference Include="..\SRI.Editor.Styles\SRI.Editor.Styles.csproj" />
+		<ProjectReference Include="..\SRI.Localization\SRI.Localization.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Pages\EditorConfigurationEditor.axaml.cs">
+			<DependentUpon>EditorConfigurationEditor.axaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
 </Project>

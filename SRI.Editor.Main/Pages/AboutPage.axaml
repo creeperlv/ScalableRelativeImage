@@ -9,7 +9,7 @@
 			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
-	<Image Source="avares://SRI.Editor.Main/Icon-1024.ico" Width="96" VerticalAlignment="Top"/>
+		<Image Source="avares://SRI.Editor.Main/Icon-1024.ico" Width="128" Margin="12" VerticalAlignment="Top"/>
 		<StackPanel Grid.Column="1" Margin="8">
 			<TextBlock Text="SRI Editor" FontSize="28" Name="Title"/>
 			<TextBlock Text="Version:" Name="VersionBlock"/>
