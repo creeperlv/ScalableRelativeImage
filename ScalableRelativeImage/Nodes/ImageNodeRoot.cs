@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRI.Core.Core;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -100,19 +101,22 @@ namespace ScalableRelativeImage.Nodes
             {
                 profile.DefaultForeground = _PreferredForeground;
             }
-            Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(Bit);
-            g.FillRectangle(new SolidBrush(profile.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)profile.TargetWidth, (int)profile.TargetHeight));
-            g.SmoothingMode = profile.SmoothingMode;
-            g.TextRenderingHint = profile.TextRenderingHint;
-            g.InterpolationMode = profile.InterpolationMode;
+            DrawableImage image=new DrawableImage();
+            image.Init((int)profile.TargetWidth, (int)profile.TargetHeight);
+            //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            //Graphics g = Graphics.FromImage(Bit);
+            image.DrawRectangle(profile.DefaultBackground.Value, 0, 0, profile.TargetWidth, profile.TargetHeight,0,true);
+            //g.FillRectangle(new SolidBrush(profile.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)profile.TargetWidth, (int)profile.TargetHeight));
+            //g.SmoothingMode = profile.SmoothingMode;
+            //g.TextRenderingHint = profile.TextRenderingHint;
+            //g.InterpolationMode = profile.InterpolationMode;
             profile.WorkingBitmap = Bit;
             foreach (var item in Children)
             {
                 item.Paint(ref g, profile);
             }
 
-            return Bit;
+            return image.ToBitmap();
         }
         public void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {

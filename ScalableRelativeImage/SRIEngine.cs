@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Nodes;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,14 @@ namespace ScalableRelativeImage
     {
         public static readonly string Flavor = "CreeperLv.SRI";
         public static readonly Version FormatVersion = new Version(1, 0, 0, 0);
+        /// <summary>
+        /// Set which backend to use.
+        /// </summary>
+        /// <param name="backend"></param>
+        public static void SetBackend(BackendDefinition backend)
+        {
+            BackendFactory.UsingBackend=backend;
+        }
         /// <summary>
         /// Deserialize the given string to an ImageNodeRoot.
         /// </summary>

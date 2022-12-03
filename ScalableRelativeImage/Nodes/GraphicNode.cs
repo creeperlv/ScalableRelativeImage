@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRI.Core.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -28,7 +29,7 @@ namespace ScalableRelativeImage.Nodes
         {
             return null;
         }
-        public virtual void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public virtual void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
 
         }
