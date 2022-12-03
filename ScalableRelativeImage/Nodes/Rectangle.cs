@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -68,7 +69,7 @@ namespace ScalableRelativeImage.Nodes
                     break;
             }
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             float RealWidth = profile.FindAbsoluteSize(Size.Get<float>(profile.CurrentSymbols));
             var LT = profile.FindTargetPoint(X.Get<float>(profile.CurrentSymbols), Y.Get<float>(profile.CurrentSymbols));
@@ -76,14 +77,14 @@ namespace ScalableRelativeImage.Nodes
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
             var f = Fill.Get(profile.CurrentSymbols, false);
-            if (f is not true)
-                TargetGraphics.DrawRectangle(new(Color, RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),
-                    new Size((int)(Width.Get(profile.CurrentSymbols,0f) / profile.root.RelativeWidth * profile.TargetWidth),
-                    (int)(Height.Get(profile.CurrentSymbols, 0f) / profile.root.RelativeHeight * profile.TargetHeight))));
-            else
-                TargetGraphics.FillRectangle(new SolidBrush(Color), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),
-                    new Size((int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
-                    (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight))));
+            //if (f is not true)
+                TargetGraphics.DrawRectangle(Color, LT.X, LT.Y,
+                    (Width.Get(profile.CurrentSymbols,0f) / profile.root.RelativeWidth * profile.TargetWidth),
+                    (Height.Get(profile.CurrentSymbols, 0f) / profile.root.RelativeHeight * profile.TargetHeight), RealWidth, f);
+            //else
+            //    TargetGraphics.FillRectangle(new SolidBrush(Color), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y),
+            //        new Size((int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
+            //        (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight))));
         }
     }
 }

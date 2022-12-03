@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,9 +14,9 @@ namespace ScalableRelativeImage.Nodes
     /// </summary>
     public class PixImg : GraphicNode
     {
-        public IntermediateValue X="0";
-        public IntermediateValue Y="0";
-        public IntermediateValue Width="0";
+        public IntermediateValue X = "0";
+        public IntermediateValue Y = "0";
+        public IntermediateValue Width = "0";
         public IntermediateValue Height = "0";
         public IntermediateValue Source = "";
         public override Dictionary<string, string> GetValueSet()
@@ -35,7 +36,7 @@ namespace ScalableRelativeImage.Nodes
             switch (Key)
             {
                 case "X":
-                    X.Value=Value;
+                    X.Value = Value;
                     break;
                 case "Y":
                     Y.Value = Value;
@@ -56,14 +57,17 @@ namespace ScalableRelativeImage.Nodes
                     break;
             }
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
-            var img = Bitmap.FromFile(profile.FindFile(Source.GetString(profile.CurrentSymbols)).FullName);
+            DrawableImage drawableImage = new DrawableImage();
+            drawableImage.Init(profile.FindFile(Source.GetString(profile.CurrentSymbols)).FullName);
+            //var img = Bitmap.FromFile(profile.FindFile(Source.GetString(profile.CurrentSymbols)).FullName);
             var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
-            var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
-                    (int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
-                    (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight)));
-            TargetGraphics.DrawImage(img, rect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
+            //var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
+            //        (int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
+            //        (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight)));
+            TargetGraphics.DrawImage(drawableImage, (int)LT.X, (int)LT.Y, (int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
+                (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight));
 
         }
     }

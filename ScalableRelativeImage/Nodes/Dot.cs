@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,8 +11,8 @@ namespace ScalableRelativeImage.Nodes
 {
     public class Dot : GraphicNode
     {
-        public IntermediateValue X=new IntermediateValue { Value = "0" };
-        public IntermediateValue Y=new IntermediateValue { Value = "0" };
+        public IntermediateValue X = new IntermediateValue { Value = "0" };
+        public IntermediateValue Y = new IntermediateValue { Value = "0" };
         public IntermediateValue Size = new IntermediateValue { Value = "0" };
         public IntermediateValue Foreground = null;
         public override void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
@@ -40,15 +41,17 @@ namespace ScalableRelativeImage.Nodes
         }
         public override Dictionary<string, string> GetValueSet()
         {
-            Dictionary<string, string> dict = new();
-            dict.Add("X", X.ToString());
-            dict.Add("Y", Y.ToString());
-            dict.Add("Size", Size.ToString());
+            Dictionary<string, string> dict = new()
+            {
+                { "X", X.ToString() },
+                { "Y", Y.ToString() },
+                { "Size", Size.ToString() }
+            };
             if (Foreground is not null)
                 dict.Add("Color", Foreground.Value);
             return dict;
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             float _S = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
             var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
@@ -57,7 +60,7 @@ namespace ScalableRelativeImage.Nodes
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            TargetGraphics.FillEllipse(new SolidBrush(Color), LT.X - R, LT.Y - R, D,  D);
+            TargetGraphics.DrawEllipse(Color, LT.X - R, LT.Y - R, D, D, 0, true);
         }
     }
 }

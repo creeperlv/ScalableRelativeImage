@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -47,12 +48,12 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "Size":
                     {
-                        RelativeFontSize.Value=Value;
+                        RelativeFontSize.Value = Value;
                     }
                     break;
                 case "X":
                     {
-                        X.Value= Value;
+                        X.Value = Value;
                     }
                     break;
                 case "Y":
@@ -110,18 +111,18 @@ namespace ScalableRelativeImage.Nodes
                 result.Add("Color", Foreground.Value);
             return result;
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             var p0 = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
             var AW = Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth;
             var AH = Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight;
-            float FS =  RelativeFontSize.GetFloat(profile.CurrentSymbols) > 0 ? profile.FindAbsoluteSize(RelativeFontSize.GetFloat(profile.CurrentSymbols)) : -RelativeFontSize.GetFloat(profile.CurrentSymbols);
+            float FS = RelativeFontSize.GetFloat(profile.CurrentSymbols) > 0 ? profile.FindAbsoluteSize(RelativeFontSize.GetFloat(profile.CurrentSymbols)) : -RelativeFontSize.GetFloat(profile.CurrentSymbols);
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            TargetGraphics.DrawString(Content.GetString(profile.CurrentSymbols),
-                new Font(FontFamily.GetString(profile.CurrentSymbols, "Arial"), FS, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle.GetString(profile.CurrentSymbols)))
-                , new SolidBrush(Color), new RectangleF(p0, new SizeF(AW, AH)), new StringFormat { Alignment = Align,LineAlignment= VerticalAlign });
+            TargetGraphics.DrawText(Content.GetString(profile.CurrentSymbols),
+               FontFamily.GetString(profile.CurrentSymbols, "Arial"), (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle.GetString(profile.CurrentSymbols)), FS
+                , (Color), p0.X, p0.Y, AW, AH, Align, VerticalAlign);
         }
     }
 }

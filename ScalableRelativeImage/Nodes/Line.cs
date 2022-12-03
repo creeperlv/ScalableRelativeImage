@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -59,15 +60,15 @@ namespace ScalableRelativeImage.Nodes
                     break;
             }
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
             float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
-            TargetGraphics.DrawLine(new Pen(Color, RealWidth),
-                profile.FindTargetPoint(StartX.GetFloat(profile.CurrentSymbols),StartY.GetFloat(profile.CurrentSymbols)), 
-                profile.FindTargetPoint(EndX.GetFloat(profile.CurrentSymbols), EndY.GetFloat(profile.CurrentSymbols)));
+            TargetGraphics.DrawLine(Color, 
+                profile.FindTargetPointAsUniversalVector2(StartX.GetFloat(profile.CurrentSymbols),StartY.GetFloat(profile.CurrentSymbols)), 
+                profile.FindTargetPointAsUniversalVector2(EndX.GetFloat(profile.CurrentSymbols), EndY.GetFloat(profile.CurrentSymbols)), RealWidth);
         }
     }
 }

@@ -15,7 +15,10 @@ namespace SRI.Core.Core
     public class DrawableImage : IGraphicsBackend
     {
         IGraphicsBackend backend;
-
+        public void Init(string File)
+        {
+            backend.Init(File);
+        }
         public void Init(int W, int H)
         {
 
@@ -37,6 +40,10 @@ namespace SRI.Core.Core
             backend.DrawImage(OtherImage, x, y, Width, Height);
         }
 
+        public void DrawLine(Color color, UniversalVector2 StartPoint,UniversalVector2 EndPoint, float Size)
+        {
+            backend.DrawLine(color, StartPoint.X, StartPoint.Y, EndPoint.X,EndPoint.Y, Size);
+        }
         public void DrawLine(Color color, float X1, float Y1, float X2, float Y2, float Size)
         {
             backend.DrawLine(color, X1, Y1, X2, Y2, Size);
@@ -72,6 +79,11 @@ namespace SRI.Core.Core
         {
             backend.SaveToFile(filename, format);
         }
+
+        public void DrawCurve(Color color, float Size, UniversalVector2[] Points)
+        {
+            backend.DrawCurve(color, Size, Points);
+        }
     }
     public enum UniversalImageFormat
     {
@@ -81,6 +93,14 @@ namespace SRI.Core.Core
     {
         static bool isLibraryInited;
         MagickImage image = null;
+        public void Init(string File)
+        {
+            if (!isLibraryInited)
+            {
+                MagickNET.Initialize();
+            }
+            image = new MagickImage(File);
+        }
         public void Init(int W, int H)
         {
             if (!isLibraryInited)
@@ -150,6 +170,22 @@ namespace SRI.Core.Core
             d = d.StrokeWidth(Size);
             d = d.Path(paths);
             d.Draw(image);
+        }
+        public void DrawCurve(Color color, float Size, UniversalVector2[] Points)
+        {
+            Paths paths = new Paths();
+            foreach (var point in Points)
+            {
+                paths.SmoothQuadraticCurveToAbs(point);
+            }
+            var d = new Drawables().StrokeColor(color.ToMagick());
+            d = d.StrokeWidth(Size);
+            d = d.Path(paths);
+            d.Draw(image);
+        }
+        public void Rotate(float Deg)
+        {
+            image.Rotate(Deg);
         }
         public void DrawPath(Color color, UniversalVector2[] Points, byte[] types, float Size, bool Fill)
         {
@@ -223,6 +259,11 @@ namespace SRI.Core.Core
     {
         Graphics graphics;
         Bitmap image = null;
+        public void Init(string File)
+        {
+            image = new Bitmap(File);
+            graphics = Graphics.FromImage(image);
+        }
         public void Init(int W, int H)
         {
             image = new Bitmap(W, H);
@@ -304,6 +345,11 @@ namespace SRI.Core.Core
         public void SaveToFile(string filename, UniversalImageFormat format)
         {
             image.Save(filename, format.ToImageFormat());
+        }
+
+        public void DrawCurve(Color color, float Size, UniversalVector2[] Points)
+        {
+            graphics.DrawCurve(new Pen(color, Size), Points.ToPointFArray());
         }
     }
 }

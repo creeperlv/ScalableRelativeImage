@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -62,13 +63,13 @@ namespace ScalableRelativeImage.Nodes
                     break;
             }
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            List<PointF> Points = new();
+            List<UniversalVector2> Points = new();
             List<byte> Types = new();
             //foreach (var item in this.Points)
             //{
@@ -77,25 +78,23 @@ namespace ScalableRelativeImage.Nodes
             //    Types.Add((byte)(int)P.NodeType);
             //}
             {
-                Points.Add(profile.FindTargetPoint(Point1.X.GetFloat(profile.CurrentSymbols), Point1.Y.GetFloat(profile.CurrentSymbols)));
+                Points.Add(profile.FindTargetPointAsUniversalVector2(Point1.X.GetFloat(profile.CurrentSymbols), Point1.Y.GetFloat(profile.CurrentSymbols)));
                 Types.Add((byte)PathPointType.Line);
             }
             {
-                Points.Add(profile.FindTargetPoint(Point2.X.GetFloat(profile.CurrentSymbols), Point2.Y.GetFloat(profile.CurrentSymbols)));
+                Points.Add(profile.FindTargetPointAsUniversalVector2(Point2.X.GetFloat(profile.CurrentSymbols), Point2.Y.GetFloat(profile.CurrentSymbols)));
                 Types.Add((byte)PathPointType.Line);
             }
             {
-                Points.Add(profile.FindTargetPoint(Point3.X.GetFloat(profile.CurrentSymbols), Point3.Y.GetFloat(profile.CurrentSymbols)));
+                Points.Add(profile.FindTargetPointAsUniversalVector2(Point3.X.GetFloat(profile.CurrentSymbols), Point3.Y.GetFloat(profile.CurrentSymbols)));
                 Types.Add((byte)PathPointType.Line);
             }
             {
-                Points.Add(profile.FindTargetPoint(Point1.X.GetFloat(profile.CurrentSymbols), Point1.Y.GetFloat(profile.CurrentSymbols)));
+                Points.Add(profile.FindTargetPointAsUniversalVector2(Point1.X.GetFloat(profile.CurrentSymbols), Point1.Y.GetFloat(profile.CurrentSymbols)));
                 Types.Add((byte)PathPointType.Line);
             }
-            if (Fill.GetBool(profile.CurrentSymbols, false) is false)
-                TargetGraphics.DrawPath(new(Color, RealWidth), new(Points.ToArray(), Types.ToArray()));
-            else
-                TargetGraphics.FillPath(new SolidBrush(Color), new(Points.ToArray(), Types.ToArray()));
+            //if (Fill.GetBool(profile.CurrentSymbols, false) is false)
+            TargetGraphics.DrawPath(Color, Points.ToArray(), Types.ToArray(), RealWidth, Fill.GetBool(profile.CurrentSymbols, false));
         }
     }
 }

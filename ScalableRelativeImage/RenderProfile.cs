@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Nodes;
+using SRI.Core.Core;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -49,11 +50,11 @@ namespace ScalableRelativeImage
         /// <summary>
         /// Render options for CLUNL.Imaging library for blur option.
         /// </summary>
-        public int RendererOptions=3;
+        public int RendererOptions = 3;
         /// <summary>
         /// The bipmap that is currently working on.
         /// </summary>
-        public Bitmap WorkingBitmap;
+        public DrawableImage WorkingBitmap;
         /// <summary>
         /// Find a subimage.
         /// </summary>
@@ -142,6 +143,25 @@ namespace ScalableRelativeImage
                 }
                 return s;
             }
+        }
+        public UniversalVector2 FindTargetPointAsUniversalVector2(float RX, float RY, GraphicNode node = null)
+        {
+            UniversalVector2 p = new UniversalVector2() { X = ((RX / root.RelativeWidth) * TargetWidth), Y = ((RY / root.RelativeHeight) * TargetHeight) };
+            if (node != null)
+            {
+                if (node.Parent != null)
+                {
+                    if (node.Parent is ILayoutable l)
+                    {
+                        p = new UniversalVector2()
+                        {
+                            X = ((RX + l.X) / root.RelativeWidth) * TargetWidth,
+                            Y = (((RY + l.Y) / root.RelativeHeight) * TargetHeight)
+                        };
+                    }
+                }
+            }
+            return p;
         }
         /// <summary>
         /// Find the absolute point of a relative point.

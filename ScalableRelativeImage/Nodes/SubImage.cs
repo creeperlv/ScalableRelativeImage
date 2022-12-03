@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -83,7 +84,7 @@ namespace ScalableRelativeImage.Nodes
                     X.Value = Value;
                     break;
                 case "Y":
-                    Y.Value=Value;
+                    Y.Value = Value;
                     break;
                 case "Width":
                     Width = float.Parse(Value);
@@ -120,7 +121,7 @@ namespace ScalableRelativeImage.Nodes
         /// </summary>
         /// <param name="TargetGraphics"></param>
         /// <param name="profile"></param>
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
             var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
@@ -131,32 +132,35 @@ namespace ScalableRelativeImage.Nodes
                     (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio.GetFloat(profile.CurrentSymbols))));
             //Scaled size of the image.
             //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            var b = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            DrawableImage b = new DrawableImage();
+            b.Init(rect.Width, rect.Height);
+            //var b = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var subProfile = profile.Copy(profile.root);
             //Keep the references.
             //subProfile.TargetWidth = rect.Width;
             //subProfile.TargetHeight = rect.Height;
             subProfile.WorkingBitmap = b;
             {
-                Graphics g = Graphics.FromImage(b);
+                //Graphics g = Graphics.FromImage(b);
                 {
                     g.SmoothingMode = profile.SmoothingMode;
                     g.TextRenderingHint = profile.TextRenderingHint;
                     g.InterpolationMode = profile.InterpolationMode;
                     foreach (var item in Children)
                     {
-                        item.Paint(ref g, subProfile);
+                        item.Paint(ref b, subProfile);
                     }
                     if (Background is not null)
                     {
-                        TargetGraphics.FillRectangle(new SolidBrush(Background.Value), _rect);
+                        TargetGraphics.DrawRectangle(Background.Value, (int)LT.X, (int)LT.Y, (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio.GetFloat(profile.CurrentSymbols)),
+                    (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio.GetFloat(profile.CurrentSymbols)), 0, true);
                     }
                     g.Dispose();
                 }
             }
             if (Rotation.GetFloat(profile.CurrentSymbols) == 0 || Rotation.GetFloat(profile.CurrentSymbols) == 360)
             {
-                TargetGraphics.DrawImage(b, _rect, 0, 0, b.Width, b.Height, GraphicsUnit.Pixel);
+                TargetGraphics.DrawImage(b, _rect.X, rect.Y, _rect.Width, _rect.Height) ;
             }
             else
             {
