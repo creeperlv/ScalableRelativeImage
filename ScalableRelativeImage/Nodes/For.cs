@@ -1,5 +1,6 @@
 ﻿using OpenCL.NetCore;
 using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -72,7 +73,7 @@ namespace ScalableRelativeImage.Nodes
             }
             return nodes;
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             var L = InitialValue.GetFloat(profile.CurrentSymbols);
             var R = EndValue.GetFloat(profile.CurrentSymbols);

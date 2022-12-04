@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using ScalableRelativeImage;
 using ScalableRelativeImage.Nodes;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -174,7 +175,7 @@ namespace SRI.Editor.Main.Editors
                     using (var img = vectorimg.Render(profile))
                     {
                         MemoryStream memoryStream = new MemoryStream();
-                        img.Save(memoryStream, ImageFormat.Png);
+                        img.Save(memoryStream, UniversalImageFormat.PNG);
                         memoryStream.Position = 0;
                         Bitmap b = new Bitmap(memoryStream);
                         ImagePreview.Source = b;

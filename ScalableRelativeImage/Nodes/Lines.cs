@@ -1,5 +1,6 @@
 ﻿using ScalableRelativeImage.Core;
 using ScalableRelativeImage.Nodes;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -57,19 +58,19 @@ namespace ScalableRelativeImage.Nodes
         {
             return Points;
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
-            List<PointF> Points = new();
+            List<UniversalVector2> Points = new();
             foreach (var item in this.Points)
             {
                 var P = item as Point;
-                Points.Add(profile.FindTargetPoint(P.X.GetFloat(profile.CurrentSymbols), P.Y.GetFloat(profile.CurrentSymbols)));
+                Points.Add(profile.FindTargetPointAsUniversalVector2(P.X.GetFloat(profile.CurrentSymbols), P.Y.GetFloat(profile.CurrentSymbols)));
             }
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            TargetGraphics.DrawLines(new(Color, RealWidth), Points.ToArray());
+            TargetGraphics.DrawLines(Color, RealWidth,Points.ToArray());
 
         }
     }

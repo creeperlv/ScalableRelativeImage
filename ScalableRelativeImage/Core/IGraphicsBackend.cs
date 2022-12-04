@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 
 namespace SRI.Core.Core
 {
     public interface IGraphicsBackend : IDisposable
     {
+        int Width { get; }
+        int Height { get; }
+
         void DrawCurve(Color color, float Size, UniversalVector2[] Points);
         void DrawEllipse(Color color, float X, float Y, float W, float H, float Size, bool Fill);
         void DrawImage(IGraphicsBackend OtherImage, int x, int y, int Width, int Height);
@@ -15,6 +19,9 @@ namespace SRI.Core.Core
         void DrawText(string text, string FontFamily, FontStyle style, float Size, Color color, float X, float Y, float W, float H, StringAlignment HorizontalAlignment, StringAlignment VerticalAlignment);
         void Init(int W, int H);
         void Init(string File);
+        void Rotate(float Deg);
+        void Save(string filename);
+        void Save(Stream stream, UniversalImageFormat format);
         void SaveToFile(string filename, UniversalImageFormat format);
         Bitmap ToBitmap();
     }

@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -37,7 +38,7 @@ namespace ScalableRelativeImage.Nodes
                     break;
             }
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             switch (_Type.ToUpper())
             {
@@ -99,7 +100,7 @@ namespace ScalableRelativeImage.Nodes
                     break;
             }
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             profile.CurrentSymbols.Set(new Symbol { Name = Symbol, Value = Value });
         }

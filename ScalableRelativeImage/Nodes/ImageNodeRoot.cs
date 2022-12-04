@@ -89,7 +89,7 @@ namespace ScalableRelativeImage.Nodes
             return nodes;
         }
 
-        public Bitmap Render(RenderProfile profile)
+        public DrawableImage Render(RenderProfile profile)
         {
             profile.root = this;
             profile.CurrentSymbols = Symbols;
@@ -110,13 +110,13 @@ namespace ScalableRelativeImage.Nodes
             //g.SmoothingMode = profile.SmoothingMode;
             //g.TextRenderingHint = profile.TextRenderingHint;
             //g.InterpolationMode = profile.InterpolationMode;
-            profile.WorkingBitmap = Bit;
+            profile.WorkingBitmap = image;
             foreach (var item in Children)
             {
-                item.Paint(ref g, profile);
+                item.Paint(ref image, profile);
             }
 
-            return image.ToBitmap();
+            return image;
         }
         public void SetValue(string Key, string Value, ref List<ExecutionWarning> executionWarnings)
         {

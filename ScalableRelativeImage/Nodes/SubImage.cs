@@ -143,19 +143,20 @@ namespace ScalableRelativeImage.Nodes
             {
                 //Graphics g = Graphics.FromImage(b);
                 {
-                    g.SmoothingMode = profile.SmoothingMode;
-                    g.TextRenderingHint = profile.TextRenderingHint;
-                    g.InterpolationMode = profile.InterpolationMode;
+                    //g.SmoothingMode = profile.SmoothingMode;
+                    //g.TextRenderingHint = profile.TextRenderingHint;
+                    //g.InterpolationMode = profile.InterpolationMode;
                     foreach (var item in Children)
                     {
                         item.Paint(ref b, subProfile);
                     }
                     if (Background is not null)
                     {
-                        TargetGraphics.DrawRectangle(Background.Value, (int)LT.X, (int)LT.Y, (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio.GetFloat(profile.CurrentSymbols)),
+                        TargetGraphics.DrawRectangle(Background.Value, (int)LT.X, (int)LT.Y,
+                            (int)(Width / profile.root.RelativeWidth * profile.TargetWidth * ScaledWidthRatio.GetFloat(profile.CurrentSymbols)),
                     (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio.GetFloat(profile.CurrentSymbols)), 0, true);
                     }
-                    g.Dispose();
+                    //g.Dispose();
                 }
             }
             if (Rotation.GetFloat(profile.CurrentSymbols) == 0 || Rotation.GetFloat(profile.CurrentSymbols) == 360)
@@ -164,28 +165,35 @@ namespace ScalableRelativeImage.Nodes
             }
             else
             {
+                var angle = Rotation.GetFloat(profile.CurrentSymbols);
+                b.Rotate(angle);
                 var The = MathHelper.Deg2Rad_P(Rotation.GetFloat(profile.CurrentSymbols));
                 int W = (int)(Math.Abs(b.Width * Math.Cos(The)) + Math.Abs(b.Height * Math.Sin(The)));
                 int H = (int)(Math.Abs(b.Height * Math.Cos(The)) + Math.Abs(b.Width * Math.Sin(The)));
-                Bitmap FB = new Bitmap(W, H);
-                using (Graphics g = Graphics.FromImage(FB))
-                {
-                    g.SmoothingMode = profile.SmoothingMode;
-                    g.TextRenderingHint = profile.TextRenderingHint;
-                    g.InterpolationMode = profile.InterpolationMode;
-                    g.TranslateTransform((float)W / 2, (float)H / 2);
-                    g.RotateTransform(Rotation.GetFloat(profile.CurrentSymbols));
-                    g.TranslateTransform(-(float)W / 2, -(float)H / 2);
-                    g.DrawImage(b, (W - b.Width) / 2, (H - b.Height) / 2);
-                    g.TranslateTransform((float)W / 2, (float)H / 2);
-                    g.RotateTransform(-Rotation.GetFloat(profile.CurrentSymbols));
-                    g.TranslateTransform(-(float)W / 2, -(float)H / 2);
-                }
                 int _W = (int)(W / 1 * ScaledWidthRatio.GetFloat(profile.CurrentSymbols));
                 int _H = (int)(H / 1 * ScaledHeightRatio.GetFloat(profile.CurrentSymbols));
                 Trace.WriteLine($"Rotated:{W}x{H},{_W}x{_H}");
                 _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)(LT.X - (_W - _rect.Width) / 2), (int)(LT.Y - (_H - _rect.Height) / 2)), new Size(_W, _H));
-                TargetGraphics.DrawImage(FB, _rect, 0, 0, W, H, GraphicsUnit.Pixel);
+
+                b.Rotate(angle);
+                TargetGraphics.DrawImage(b, _rect.X, _rect.Y, _rect.Width, _rect.Height);
+
+                //Bitmap FB = new Bitmap(W, H);
+                //using (Graphics g = Graphics.FromImage(FB))
+                //{
+                //    g.SmoothingMode = profile.SmoothingMode;
+                //    g.TextRenderingHint = profile.TextRenderingHint;
+                //    g.InterpolationMode = profile.InterpolationMode;
+                //    g.TranslateTransform((float)W / 2, (float)H / 2);
+                //    g.RotateTransform(Rotation.GetFloat(profile.CurrentSymbols));
+                //    g.TranslateTransform(-(float)W / 2, -(float)H / 2);
+                //    g.DrawImage(b, (W - b.Width) / 2, (H - b.Height) / 2);
+                //    g.TranslateTransform((float)W / 2, (float)H / 2);
+                //    g.RotateTransform(-Rotation.GetFloat(profile.CurrentSymbols));
+                //    g.TranslateTransform(-(float)W / 2, -(float)H / 2);
+                //}
+
+                //TargetGraphics.DrawImage(FB, _rect, 0, 0, W, H, GraphicsUnit.Pixel);
             }
             b.Dispose();
         }

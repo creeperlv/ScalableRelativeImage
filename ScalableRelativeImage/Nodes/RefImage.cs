@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -110,7 +111,7 @@ namespace ScalableRelativeImage.Nodes
             {
             }
         }
-        public override void Paint(ref Graphics TargetGraphics, RenderProfile profile)
+        public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
             var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
@@ -142,19 +143,23 @@ namespace ScalableRelativeImage.Nodes
                 var _LT = p.FindTargetPoint(sub.X.GetFloat(profile.CurrentSymbols), sub.Y.GetFloat(profile.CurrentSymbols));
                 var __rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)_LT.X, (int)_LT.Y), new Size(
                         (int)(sub.Width / p.root.RelativeWidth * p.TargetWidth), (int)(sub.Height / p.root.RelativeHeight * p.TargetHeight)));
-                Bitmap Bit = new Bitmap((int)p.TargetWidth, (int)p.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                DrawableImage Bit = new DrawableImage();
+                Bit.Init((int)p.TargetWidth, (int)p.TargetHeight);
                 p.WorkingBitmap = Bit;
-                Graphics g = Graphics.FromImage(Bit);
-                if (Background is not null)
-                    g.FillRectangle(new SolidBrush(Background.GetColor(profile.CurrentSymbols)), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
-                else
-                    g.FillRectangle(new SolidBrush(p.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)p.TargetWidth, (int)p.TargetHeight));
-                g.SmoothingMode = profile.SmoothingMode;
-                g.TextRenderingHint = profile.TextRenderingHint;
-                g.InterpolationMode = profile.InterpolationMode;
-                sub.Paint(ref g, p);
-                TargetGraphics.DrawImage(Bit, _rect, __rect, GraphicsUnit.Pixel);
-                g.Dispose();
+                {
+                    if (Background is not null)
+                        Bit.DrawRectangle((Background.GetColor(profile.CurrentSymbols)), 0, 0, (int)p.TargetWidth, (int)p.TargetHeight,0,true);
+                    else
+                        Bit.DrawRectangle((p.DefaultBackground.Value), 0, 0, (int)p.TargetWidth, (int)p.TargetHeight, 0, true);
+                }
+                //Graphics g = Graphics.FromImage(Bit);
+                
+                //g.SmoothingMode = profile.SmoothingMode;
+                //g.TextRenderingHint = profile.TextRenderingHint;
+                //g.InterpolationMode = profile.InterpolationMode;
+                sub.Paint(ref Bit, p);
+                TargetGraphics.DrawImage(Bit, _rect.X,_rect.Y, __rect.Width,_rect.Height);
+                //g.Dispose();
                 Bit.Dispose();
 
             }
@@ -167,7 +172,7 @@ namespace ScalableRelativeImage.Nodes
                 p.TargetWidth = rect.Width;
                 p.TargetHeight = rect.Height;
                 var img = sri.Render(p);
-                TargetGraphics.DrawImage(img, rect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
+                TargetGraphics.DrawImage(img, rect.X,rect.Y,rect.Width,rect.Height);
                 img.Dispose();
             }
         }

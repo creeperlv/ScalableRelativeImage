@@ -77,7 +77,9 @@ namespace ScalableRelativeImage.Nodes
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
             bool b = Fill.GetBool(profile.CurrentSymbols);
-            TargetGraphics.DrawEllipse(Color, LT.X, LT.Y, (Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight), RealWidth, b);
+            TargetGraphics.DrawEllipse(Color, LT.X, LT.Y, 
+                (Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
+                (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight), RealWidth, b);
             //if (Fill.GetBool(profile.CurrentSymbols) is not true)
             //    TargetGraphics.DrawEllipse(new(Color, RealWidth), new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
             //        (int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth), (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight))));

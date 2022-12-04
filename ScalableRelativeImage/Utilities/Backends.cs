@@ -96,7 +96,12 @@ namespace SRI.Core.Utilities
         }
         public static PointF[] ToPointFArray(this UniversalVector2[] vs)
         {
-            return vs.Cast<PointF>().ToArray();
+            PointF[] f=new PointF[vs.Length];
+            for (int i = 0; i < vs.Length; i++)
+            {
+                f[i] = vs[i];
+            }
+            return f;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace ScalableRelativeImage.Nodes
             Color Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
             else Color = profile.DefaultForeground.Value;
-            TargetGraphics.DrawCurve(Color, RealWidth, Points.ToArray(),false);
+            TargetGraphics.DrawCurve(Color, RealWidth, Points.ToArray());
 
         }
     }
