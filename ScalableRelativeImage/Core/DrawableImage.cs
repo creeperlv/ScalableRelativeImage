@@ -16,14 +16,15 @@ namespace SRI.Core.Core
 {
     public class DrawableImage : IGraphicsBackend
     {
-        IGraphicsBackend backend;
-
+        private IGraphicsBackend backend;
+        public IGraphicsBackend Backend { get { return backend; } }
         public int Width => backend.Width;
 
         public int Height => backend.Height;
 
         public void Init(string File)
         {
+            backend = BackendFactory.Instance.CreateBackend();
             backend.Init(File);
         }
         public void Init(int W, int H)
@@ -120,7 +121,7 @@ namespace SRI.Core.Core
             {
                 MagickNET.Initialize();
             }
-            image = new MagickImage(File);
+            image = new MagickImage(new FileInfo(File));
         }
         public void Init(int W, int H)
         {
@@ -157,12 +158,39 @@ namespace SRI.Core.Core
         }
         public void DrawImage(IGraphicsBackend OtherImage, int x, int y, int Width, int Height)
         {
-            if (OtherImage is MagickGraphicsBackend backend)
+            if (OtherImage is DrawableImage di)
             {
-                var d = new Drawables().Composite((new MagickGeometryFactory()).Create(x, y, Width, Height), CompositeOperator.Alpha, backend.image);
-                d.Draw(image);
+                if (di.Backend is MagickGraphicsBackend backend)
+                {
+                    int Scale_H = 1;
+                    int Scale_V = 1;
+                    int W = Width;
+                    int H = Height;
+                    if (W < 0)
+                    {
+                        Scale_H = -1;
+                        W = -W;
+                    }
+                    if (H < 0)
+                    {
+                        Scale_V = -1;
+                        H = -H;
+                    }
+                    MagickGeometry magickGeometry = new MagickGeometry(W, H);
+                    magickGeometry.IgnoreAspectRatio = true;
+                    backend.image.Resize(magickGeometry);
+                    if (Scale_H == -1)
+                        backend.image.Flop();
+                    if(Scale_V==-1)
+                        backend.image.Flip();
+                    //if (Scale_H != 1 || Scale_V != 1)
+                    //    backend.image.Scale(Scale_H, Scale_V);
+                    image.Composite(backend.image, x, y, CompositeOperator.Blend);
+                    //var d = new Drawables().Composite((new MagickGeometryFactory()).Create(x, y, Width, Height), CompositeOperator.Alpha, backend.image);
+                    //d.Draw(image);
+                    return;
+                }
             }
-            else
             {
                 throw new NotSupportedException();
             }
@@ -264,13 +292,15 @@ namespace SRI.Core.Core
                 TextGravity = Backends.ToGravity(HorizontalAlignment, VerticalAlignment),
                 BackgroundColor = MagickColors.Transparent,
                 FontPointsize = Size,
-                Height = (int)W,
-                Width = (int)H
+                Width = (int)W,
+                Height = (int)H,
             };
 
             using (var text_img = new MagickImage($"caption:{text}", settings))
             {
-                image.Composite(text_img, (int)X, (int)Y, CompositeOperator.Over);
+                //var d = new Drawables().Composite((new MagickGeometryFactory()).Create((int)X, (int)Y, (int)W, (int)H), CompositeOperator.Alpha, textimg);
+                //d.Draw(image);
+                image.Composite(text_img, (int)(X), (int)Y, CompositeOperator.Over);
             }
         }
         public void DrawEllipse(Color color, float X, float Y, float W, float H, float Size, bool Fill)
@@ -286,9 +316,9 @@ namespace SRI.Core.Core
                 d = d.FillColor(MagickColors.Transparent);
                 d = d.StrokeWidth(Size);
             }
-            var rX=W/2;
-            var rY=H/2;
-            d = d.Ellipse(X+rX, Y+rY, rX, rY, 0, 360);
+            var rX = W / 2;
+            var rY = H / 2;
+            d = d.Ellipse(X + rX, Y + rY, rX, rY, 0, 360);
             d.Draw(image);
         }
 
@@ -363,14 +393,27 @@ namespace SRI.Core.Core
 
         public void DrawImage(IGraphicsBackend OtherImage, int x, int y, int Width, int Height)
         {
-            if (OtherImage is SystemGraphicsBackend backend)
+            if (OtherImage is DrawableImage di)
             {
-                graphics.DrawImage(backend.image, new Rectangle(x, y, Width, Height), 0, 0, backend.image.Width, backend.image.Height, GraphicsUnit.Pixel);
+                if (di.Backend is SystemGraphicsBackend backend)
+                {
+                    graphics.DrawImage(backend.image, new Rectangle(x, y, Width, Height), 0, 0, backend.image.Width, backend.image.Height, GraphicsUnit.Pixel);
+                    //var d = new Drawables().Composite((new MagickGeometryFactory()).Create(x, y, Width, Height), CompositeOperator.Alpha, backend.image);
+                    //d.Draw(image);
+                    return;
+                }
             }
-            else
             {
                 throw new NotSupportedException();
             }
+            //if (OtherImage is SystemGraphicsBackend backend)
+            //{
+            //    graphics.DrawImage(backend.image, new Rectangle(x, y, Width, Height), 0, 0, backend.image.Width, backend.image.Height, GraphicsUnit.Pixel);
+            //}
+            //else
+            //{
+            //    throw new NotSupportedException();
+            //}
         }
         public void DrawLines(Color color, float Size, UniversalVector2[] Points)
         {
