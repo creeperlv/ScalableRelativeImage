@@ -5,11 +5,13 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using ScalableRelativeImage;
 using ScalableRelativeImage.Nodes;
+using SRI.Core.Core;
 using SRI.Editor.Core;
 using SRI.Editor.Core.Projects;
 using SRI.Editor.Extension;
 using SRI.Editor.Extension.Defaults;
 using SRI.Editor.Main.Controls;
+using SRI.Editor.Main.Data;
 using SRI.Editor.Main.Editors;
 using SRI.Editor.Main.Pages;
 using System;
@@ -44,6 +46,7 @@ namespace SRI.Editor.Main
 
             this.SetProgress(0, 100, 0);
             int Total = 0;
+            BackendFactory.UsingBackend = (BackendDefinition)EditorConfiguration.CurrentConfiguration.Backend;
             var P = ProjectEngine.BuildAsync(OpenedProject,
                   (ConfigurationBox.SelectedItem as ComboBoxItem).Content as string,
 

@@ -2,7 +2,7 @@
 {
     public class BackendFactory
     {
-        public static BackendDefinition UsingBackend = BackendDefinition.Magick;
+        public static BackendDefinition UsingBackend = BackendDefinition.SystemDrawing;
         public static readonly BackendFactory Instance = new BackendFactory();
         public IGraphicsBackend CreateBackend()
         {

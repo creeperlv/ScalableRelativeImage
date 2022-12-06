@@ -104,6 +104,11 @@ namespace SRI.Core.Core
         {
             backend.Rotate(Deg);
         }
+
+        public void DrawClosedCurve(Color color, float Size, UniversalVector2[] Points, bool Filled)
+        {
+            backend.DrawClosedCurve(color, Size, Points, Filled);
+        }
     }
     public enum UniversalImageFormat
     {
@@ -181,7 +186,7 @@ namespace SRI.Core.Core
                     backend.image.Resize(magickGeometry);
                     if (Scale_H == -1)
                         backend.image.Flop();
-                    if(Scale_V==-1)
+                    if (Scale_V == -1)
                         backend.image.Flip();
                     //if (Scale_H != 1 || Scale_V != 1)
                     //    backend.image.Scale(Scale_H, Scale_V);
@@ -330,6 +335,23 @@ namespace SRI.Core.Core
         public void Save(Stream stream, UniversalImageFormat format)
         {
             image.Write(stream, format.ToMagickFormat());
+        }
+
+        public void DrawClosedCurve(Color color, float Size, UniversalVector2[] Points, bool Filled)
+        {
+            Paths paths = new Paths();
+            foreach (var point in Points)
+            {
+                paths.SmoothQuadraticCurveToAbs(point);
+            }
+            if (Points.Last() != Points.First())
+            {
+                paths.SmoothQuadraticCurveToAbs(Points.First());
+            }
+            var d = new Drawables().StrokeColor(color.ToMagick());
+            d = d.StrokeWidth(Size);
+            d = d.Path(paths);
+            d.Draw(image);
         }
     }
     public class SystemGraphicsBackend : IGraphicsBackend
@@ -490,6 +512,16 @@ namespace SRI.Core.Core
         public void Save(Stream stream, UniversalImageFormat format)
         {
             image.Save(stream, format.ToImageFormat());
+        }
+
+        public void DrawClosedCurve(Color color, float Size, UniversalVector2[] Points, bool Filled)
+        {
+            if (Filled)
+            {
+                graphics.FillClosedCurve(new SolidBrush(color), Points.ToPointFArray());
+            }
+            else
+                graphics.DrawClosedCurve(new Pen(color, Size), Points.ToPointFArray());
         }
     }
 }

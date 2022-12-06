@@ -5,6 +5,7 @@ using Avalonia.Media.Imaging;
 using ScalableRelativeImage;
 using ScalableRelativeImage.Nodes;
 using SRI.Core.Core;
+using SRI.Editor.Main.Data;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -99,6 +100,7 @@ namespace SRI.Editor.Main.Editors
         }
         public ImageNodeRoot Compile()
         {
+            BackendFactory.UsingBackend = (BackendDefinition)EditorConfiguration.CurrentConfiguration.Backend;
             if (CentralEditor is null) return null;
             List<ExecutionWarning> Warnings;
             var vectorimg = SRIEngine.Deserialize(CentralEditor.Text, out Warnings);
@@ -133,6 +135,7 @@ namespace SRI.Editor.Main.Editors
             {
                 try
                 {
+                    BackendFactory.UsingBackend = (BackendDefinition)EditorConfiguration.CurrentConfiguration.Backend;
                     var vectorimg = Compile();
                     if (vectorimg is null) return;
                     RenderProfile profile = new RenderProfile();

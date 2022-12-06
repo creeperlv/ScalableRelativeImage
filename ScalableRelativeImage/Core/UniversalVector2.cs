@@ -10,8 +10,16 @@ namespace SRI.Core.Core
 {
     public struct UniversalVector2
     {
-        public float X; 
+        public float X;
         public float Y;
+        public static bool operator ==(UniversalVector2 L, UniversalVector2 R)
+        {
+            return L.X == R.X && L.Y == R.Y;
+        }
+        public static bool operator !=(UniversalVector2 L, UniversalVector2 R)
+        {
+            return L.X != R.X || L.Y != R.Y;
+        }
         public static implicit operator PointD(UniversalVector2 v)
         {
             return new PointD(v.X, v.Y);

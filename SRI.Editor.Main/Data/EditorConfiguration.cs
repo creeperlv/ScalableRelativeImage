@@ -105,5 +105,6 @@ namespace SRI.Editor.Main.Data
         public bool isBlurEnabled = true;
         public int ComputeMode = 0;
         public bool TransparentInsteadOfBlur = false;
+        public int Backend;
     }
 }

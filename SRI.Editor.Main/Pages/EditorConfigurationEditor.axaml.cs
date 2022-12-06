@@ -27,17 +27,20 @@ namespace SRI.Editor.Main.Pages
             LocalizationButton.Click += (_, _) => { HideAllPages(); LocalizationPanel.IsVisible = true; };
             VisualButton.Click += (_, _) => { HideAllPages(); VisualPanel.IsVisible = true; };
             AccelerationButton.Click += (_, _) => { HideAllPages(); AccelerationPanel.IsVisible = true; };
+            BackendButton.Click += (_, _) => { HideAllPages(); BackendPanel.IsVisible = true; };
         }
         void HideAllPages()
         {
             LocalizationPanel.IsVisible = false;
             VisualPanel.IsVisible = false;
             AccelerationPanel.IsVisible = false;
+            BackendPanel.IsVisible = false;
         }
         public void LoadFromSettings()
         {
             UseBlurSwitch.IsChecked = EditorConfiguration.CurrentConfiguration.isBlurEnabled;
             UseTransparentSwitch.IsChecked = EditorConfiguration.CurrentConfiguration.TransparentInsteadOfBlur;
+            BackendBox.SelectedIndex = EditorConfiguration.CurrentConfiguration.Backend;
             {
                 var CODES = Language.EnumerateLanguageCodes();
                 List<ComboBoxItem> Items = new List<ComboBoxItem>();
@@ -117,6 +120,7 @@ namespace SRI.Editor.Main.Pages
         {
             EditorConfiguration.CurrentConfiguration.isBlurEnabled = UseBlurSwitch.IsChecked.Value;
             EditorConfiguration.CurrentConfiguration.ComputeMode = CLUNLAP.SelectedIndex;
+            EditorConfiguration.CurrentConfiguration.Backend = BackendBox.SelectedIndex;
             EditorConfiguration.CurrentConfiguration.TransparentInsteadOfBlur = UseTransparentSwitch.IsChecked.Value;
             var CODE = (LanguageBox.SelectedItem as ComboBoxItem).Content as string;
             Language.SetLanguageCode(CODE);
@@ -139,27 +143,33 @@ namespace SRI.Editor.Main.Pages
         ToggleSwitch UseTransparentSwitch;
         ComboBox LanguageBox;
         ComboBox CLUNLAP;
+        ComboBox BackendBox;
         Button VisualButton;
         Button AccelerationButton;
         Button LocalizationButton;
         Button SaveButton;
+        Button BackendButton;
         StackPanel VisualPanel;
         StackPanel LocalizationPanel;
         StackPanel AccelerationPanel;
+        StackPanel BackendPanel;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
             LanguageBox = this.FindControl<ComboBox>("LanguageBox");
             CLUNLAP = this.FindControl<ComboBox>("CLUNLAP");
+            BackendBox = this.FindControl<ComboBox>("BackendBox");
             UseBlurSwitch = this.FindControl<ToggleSwitch>("UseBlurSwitch");
             UseTransparentSwitch = this.FindControl<ToggleSwitch>("UseTransparentSwitch");
             VisualButton = this.FindControl<Button>("VisualButton");
             AccelerationButton = this.FindControl<Button>("AccelerationButton");
             SaveButton = this.FindControl<Button>("SaveButton");
             LocalizationButton = this.FindControl<Button>("LocalizationButton");
+            BackendButton = this.FindControl<Button>("BackendButton");
             VisualPanel = this.FindControl<StackPanel>("VisualPanel");
             LocalizationPanel = this.FindControl<StackPanel>("LocalizationPanel");
             AccelerationPanel = this.FindControl<StackPanel>("AccelerationPanel");
+            BackendPanel = this.FindControl<StackPanel>("BackendPanel");
         }
     }
 }

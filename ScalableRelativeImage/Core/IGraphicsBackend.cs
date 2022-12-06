@@ -9,6 +9,7 @@ namespace SRI.Core.Core
         int Width { get; }
         int Height { get; }
 
+        void DrawClosedCurve(Color color, float Size, UniversalVector2[] Points, bool Filled);
         void DrawCurve(Color color, float Size, UniversalVector2[] Points);
         void DrawEllipse(Color color, float X, float Y, float W, float H, float Size, bool Fill);
         void DrawImage(IGraphicsBackend OtherImage, int x, int y, int Width, int Height);

@@ -42,6 +42,7 @@
 				<Button Content="Visual" Name="VisualButton"/>
 				<Button Content="Localization" Name="LocalizationButton"/>
 				<Button Content="Hardware Acceleration" Name="AccelerationButton"/>
+				<Button Content="Backend" Name="BackendButton"/>
 			</StackPanel>
 		</ScrollViewer>
 		<ScrollViewer Grid.Column="1" Background="#80222222">
@@ -59,6 +60,13 @@
 					<StackPanel Name="AccelerationPanel" IsVisible="false">
 						<TextBlock Text="Accleration Platform (CLUNL.Imaging)"/>
 						<ComboBox Name="CLUNLAP"></ComboBox>
+					</StackPanel>
+					<StackPanel Name="BackendPanel" IsVisible="False">
+						<TextBlock Text="SRI Backends"/>
+						<ComboBox Name="BackendBox" SelectedIndex="0">
+							<ComboBoxItem>System.Drawings</ComboBoxItem>
+							<ComboBoxItem>Magick.NET (Experimental)</ComboBoxItem>
+						</ComboBox>
 					</StackPanel>
 				</Grid>
 			</Border>
