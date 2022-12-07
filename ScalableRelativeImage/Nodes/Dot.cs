@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
@@ -57,8 +58,8 @@ namespace ScalableRelativeImage.Nodes
             var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
             float D = _S / MathF.Sqrt(2);
             float R = D / 2;
-            Color Color;
-            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            ColorF Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToString("X"));
             else Color = profile.DefaultForeground.Value;
             TargetGraphics.DrawEllipse(Color, LT.X - R, LT.Y - R, D, D, 0, true);
         }

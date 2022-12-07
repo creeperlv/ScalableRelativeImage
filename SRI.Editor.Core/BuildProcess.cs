@@ -1,5 +1,6 @@
 ﻿using ScalableRelativeImage;
 using ScalableRelativeImage.Nodes;
+using SRI.Core.Utilities;
 using SRI.Editor.Core.Projects;
 using System;
 using System.Collections.Generic;
@@ -122,8 +123,8 @@ namespace SRI.Editor.Core
                         RenderProfile renderProfile = new RenderProfile();
                         renderProfile.TargetWidth = Width;
                         renderProfile.TargetHeight = Height;
-                        renderProfile.DefaultForeground = Foreground;
-                        renderProfile.DefaultBackground = Background;
+                        renderProfile.DefaultForeground = Foreground.ToColorF();
+                        renderProfile.DefaultBackground = Background.ToColorF();
                         renderProfile.WorkingDirectory = source.Directory.FullName;
                         var bitmap = imageNodeRoot.Render(renderProfile);
 

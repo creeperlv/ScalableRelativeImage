@@ -1,5 +1,6 @@
 ﻿using OpenCL.NetCore;
 using ScalableRelativeImage.Core;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using System.Collections.Generic;
 using System.Drawing;

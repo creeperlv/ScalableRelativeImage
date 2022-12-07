@@ -1,5 +1,6 @@
 ﻿using ScalableRelativeImage.Core;
 using ScalableRelativeImage.Nodes;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
@@ -67,8 +68,8 @@ namespace ScalableRelativeImage.Nodes
                 var P = item as Point;
                 Points.Add(profile.FindTargetPointAsUniversalVector2(P.X.GetFloat(profile.CurrentSymbols), P.Y.GetFloat(profile.CurrentSymbols)));
             }
-            Color Color;
-            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            ColorF Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToString("X"));
             else Color = profile.DefaultForeground.Value;
             TargetGraphics.DrawLines(Color, RealWidth,Points.ToArray());
 

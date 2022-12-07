@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using ScalableRelativeImage.Core;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
@@ -117,8 +118,8 @@ namespace ScalableRelativeImage.Nodes
             var AW = Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth;
             var AH = Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight;
             float FS = RelativeFontSize.GetFloat(profile.CurrentSymbols) > 0 ? profile.FindAbsoluteSize(RelativeFontSize.GetFloat(profile.CurrentSymbols)) : -RelativeFontSize.GetFloat(profile.CurrentSymbols);
-            Color Color;
-            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            ColorF Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToString("X"));
             else Color = profile.DefaultForeground.Value;
             TargetGraphics.DrawText(Content.GetString(profile.CurrentSymbols),
                FontFamily.GetString(profile.CurrentSymbols, "Arial"), (FontStyle)Enum.Parse(typeof(FontStyle), FontStyle.GetString(profile.CurrentSymbols)), FS

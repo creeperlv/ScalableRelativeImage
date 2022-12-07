@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using ScalableRelativeImage;
 using ScalableRelativeImage.Nodes;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using SRI.Editor.Main.Data;
 using System;

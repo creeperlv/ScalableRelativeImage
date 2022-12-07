@@ -25,8 +25,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="CLUNL.Imaging" Version="0.1.2" />
-		<PackageReference Include="Magick.NET-Q16-HDRI-AnyCPU" Version="12.2.1" />
 		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SRI.Core.Backend.Abstraction\SRI.Core.Backend.Abstraction.csproj" />
+	  <ProjectReference Include="..\SRI.Core.Backend.Magick\SRI.Core.Backend.Magick.csproj" />
+	  <ProjectReference Include="..\SRI.Core.Backend.SystemDrawing\SRI.Core.Backend.SystemDrawing.csproj" />
 	</ItemGroup>
 
 </Project>

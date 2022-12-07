@@ -15,8 +15,9 @@
 			<TextBlock Text="Version:" Name="VersionBlock"/>
 			<TextBlock Text="Core Version:" Name="CoreVersionBlock"/>
 			<TextBlock Text="Third-Party Libraries" FontSize="22"/>
-			<TextBlock Text="AvaloniaUI (github.com/AvaloniaUI/Avalonia)"/>
-			<TextBlock Text="AvaloniaEditor (github.com/AvaloniaUI/AvaloniaEditor)"/>
+			<TextBlock Text="AvaloniaUI (github.com/AvaloniaUI/Avalonia) - MIT license"/>
+			<TextBlock Text="AvaloniaEditor (github.com/AvaloniaUI/AvaloniaEditor) - MIT license"/>
+			<TextBlock Text="Magick.NET (github.com/dlemstra/Magick.NET) - Apache-2.0 license"/>
 		</StackPanel>
 	</Grid>
 </UserControl>

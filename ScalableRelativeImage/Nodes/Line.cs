@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using System.Collections.Generic;
 using System.Drawing;
@@ -62,8 +63,8 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
-            Color Color;
-            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            ColorF Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToString("X"));
             else Color = profile.DefaultForeground.Value;
             float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
             TargetGraphics.DrawLine(Color, 

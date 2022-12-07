@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Nodes;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using System;
 using System.Drawing;
@@ -25,8 +26,8 @@ namespace ScalableRelativeImage
         /// Target render height (absolute length);
         /// </summary>
         public float TargetHeight;
-        public Color? DefaultForeground = null;
-        public Color? DefaultBackground = null;
+        public ColorF? DefaultForeground = null;
+        public ColorF? DefaultBackground = null;
         /// <summary>
         /// Controls how System.Drawing will perform interpolation.
         /// </summary>

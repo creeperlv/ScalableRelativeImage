@@ -1,8 +1,8 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,8 +73,8 @@ namespace ScalableRelativeImage.Nodes
         {
             float RealWidth = profile.FindAbsoluteSize(Size.Get<float>(profile.CurrentSymbols));
             var LT = profile.FindTargetPoint(X.Get<float>(profile.CurrentSymbols), Y.Get<float>(profile.CurrentSymbols));
-            Color Color;
-            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToArgb().ToString("X"));
+            ColorF Color;
+            if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToString("X"));
             else Color = profile.DefaultForeground.Value;
             var f = Fill.Get(profile.CurrentSymbols, false);
             //if (f is not true)

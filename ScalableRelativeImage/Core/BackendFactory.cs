@@ -1,10 +1,15 @@
-﻿namespace SRI.Core.Core
+﻿using SRI.Core.Backend;
+using SRI.Core.Backend.Magick;
+using SRI.Core.Backend.SystemDrawing;
+
+namespace SRI.Core.Core
 {
-    public class BackendFactory
+    public class BackendFactory:BaseBackendFactory
     {
         public static BackendDefinition UsingBackend = BackendDefinition.SystemDrawing;
-        public static readonly BackendFactory Instance = new BackendFactory();
-        public IGraphicsBackend CreateBackend()
+        //public static readonly BackendFactory Instance = new BackendFactory();
+        
+        public override IGraphicsBackend CreateBackend()
         {
             switch (UsingBackend)
             {
@@ -19,5 +24,6 @@
             }
             return null;
         }
+        
     }
 }

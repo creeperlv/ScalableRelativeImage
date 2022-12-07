@@ -1,4 +1,6 @@
-﻿using SRI.Core.Core;
+﻿using SRI.Core.Backend;
+using SRI.Core.Core;
+using SRI.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -60,12 +62,12 @@ namespace ScalableRelativeImage.Nodes
     {
         public float RelativeWidth { get => _RelativeWidth; set { _RelativeWidth = value; RelativeArea = _RelativeHeight * _RelativeWidth; } }
         public float RelativeHeight { get => _RelativeHeight; set { _RelativeHeight = value; RelativeArea = _RelativeHeight * _RelativeWidth; } }
-        public Color PreferredForeground { get => _PreferredForeground; set => _PreferredForeground = value; }
-        public Color PreferredBackground { get => _PreferredForeground; set => _PreferredForeground = value; }
+        public ColorF PreferredForeground { get => _PreferredForeground; set => _PreferredForeground = value; }
+        public ColorF PreferredBackground { get => _PreferredForeground; set => _PreferredForeground = value; }
         internal float _RelativeWidth = 0;
         internal float _RelativeHeight = 0;
-        internal Color _PreferredBackground = Color.White;
-        internal Color _PreferredForeground = Color.Transparent;
+        internal ColorF _PreferredBackground = Color.White.ToColorF();
+        internal ColorF _PreferredForeground = Color.Transparent.ToColorF();
         public SymbolHelper Symbols = new SymbolHelper();
         public float RelativeArea { get; internal set; }
         public List<GraphicNode> Children = new();
@@ -129,10 +131,10 @@ namespace ScalableRelativeImage.Nodes
                     _RelativeHeight = float.Parse(Value); RelativeArea = _RelativeHeight * _RelativeWidth;
                     break;
                 case "Foreground":
-                    _PreferredForeground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                    _PreferredForeground = ((Color)SRIAnalyzer.cc.ConvertFromString(Value)).ToColorF();
                     break;
                 case "Background":
-                    _PreferredBackground = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                    _PreferredBackground = ((Color)SRIAnalyzer.cc.ConvertFromString(Value)).ToColorF();
                     break;
                 default:
                     executionWarnings.Add(new DataDisposedWarning(Key, Value));
@@ -146,8 +148,8 @@ namespace ScalableRelativeImage.Nodes
             dict.Add("RelativeWidth", _RelativeWidth.ToString());
             dict.Add("RelativeHeight", _RelativeHeight.ToString());
 
-            dict.Add("Foreground", "#" + _PreferredForeground.ToArgb().ToString("X"));
-            dict.Add("Background", "#" + _PreferredBackground.ToArgb().ToString("X"));
+            dict.Add("Foreground", "#" + _PreferredForeground.ToString("X"));
+            dict.Add("Background", "#" + _PreferredBackground.ToString("X"));
 
             return dict;
         }

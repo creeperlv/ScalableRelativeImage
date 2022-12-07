@@ -1,4 +1,6 @@
 ﻿using ScalableRelativeImage.Core;
+using SRI.Core.Backend;
+using SRI.Core.Utilities;
 using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace ScalableRelativeImage.Nodes
         public float Height = 0;
         public IntermediateValue ScaledWidthRatio = 1f;
         public IntermediateValue ScaledHeightRatio = 1f;
-        public Color? Background;
+        public ColorF? Background;
         public string Name = null;
         public IntermediateValue Rotation = 0;
         public float RelativeWidth { get => Width; set => throw new NotImplementedException(); }
@@ -48,7 +50,7 @@ namespace ScalableRelativeImage.Nodes
             }
             if (Background is not null)
                 if (Background.HasValue is true)
-                    dict.Add("Background", "#" + Background.Value.ToArgb().ToString("X"));
+                    dict.Add("Background", "#" + Background.Value.ToString("X"));
             return dict;
         }
         public void RemoveChildAt(int i)
@@ -103,7 +105,7 @@ namespace ScalableRelativeImage.Nodes
                     break;
                 case "Background":
                     {
-                        Background = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                        Background = ((Color)SRIAnalyzer.cc.ConvertFromString(Value)).ToColorF();
                     }
                     break;
                 case "Name":

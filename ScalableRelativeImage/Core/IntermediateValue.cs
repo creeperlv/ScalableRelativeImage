@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SRI.Core.Backend;
+using SRI.Core.Utilities;
+using System;
 using System.Drawing;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -257,12 +259,12 @@ namespace ScalableRelativeImage.Core
             return Value;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Color GetColor(SymbolHelper s, string Fallback = "White")
+        public ColorF GetColor(SymbolHelper s, string Fallback = "White")
         {
 
             try
             {
-                var C = (Color)SRIAnalyzer.cc.ConvertFromString(Value);
+                var C = ((Color)SRIAnalyzer.cc.ConvertFromString(Value)).ToColorF();
                 return C;
             }
             catch (Exception)
@@ -270,13 +272,13 @@ namespace ScalableRelativeImage.Core
                 try
                 {
                     var CC = (Color)SRIAnalyzer.cc.ConvertFromString(s.Lookup(Value, Fallback));
-                    return CC;
+                    return CC.ToColorF();
                 }
                 catch (Exception)
                 {
                 }
             }
-            return (Color)SRIAnalyzer.cc.ConvertFromString(Fallback);
+            return ((Color)SRIAnalyzer.cc.ConvertFromString(Fallback)).ToColorF();
         }
         public static implicit operator string(IntermediateValue v)
         {

@@ -1,4 +1,5 @@
 ﻿using ScalableRelativeImage.Nodes;
+using SRI.Core.Backend;
 using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,12 @@ namespace ScalableRelativeImage
     /// <summary>
     /// SRI Engine, contains all method you need to serialize/deserialize a SRI Image.
     /// </summary>
-    public class SRIEngine
+    public static class SRIEngine
     {
+        static SRIEngine()
+        {
+            BaseBackendFactory.Instance = new BackendFactory();
+        }
         public static readonly string Flavor = "CreeperLv.SRI";
         public static readonly Version FormatVersion = new Version(1, 0, 0, 0);
         /// <summary>
@@ -22,7 +27,8 @@ namespace ScalableRelativeImage
         /// <param name="backend"></param>
         public static void SetBackend(BackendDefinition backend)
         {
-            BackendFactory.UsingBackend=backend;
+            BaseBackendFactory.Instance = new BackendFactory();
+            BackendFactory.UsingBackend = backend;
         }
         /// <summary>
         /// Deserialize the given string to an ImageNodeRoot.

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SRI.Core.Backend.Abstraction\SRI.Core.Backend.Abstraction.csproj" />
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Magick.NET-Q16-HDRI-AnyCPU" Version="12.2.1" />
+	</ItemGroup>
+
+</Project>
