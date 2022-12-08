@@ -13,7 +13,7 @@ namespace SRI.Editor.Extension.Utilities
     {
         public static void KeyBind(TextEditor editor,IEditor Host)
         {
-            editor.PointerWheelChanged += (sender, e) => {
+            editor.TextArea.PointerWheelChanged += (sender, e) => {
                 if (e.KeyModifiers == KeyModifiers.Control)
                 {
                     //Scale;
@@ -22,6 +22,15 @@ namespace SRI.Editor.Extension.Utilities
                     e.Handled = true;
                 }
             };
+            //editor.PointerWheelChanged += (sender, e) => {
+            //    if (e.KeyModifiers == KeyModifiers.Control)
+            //    {
+            //        //Scale;
+            //        editor.FontSize += 1 * e.Delta.Y;
+            //        if (editor.FontSize < 1) editor.FontSize = 1;
+            //        e.Handled = true;
+            //    }
+            //};
             editor.KeyDown += (sender, e) => {
 
                 if (e.KeyModifiers == KeyModifiers.Control)
