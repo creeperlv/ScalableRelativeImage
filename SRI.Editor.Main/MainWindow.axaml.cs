@@ -46,7 +46,6 @@ namespace SRI.Editor.Main
 
             this.SetProgress(0, 100, 0);
             int Total = 0;
-            BackendFactory.UsingBackend = (BackendDefinition)EditorConfiguration.CurrentConfiguration.Backend;
             var P = ProjectEngine.BuildAsync(OpenedProject,
                   (ConfigurationBox.SelectedItem as ComboBoxItem).Content as string,
 

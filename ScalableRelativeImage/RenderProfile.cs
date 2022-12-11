@@ -14,6 +14,21 @@ namespace ScalableRelativeImage
     /// </summary>
     public class RenderProfile
     {
+        public BaseBackendFactory FactoryInstance;
+        public DrawableImage NewImage(int W,int H)
+        {
+            BaseBackendFactory.Instance = FactoryInstance;
+            DrawableImage drawableImage = new DrawableImage();
+            drawableImage.Init(W, H);
+            return drawableImage;
+        }
+        public DrawableImage NewImage(string File)
+        {
+            BaseBackendFactory.Instance = FactoryInstance;
+            DrawableImage drawableImage = new DrawableImage();
+            drawableImage.Init(File);
+            return drawableImage;
+        }
         /// <summary>
         /// Environment that the SRI will render in.
         /// </summary>
@@ -107,6 +122,7 @@ namespace ScalableRelativeImage
             renderProfile.TargetHeight = TargetHeight;
             renderProfile.TargetWidth = TargetWidth;
             renderProfile.root = Root;
+            renderProfile.FactoryInstance = FactoryInstance;
             renderProfile.CurrentSymbols = CurrentSymbols;
             renderProfile.WorkingDirectory = this.WorkingDirectory;
             return renderProfile;

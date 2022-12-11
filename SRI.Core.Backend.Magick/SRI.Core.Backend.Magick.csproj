@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ScalableRelativeImage\SRI.Core.csproj" />
     <ProjectReference Include="..\SRI.Core.Backend.Abstraction\SRI.Core.Backend.Abstraction.csproj" />
   </ItemGroup>
 	<ItemGroup>

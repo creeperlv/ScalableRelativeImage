@@ -30,8 +30,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SRI.Core.Backend.Abstraction\SRI.Core.Backend.Abstraction.csproj" />
-	  <ProjectReference Include="..\SRI.Core.Backend.Magick\SRI.Core.Backend.Magick.csproj" />
-	  <ProjectReference Include="..\SRI.Core.Backend.SystemDrawing\SRI.Core.Backend.SystemDrawing.csproj" />
 	</ItemGroup>
 
 </Project>

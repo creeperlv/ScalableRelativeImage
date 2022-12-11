@@ -103,11 +103,10 @@ namespace ScalableRelativeImage.Nodes
             {
                 profile.DefaultForeground = _PreferredForeground;
             }
-            DrawableImage image=new DrawableImage();
-            image.Init((int)profile.TargetWidth, (int)profile.TargetHeight);
+            DrawableImage image = profile.NewImage((int)profile.TargetWidth, (int)profile.TargetHeight);
             //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             //Graphics g = Graphics.FromImage(Bit);
-            image.DrawRectangle(profile.DefaultBackground.Value, 0, 0, profile.TargetWidth, profile.TargetHeight,0,true);
+            image.DrawRectangle(profile.DefaultBackground.Value, 0, 0, profile.TargetWidth, profile.TargetHeight, 0, true);
             //g.FillRectangle(new SolidBrush(profile.DefaultBackground.Value), new System.Drawing.Rectangle(0, 0, (int)profile.TargetWidth, (int)profile.TargetHeight));
             //g.SmoothingMode = profile.SmoothingMode;
             //g.TextRenderingHint = profile.TextRenderingHint;

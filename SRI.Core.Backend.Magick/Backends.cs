@@ -1,4 +1,5 @@
 ﻿using ImageMagick;
+using ScalableRelativeImage;
 using SRI.Core.Backend;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,21 @@ using System.Threading.Tasks;
 
 namespace SRI.Core.Backend.Magick
 {
-    public static class Utilities
+    public class MagickBackendFactory : BaseBackendFactory
+    {
+        public override IGraphicsBackend CreateBackend()
+        {
+            return new MagickGraphicsBackend();
+        }
+    }
+    
+    public static class Extensions
     {
         static float B16B8Converter = 65535 / 255;
+        public static void UseMagick(this RenderProfile profile)
+        {
+            profile.FactoryInstance = new MagickBackendFactory();
+        }
         public static MagickColor ToMagick(this ColorF c)
         {
             return new MagickColor(c.R * B16B8Converter, c.G * B16B8Converter, c.B * B16B8Converter, c.A * B16B8Converter);

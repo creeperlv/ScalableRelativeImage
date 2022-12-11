@@ -186,7 +186,7 @@ namespace SRI.Core.Backend.Magick
                 Font = FontFamily,
                 FillColor = color.ToMagick(),
                 FontStyle = style.ToFontStyleType(),
-                TextGravity = Utilities.ToGravity(HorizontalAlignment, VerticalAlignment),
+                TextGravity = Extensions.ToGravity(HorizontalAlignment, VerticalAlignment),
                 BackgroundColor = MagickColors.Transparent,
                 FontPointsize = Size,
                 Width = (int)W,

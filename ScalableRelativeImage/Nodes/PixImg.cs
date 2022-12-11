@@ -60,8 +60,9 @@ namespace ScalableRelativeImage.Nodes
         }
         public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
-            DrawableImage drawableImage = new DrawableImage();
-            drawableImage.Init(profile.FindFile(Source.GetString(profile.CurrentSymbols)).FullName);
+
+            DrawableImage drawableImage = profile.NewImage(profile.FindFile(Source.GetString(profile.CurrentSymbols)).FullName);
+            //drawableImage.Init(profile.FindFile(Source.GetString(profile.CurrentSymbols)).FullName);
             //var img = Bitmap.FromFile(profile.FindFile(Source.GetString(profile.CurrentSymbols)).FullName);
             var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
             //var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(

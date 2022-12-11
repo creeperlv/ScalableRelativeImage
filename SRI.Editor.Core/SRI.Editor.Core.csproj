@@ -1,8 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 
   <ItemGroup>
     <ProjectReference Include="..\ScalableRelativeImage\SRI.Core.csproj" />
+    <ProjectReference Include="..\SRI.Core.Backend.Magick\SRI.Core.Backend.Magick.csproj" />
+    <ProjectReference Include="..\SRI.Core.Backend.SystemDrawing\SRI.Core.Backend.SystemDrawing.csproj" />
+	  <ProjectReference Include="..\SRI.Localization\SRI.Localization.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+	</ItemGroup>
 </Project>

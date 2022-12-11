@@ -134,8 +134,7 @@ namespace ScalableRelativeImage.Nodes
                     (int)(Height / profile.root.RelativeHeight * profile.TargetHeight * ScaledHeightRatio.GetFloat(profile.CurrentSymbols))));
             //Scaled size of the image.
             //Bitmap Bit = new Bitmap((int)profile.TargetWidth, (int)profile.TargetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            DrawableImage b = new DrawableImage();
-            b.Init(rect.Width, rect.Height);
+            DrawableImage b = profile.NewImage(rect.Width, rect.Height);
             //var b = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             var subProfile = profile.Copy(profile.root);
             //Keep the references.

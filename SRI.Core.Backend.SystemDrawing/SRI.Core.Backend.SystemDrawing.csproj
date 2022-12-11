@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+		<ProjectReference Include="..\ScalableRelativeImage\SRI.Core.csproj" />
 		<ProjectReference Include="..\SRI.Core.Backend.Abstraction\SRI.Core.Backend.Abstraction.csproj" />
 	</ItemGroup>
 </Project>

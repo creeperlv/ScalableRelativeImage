@@ -144,8 +144,8 @@ namespace ScalableRelativeImage.Nodes
                 var _LT = p.FindTargetPoint(sub.X.GetFloat(profile.CurrentSymbols), sub.Y.GetFloat(profile.CurrentSymbols));
                 var __rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)_LT.X, (int)_LT.Y), new Size(
                         (int)(sub.Width / p.root.RelativeWidth * p.TargetWidth), (int)(sub.Height / p.root.RelativeHeight * p.TargetHeight)));
-                DrawableImage Bit = new DrawableImage();
-                Bit.Init((int)p.TargetWidth, (int)p.TargetHeight);
+                DrawableImage Bit = profile.NewImage((int)p.TargetWidth, (int)p.TargetHeight);
+                //Bit.Init((int)p.TargetWidth, (int)p.TargetHeight);
                 p.WorkingBitmap = Bit;
                 {
                     if (Background is not null)

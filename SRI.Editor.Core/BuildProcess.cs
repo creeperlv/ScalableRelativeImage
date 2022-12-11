@@ -1,7 +1,11 @@
 ﻿using ScalableRelativeImage;
 using ScalableRelativeImage.Nodes;
+using SRI.Core.Backend.Magick;
+using SRI.Core.Backend.SystemDrawing;
+using SRI.Core.Core;
 using SRI.Core.Utilities;
 using SRI.Editor.Core.Projects;
+using SRI.Editor.Main.Data;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -121,6 +125,17 @@ namespace SRI.Editor.Core
                         }
 
                         RenderProfile renderProfile = new RenderProfile();
+                        switch ((BackendDefinition)EditorConfiguration.CurrentConfiguration.Backend)
+                        {
+                            case BackendDefinition.SystemDrawing:
+                                renderProfile.UseSystemDrawing();
+                                break;
+                            case BackendDefinition.Magick:
+                                renderProfile.UseMagick();
+                                break;
+                            default:
+                                break;
+                        }
                         renderProfile.TargetWidth = Width;
                         renderProfile.TargetHeight = Height;
                         renderProfile.DefaultForeground = Foreground.ToColorF();

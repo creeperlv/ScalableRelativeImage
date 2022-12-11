@@ -10,6 +10,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\SRI.Core.Backend.SystemDrawing\SRI.Core.Backend.SystemDrawing.csproj" />
 		<ProjectReference Include="..\SRI.Editor.Core\SRI.Editor.Core.csproj" />
 		<ProjectReference Include="..\SRI.Localization\SRI.Localization.csproj" />
 	</ItemGroup>

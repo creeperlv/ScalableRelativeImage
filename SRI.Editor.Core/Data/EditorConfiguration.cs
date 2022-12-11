@@ -14,7 +14,12 @@ namespace SRI.Editor.Main.Data
     {
         public static void Init()
         {
-            CurrentConfiguration = JsonConvert.DeserializeObject<EditorConfiguration>(ObtainInstalled("SRI.Editor.Configuration.json", "SRI.Editor"), new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore, Formatting = Formatting.Indented });
+            CurrentConfiguration = JsonConvert.DeserializeObject<EditorConfiguration>(ObtainInstalled("SRI.Editor.Configuration.json", "SRI.Editor"),
+                new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Formatting = Formatting.Indented
+                });
         }
         public static void Save()
         {
@@ -105,6 +110,6 @@ namespace SRI.Editor.Main.Data
         public bool isBlurEnabled = true;
         public int ComputeMode = 0;
         public bool TransparentInsteadOfBlur = false;
-        public int Backend;
+        public int Backend=0;
     }
 }

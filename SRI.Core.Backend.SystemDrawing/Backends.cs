@@ -1,4 +1,5 @@
-﻿using SRI.Core.Backend;
+﻿using ScalableRelativeImage;
+using SRI.Core.Backend;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,10 +11,20 @@ using System.Threading.Tasks;
 
 namespace SRI.Core.Backend.SystemDrawing
 {
-    public static class Backends
+    public class SystemDBackendFactory : BaseBackendFactory
+    {
+        public override IGraphicsBackend CreateBackend()
+        {
+            return new SystemGraphicsBackend();
+        }
+    }
+    public static class Extensions
     {
         static float B16B8Converter = 65535 / 255;
-      
+        public static void UseSystemDrawing(this RenderProfile profile)
+        {
+            profile.FactoryInstance = new SystemDBackendFactory();
+        }
         public static ImageFormat ToImageFormat(this UniversalImageFormat format)
         {
             switch (format)
@@ -31,7 +42,7 @@ namespace SRI.Core.Backend.SystemDrawing
         }
         public static PointF[] ToPointFArray(this UniversalVector2[] vs)
         {
-            PointF[] f=new PointF[vs.Length];
+            PointF[] f = new PointF[vs.Length];
             for (int i = 0; i < vs.Length; i++)
             {
                 f[i] = vs[i].ToPointF();

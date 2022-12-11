@@ -1,4 +1,6 @@
-﻿namespace SRI.Core.Backend
+﻿using System.Diagnostics;
+
+namespace SRI.Core.Backend
 {
     public struct ColorF
     {
@@ -12,7 +14,9 @@
         }
         public string ToString(string format)
         {
-            return String.Format($"{{3:{format}}}{{0:{format}}}{{1:{format}}}{{2:{format}}}", R, G, B, A);
+            var str = $"{{3:{format}2}}{{0:{format}2}}{{1:{format}2}}{{2:{format}2}}";
+            Debug.WriteLine(str);
+            return String.Format(str, (int)R, (int)G, (int)B, (int)A);
         }
         public ColorF(float r, float g, float b, float a)
         {

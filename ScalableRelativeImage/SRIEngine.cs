@@ -15,21 +15,8 @@ namespace ScalableRelativeImage
     /// </summary>
     public static class SRIEngine
     {
-        static SRIEngine()
-        {
-            BaseBackendFactory.Instance = new BackendFactory();
-        }
         public static readonly string Flavor = "CreeperLv.SRI";
         public static readonly Version FormatVersion = new Version(1, 0, 0, 0);
-        /// <summary>
-        /// Set which backend to use.
-        /// </summary>
-        /// <param name="backend"></param>
-        public static void SetBackend(BackendDefinition backend)
-        {
-            BaseBackendFactory.Instance = new BackendFactory();
-            BackendFactory.UsingBackend = backend;
-        }
         /// <summary>
         /// Deserialize the given string to an ImageNodeRoot.
         /// </summary>
