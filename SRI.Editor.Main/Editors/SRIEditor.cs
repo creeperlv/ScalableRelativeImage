@@ -132,6 +132,7 @@ namespace SRI.Editor.Main.Editors
                 ImagePreview.Height = PreviewOriginHeight * PreviewScale;
             }
         }
+        Bitmap b = null;
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             {
@@ -193,7 +194,8 @@ namespace SRI.Editor.Main.Editors
                         MemoryStream memoryStream = new MemoryStream();
                         img.Save(memoryStream, UniversalImageFormat.PNG);
                         memoryStream.Position = 0;
-                        Bitmap b = new Bitmap(memoryStream);
+                        Bitmap Last = b;
+                        b = new Bitmap(memoryStream);
                         ImagePreview.Source = b;
                         PreviewOriginWidth = profile.TargetWidth;
                         PreviewOriginHeight = profile.TargetHeight;
@@ -201,6 +203,7 @@ namespace SRI.Editor.Main.Editors
                         ImagePreview.Height = profile.TargetHeight;
                         ApplyPreviewZoom();
                         memoryStream.Dispose();
+                        Last.Dispose();
                         GC.Collect();
                     }
 

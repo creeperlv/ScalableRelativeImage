@@ -21,7 +21,14 @@ namespace SRI.Core.Backend.SystemDrawing
         public void Init(string File)
         {
             image = new Bitmap(File);
-            graphics = Graphics.FromImage(image);
+            try
+            {
+
+                graphics = Graphics.FromImage(image);
+            }
+            catch (Exception)
+            {
+            }
         }
         public void Init(int W, int H)
         {
@@ -30,17 +37,20 @@ namespace SRI.Core.Backend.SystemDrawing
         }
         public void Dispose()
         {
-            graphics.Dispose();
+            if (image != null)
+                image.Dispose();
+            if (graphics != null)
+                graphics.Dispose();
         }
-        public void DrawEllipse(ColorF  ColorF , float X, float Y, float W, float H, float Size, bool Fill)
+        public void DrawEllipse(ColorF ColorF, float X, float Y, float W, float H, float Size, bool Fill)
         {
             if (Fill)
             {
-                graphics.FillEllipse(new SolidBrush(ColorF.ToColor() ), X, Y, W, H);
+                graphics.FillEllipse(new SolidBrush(ColorF.ToColor()), X, Y, W, H);
             }
             else
             {
-                graphics.DrawEllipse(new Pen(ColorF.ToColor() , Size), X, Y, W, H);
+                graphics.DrawEllipse(new Pen(ColorF.ToColor(), Size), X, Y, W, H);
             }
         }
         public Bitmap ToBitmap()
@@ -55,15 +65,15 @@ namespace SRI.Core.Backend.SystemDrawing
             GC.Collect();
             return b;
         }
-        public void DrawRectangle(ColorF  ColorF , float X, float Y, float W, float H, float BorderSize, bool Filled)
+        public void DrawRectangle(ColorF ColorF, float X, float Y, float W, float H, float BorderSize, bool Filled)
         {
             if (!Filled)
                 graphics.DrawRectangle(new Pen(ColorF.ToColor(), BorderSize), X, Y, W, H);
             else
-                graphics.FillRectangle(new SolidBrush(ColorF.ToColor() ), X, Y, W, H);
+                graphics.FillRectangle(new SolidBrush(ColorF.ToColor()), X, Y, W, H);
         }
 
-        public void DrawLine(ColorF  ColorF , float X1, float Y1, float X2, float Y2, float Size)
+        public void DrawLine(ColorF ColorF, float X1, float Y1, float X2, float Y2, float Size)
         {
             graphics.DrawLine(new Pen(ColorF.ToColor(), Size), X1, Y1, X2, Y2);
         }
@@ -92,12 +102,12 @@ namespace SRI.Core.Backend.SystemDrawing
             //    throw new NotSupportedException();
             //}
         }
-        public void DrawLines(ColorF  ColorF , float Size, UniversalVector2[] Points)
+        public void DrawLines(ColorF ColorF, float Size, UniversalVector2[] Points)
         {
             graphics.DrawLines(new Pen(ColorF.ToColor(), Size), Points.ToPointFArray());
         }
 
-        public void DrawPath(ColorF  ColorF , UniversalVector2[] Points, byte[] types, float Size, bool Fill)
+        public void DrawPath(ColorF ColorF, UniversalVector2[] Points, byte[] types, float Size, bool Fill)
         {
             if (Fill)
             {
@@ -108,7 +118,7 @@ namespace SRI.Core.Backend.SystemDrawing
                 graphics.DrawPath(new Pen(ColorF.ToColor(), Size), new System.Drawing.Drawing2D.GraphicsPath(Points.ToPointFArray(), types));
         }
 
-        public void DrawText(string text, string FontFamily, FontStyle style, float Size, ColorF  ColorF , float X, float Y, float W, float H, StringAlignment HorizontalAlignment, StringAlignment VerticalAlignment)
+        public void DrawText(string text, string FontFamily, FontStyle style, float Size, ColorF ColorF, float X, float Y, float W, float H, StringAlignment HorizontalAlignment, StringAlignment VerticalAlignment)
         {
             graphics.DrawString(text, new Font(FontFamily, Size, style)
                 , new SolidBrush(ColorF.ToColor()), new RectangleF(new PointF(X, Y), new SizeF(W, H)), new StringFormat { Alignment = HorizontalAlignment, LineAlignment = VerticalAlignment });
@@ -119,7 +129,7 @@ namespace SRI.Core.Backend.SystemDrawing
             image.Save(filename, format.ToImageFormat());
         }
 
-        public void DrawCurve(ColorF  ColorF , float Size, UniversalVector2[] Points)
+        public void DrawCurve(ColorF ColorF, float Size, UniversalVector2[] Points)
         {
             graphics.DrawCurve(new Pen(ColorF.ToColor(), Size), Points.ToPointFArray());
         }
@@ -169,11 +179,11 @@ namespace SRI.Core.Backend.SystemDrawing
             image.Save(stream, format.ToImageFormat());
         }
 
-        public void DrawClosedCurve(ColorF  ColorF , float Size, UniversalVector2[] Points, bool Filled)
+        public void DrawClosedCurve(ColorF ColorF, float Size, UniversalVector2[] Points, bool Filled)
         {
             if (Filled)
             {
-                graphics.FillClosedCurve(new SolidBrush(ColorF.ToColor() ), Points.ToPointFArray());
+                graphics.FillClosedCurve(new SolidBrush(ColorF.ToColor()), Points.ToPointFArray());
             }
             else
                 graphics.DrawClosedCurve(new Pen(ColorF.ToColor(), Size), Points.ToPointFArray());

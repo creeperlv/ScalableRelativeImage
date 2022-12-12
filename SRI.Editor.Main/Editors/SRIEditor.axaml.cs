@@ -157,6 +157,7 @@ namespace SRI.Editor.Main.Editors
         FileInfo OpenedFile = null;
         public void Dispose()
         {
+            b.Dispose();
         }
         string ObtainFileTitle()
         {

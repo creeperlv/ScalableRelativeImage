@@ -59,6 +59,7 @@ namespace SRI.Editor.Main
                 {
                     ParentContainer.RemovePage(child, this);
                     child.Dispose();
+                    GC.Collect();
                     return true;
                 }
                 return false;
