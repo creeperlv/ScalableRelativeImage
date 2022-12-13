@@ -41,9 +41,9 @@ namespace SRI.Core.Backend
             backend.DrawEllipse(color, X, Y, W, H, Size, Fill);
         }
 
-        public void DrawImage(IGraphicsBackend OtherImage, int x, int y, int Width, int Height)
+        public void DrawImage(IGraphicsBackend OtherImage, UniversalRectangle Dest,UniversalRectangle Src)
         {
-            backend.DrawImage(OtherImage, x, y, Width, Height);
+            backend.DrawImage(OtherImage, Dest,Src);
         }
 
         public void DrawLine(ColorF color, UniversalVector2 StartPoint, UniversalVector2 EndPoint, float Size)

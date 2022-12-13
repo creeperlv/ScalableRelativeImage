@@ -53,7 +53,7 @@ namespace SRI.Core.Backend.Magick
         {
             image.Dispose();
         }
-        public void DrawImage(IGraphicsBackend OtherImage, int x, int y, int Width, int Height)
+        public void DrawImage(IGraphicsBackend OtherImage, UniversalRectangle Dest, UniversalRectangle Src)
         {
             if (OtherImage is DrawableImage di)
             {
@@ -61,8 +61,8 @@ namespace SRI.Core.Backend.Magick
                 {
                     int Scale_H = 1;
                     int Scale_V = 1;
-                    int W = Width;
-                    int H = Height;
+                    int W = (int)Dest.w;
+                    int H = (int)Dest.h;
                     if (W < 0)
                     {
                         Scale_H = -1;
@@ -82,7 +82,7 @@ namespace SRI.Core.Backend.Magick
                         backend.image.Flip();
                     //if (Scale_H != 1 || Scale_V != 1)
                     //    backend.image.Scale(Scale_H, Scale_V);
-                    image.Composite(backend.image, x, y, CompositeOperator.Blend);
+                    image.Composite(backend.image, (int)Dest.x, (int)Dest.y, CompositeOperator.Blend);
                     //var d = new Drawables().Composite((new MagickGeometryFactory()).Create(x, y, Width, Height), CompositeOperator.Alpha, backend.image);
                     //d.Draw(image);
                     return;

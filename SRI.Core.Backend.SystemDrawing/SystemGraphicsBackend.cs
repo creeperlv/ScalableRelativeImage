@@ -78,13 +78,13 @@ namespace SRI.Core.Backend.SystemDrawing
             graphics.DrawLine(new Pen(ColorF.ToColor(), Size), X1, Y1, X2, Y2);
         }
 
-        public void DrawImage(IGraphicsBackend OtherImage, int x, int y, int Width, int Height)
+        public void DrawImage(IGraphicsBackend OtherImage, UniversalRectangle Dest,UniversalRectangle Src)
         {
             if (OtherImage is DrawableImage di)
             {
                 if (di.Backend is SystemGraphicsBackend backend)
                 {
-                    graphics.DrawImage(backend.image, new Rectangle(x, y, Width, Height), 0, 0, backend.image.Width, backend.image.Height, GraphicsUnit.Pixel);
+                    graphics.DrawImage(backend.image, Dest.ToRectangle(),Src.ToRectangle(), GraphicsUnit.Pixel);
                     //var d = new Drawables().Composite((new MagickGeometryFactory()).Create(x, y, Width, Height), CompositeOperator.Alpha, backend.image);
                     //d.Draw(image);
                     return;

@@ -25,6 +25,10 @@ namespace SRI.Core.Backend.SystemDrawing
         {
             profile.FactoryInstance = new SystemDBackendFactory();
         }
+        public static Rectangle ToRectangle(this UniversalRectangle rectangle)
+        {
+            return new Rectangle((int)rectangle.x, (int)rectangle.y, (int)rectangle.w, (int)rectangle.h);
+        }
         public static ImageFormat ToImageFormat(this UniversalImageFormat format)
         {
             switch (format)

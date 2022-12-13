@@ -42,7 +42,7 @@ namespace SRI.Core.Backend
         /// <param name="y"></param>
         /// <param name="Width"></param>
         /// <param name="Height"></param>
-        void DrawImage(IGraphicsBackend OtherImage, int x, int y, int Width, int Height);
+        void DrawImage(IGraphicsBackend OtherImage, UniversalRectangle Dest,UniversalRectangle Src);
         /// <summary>
         /// Draw a line.
         /// </summary>

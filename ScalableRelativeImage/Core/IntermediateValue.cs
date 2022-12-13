@@ -127,6 +127,7 @@ namespace ScalableRelativeImage.Core
             }
             return Fallback;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryGetFloat(string Value, SymbolHelper s, out float result, float Fallback = 0)
         {
 
@@ -189,6 +190,7 @@ namespace ScalableRelativeImage.Core
         {
             return GetFloat(Value, s, Fallback);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryGetDouble(string Value, SymbolHelper s, out double result, double Fallback = 0)
         {
 
@@ -280,18 +282,22 @@ namespace ScalableRelativeImage.Core
             }
             return ((Color)SRIAnalyzer.cc.ConvertFromString(Fallback)).ToColorF();
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator string(IntermediateValue v)
         {
             return v.ToString();
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator IntermediateValue(string str)
         {
             return new IntermediateValue { Value = str };
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator IntermediateValue(float v)
         {
             return new IntermediateValue { Value = v.ToString() };
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator IntermediateValue(bool v)
         {
             return new IntermediateValue { Value = v.ToString() };

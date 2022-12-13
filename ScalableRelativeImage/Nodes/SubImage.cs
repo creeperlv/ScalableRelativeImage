@@ -162,7 +162,7 @@ namespace ScalableRelativeImage.Nodes
             }
             if (Rotation.GetFloat(profile.CurrentSymbols) == 0 || Rotation.GetFloat(profile.CurrentSymbols) == 360)
             {
-                TargetGraphics.DrawImage(b, _rect.X, rect.Y, _rect.Width, _rect.Height) ;
+                TargetGraphics.DrawImage(b,_rect.ToUR(), new UniversalRectangle(0, 0, b.Width, b.Height)) ;
             }
             else
             {
@@ -177,7 +177,7 @@ namespace ScalableRelativeImage.Nodes
                 _rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)(LT.X - (_W - _rect.Width) / 2), (int)(LT.Y - (_H - _rect.Height) / 2)), new Size(_W, _H));
 
                 b.Rotate(angle);
-                TargetGraphics.DrawImage(b, _rect.X, _rect.Y, _rect.Width, _rect.Height);
+                TargetGraphics.DrawImage(b, _rect.ToUR(),new UniversalRectangle(0, 0, W, H));
 
                 //Bitmap FB = new Bitmap(W, H);
                 //using (Graphics g = Graphics.FromImage(FB))

@@ -66,8 +66,10 @@ namespace ScalableRelativeImage.Nodes
                 //var rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)LT.X, (int)LT.Y), new Size(
                 //        (int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
                 //        (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight)));
-                TargetGraphics.DrawImage(drawableImage, (int)LT.X, (int)LT.Y, (int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
-                    (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight));
+                TargetGraphics.DrawImage(drawableImage, 
+                    new UniversalRectangle((int)LT.X, (int)LT.Y, (int)(Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
+                    (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight)),
+                    new UniversalRectangle(0,0,drawableImage.Width,drawableImage.Height));
             }
 
         }

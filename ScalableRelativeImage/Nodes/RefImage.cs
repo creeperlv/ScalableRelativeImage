@@ -1,6 +1,7 @@
 ﻿using ScalableRelativeImage.Core;
 using SRI.Core.Backend;
 using SRI.Core.Core;
+using SRI.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -144,6 +145,7 @@ namespace ScalableRelativeImage.Nodes
                 var _LT = p.FindTargetPoint(sub.X.GetFloat(profile.CurrentSymbols), sub.Y.GetFloat(profile.CurrentSymbols));
                 var __rect = new System.Drawing.Rectangle(new System.Drawing.Point((int)_LT.X, (int)_LT.Y), new Size(
                         (int)(sub.Width / p.root.RelativeWidth * p.TargetWidth), (int)(sub.Height / p.root.RelativeHeight * p.TargetHeight)));
+                Trace.WriteLine($"{(int)p.TargetWidth}x{(int)p.TargetHeight}");
                 DrawableImage Bit = profile.NewImage((int)p.TargetWidth, (int)p.TargetHeight);
                 //Bit.Init((int)p.TargetWidth, (int)p.TargetHeight);
                 p.WorkingBitmap = Bit;
@@ -159,7 +161,7 @@ namespace ScalableRelativeImage.Nodes
                 //g.TextRenderingHint = profile.TextRenderingHint;
                 //g.InterpolationMode = profile.InterpolationMode;
                 sub.Paint(ref Bit, p);
-                TargetGraphics.DrawImage(Bit, _rect.X,_rect.Y, __rect.Width,_rect.Height);
+                TargetGraphics.DrawImage(Bit, new UniversalRectangle(_rect.X, _rect.Y, _rect.Width, _rect.Height),__rect.ToUR());
                 //g.Dispose();
                 Bit.Dispose();
 
@@ -173,7 +175,7 @@ namespace ScalableRelativeImage.Nodes
                 p.TargetWidth = rect.Width;
                 p.TargetHeight = rect.Height;
                 var img = sri.Render(p);
-                TargetGraphics.DrawImage(img, rect.X,rect.Y,rect.Width,rect.Height);
+                TargetGraphics.DrawImage(img, rect.ToUR(),new UniversalRectangle(0,0, img.Width,img.Height));
                 img.Dispose();
             }
         }
