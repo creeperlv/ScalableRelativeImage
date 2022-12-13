@@ -60,6 +60,28 @@ namespace SRI.Editor.Main.Controls
                         }
                     });
                 };
+                RenameMenuItem.Click += (_, _) =>
+                {
+                    Globals.CurrentMainWindow.ShowInputDialog("Rename Folder", "Input Folder Name", item.Name, (___fileName) =>
+                    {
+                        if (___fileName != null)
+                        {
+                            DirectoryInfo di = new DirectoryInfo(item.FullName);
+                            var __full_folder_path = Path.Combine(di.Parent.FullName, ___fileName);
+                            Directory.Move(item.FullName, __full_folder_path);
+                            controlledItem = new DirectoryInfo(__full_folder_path);
+                            NameBlock.Text = controlledItem.Name;
+                            if (SubNodes.Children.Count == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                OpenDir();
+                            }
+                        }
+                    });
+                };
                 Menu_New_Folder.Click += (a, b) =>
                 {
                     Globals.CurrentMainWindow.ShowInputDialog("New Folder", "Input Folder Name", (___fileName) =>
@@ -165,6 +187,29 @@ namespace SRI.Editor.Main.Controls
                 icon.Height = 15;
                 this.FindControl<Grid>("IconContainer").Children.Add(icon);
                 this.FindControl<MenuItem>("NewMenu").IsVisible = false;
+
+                RenameMenuItem.Click += (_, _) =>
+                {
+                    Globals.CurrentMainWindow.ShowInputDialog("Rename File", "Input File Name", item.Name, (___fileName) =>
+                    {
+                        if (___fileName != null)
+                        {
+                            FileInfo di = new FileInfo(item.FullName);
+                            var __full_folder_path = Path.Combine(di.Directory.FullName, ___fileName);
+                            File.Move(item.FullName, __full_folder_path);
+                            controlledItem = new FileInfo(__full_folder_path);
+                            NameBlock.Text = controlledItem.Name;
+                            if (SubNodes.Children.Count == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                OpenDir();
+                            }
+                        }
+                    });
+                };
                 this.FindControl<MenuItem>("Delete_Item").Click += (_, _) =>
                 {
                     Globals.CurrentMainWindow.ShowDialog("Are you sure?", $"This operation will delete \"{controlledItem.Name}\".", new DialogButton
@@ -275,6 +320,7 @@ namespace SRI.Editor.Main.Controls
         MenuItem Menu_New_Folder;
         MenuItem OpenWithMenu;
         MenuItem NewMenu;
+        MenuItem RenameMenuItem;
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -286,6 +332,7 @@ namespace SRI.Editor.Main.Controls
             CheckBox = this.FindControl<ToggleButton>("CheckBox");
             Menu_New_Folder = this.FindControl<MenuItem>("Menu_New_Folder");
             NewMenu = this.FindControl<MenuItem>("NewMenu");
+            RenameMenuItem = this.FindControl<MenuItem>("RenameMenuItem");
         }
         static LocalizedString LFolder = new LocalizedString("Menu.New_Folder", "Fol_der");
         static LocalizedString LOpenWithMenu = new LocalizedString("Menu.OpenWith", "Open _With...");

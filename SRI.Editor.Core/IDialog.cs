@@ -6,6 +6,7 @@ namespace SRI.Editor.Core
     {
         void SetContent(string Header, string Content);
         void SetInputDialog(Action<string> AfterInput);
+        void SetPreinput(string Content);
         void SetButtons(DialogButton button0 = null, DialogButton button1 = null, DialogButton button2 = null);
     }
 }

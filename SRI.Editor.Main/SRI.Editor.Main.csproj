@@ -3,6 +3,7 @@
 		<OutputType>WinExe</OutputType>
 		<ApplicationIcon>Icon-1024.ico</ApplicationIcon>
 		<Version>0.0.2</Version>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove=".gitignore" />

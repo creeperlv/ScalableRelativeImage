@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.OpenGL;
 using SRI.Editor.Extension;
 using SRI.Editor.Extension.Defaults;
 using SRI.Editor.Main.Data;
@@ -8,6 +9,7 @@ using SRI.Editor.Main.Editors;
 using SRI.Editor.Styles;
 using SRI.Localization;
 using System;
+using System.Collections.Generic;
 
 namespace SRI.Editor.Main
 {
@@ -24,19 +26,22 @@ namespace SRI.Editor.Main
             LanguageLib.InitLocal();
             IconProviders.RegisterProvider(new DefaultIconProvider());
             {
-                EditorProvider.RegisterEditor("SRI.Editor.SRIEditor", "SRI Editor", typeof(SRIEditor),"sri");
-                EditorProvider.RegisterEditor("SRI.Editor.ProjectEditor", "Project Editor", typeof(ProjectEditor),"sri-proj", "*");
+                EditorProvider.RegisterEditor("SRI.Editor.SRIEditor", "SRI Editor", typeof(SRIEditor), "sri");
+                EditorProvider.RegisterEditor("SRI.Editor.ProjectEditor", "Project Editor", typeof(ProjectEditor), "sri-proj", "*");
                 EditorProvider.RegisterEditor("SRI.Editor.ImageViewer", "Image Viewer", typeof(ImageViewer), "png", "jpg", "bmp");
                 EditorProvider.RegisterEditor("SRI.Editor.BaseEditor", "Basic Editor", typeof(BaseEditor), "*");
             }
             isDesign = false;
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
-        internal static bool isDesign=true;
+        internal static bool isDesign = true;
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
+                .UsePlatformDetect().With(new Win32PlatformOptions
+                {
+                    UseWindowsUIComposition = true,
+                }).With(new X11PlatformOptions { EnableIme = true })
                 .LogToTrace();
     }
 }

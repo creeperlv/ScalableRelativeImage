@@ -30,7 +30,7 @@
 							<MenuItem Header="Git Window"/>
 						</MenuItem>
 						<Separator/>
-						<MenuItem Header="_Rename"/>
+						<MenuItem Header="_Rename" Name="RenameMenuItem"/>
 						<MenuItem Header="_Copy"/>
 						<MenuItem Header="Cut (_X)"/>
 						<MenuItem Header="_Paste"/>

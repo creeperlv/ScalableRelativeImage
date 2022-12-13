@@ -102,7 +102,7 @@ namespace SRI.Editor.Extension.Defaults
                 var DEF = HighlightingManager.Instance.GetDefinition("Markdown");
                 if (DEF != null)
                     CentralEditor.SyntaxHighlighting = DEF;
-            }else if (StringHelper.IsEndsWithCaseInsensitive(__Name, ".cxx", ".cpp"))
+            }else if (StringHelper.IsEndsWithCaseInsensitive(__Name, ".cxx", ".cpp", ".c", ".h"))
             {
                 var DEF = HighlightingManager.Instance.GetDefinition("C++");
                 if (DEF != null)

@@ -20,9 +20,16 @@
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
 					<ColumnDefinition Width="1*"/>
 				</Grid.ColumnDefinitions>
-				<Grid  Background="#A333">
+				<Grid Background="#A333">
+					<Grid Margin="8,0,0,0">
+					<Image Source="avares://SRI.Editor.Main/Icon-1024.ico" Width="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+					</Grid>
+	
+				</Grid>
+				<Grid  Background="#A333" Grid.Column="1">
 
 					<Menu Margin="8" Name="MainMenu">
 						<MenuItem Header="_File" Name="File_">
@@ -149,7 +156,7 @@
 						</MenuItem>
 					</Menu>
 				</Grid>
-				<Grid Background="#A333" Grid.Column="1" IsHitTestVisible="False">
+				<Grid Background="#A333" Grid.Column="2" IsHitTestVisible="False">
 					<TextBlock Text="SRI Editor" Name="TitleBlock" Foreground="#8FFF" VerticalAlignment="Center"/>
 				</Grid>
 			</Grid>

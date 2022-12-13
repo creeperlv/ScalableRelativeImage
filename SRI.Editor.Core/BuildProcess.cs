@@ -152,6 +152,7 @@ namespace SRI.Editor.Core
                             fileInfo.Directory.Create();
                         }
                         bitmap.Save(output);
+                        bitmap.Dispose();
                     }
                     if (OnEndProcess != null)
                     {

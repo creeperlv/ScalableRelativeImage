@@ -19,7 +19,7 @@ using System.Xml;
 
 namespace SRI.Editor.Main.Editors
 {
-    public partial class SRIEditor : Grid, ITabPage, IEditor,ILocalizable
+    public partial class SRIEditor : Grid, ITabPage, IEditor, ILocalizable
     {
         public SRIEditor()
         {
@@ -157,7 +157,8 @@ namespace SRI.Editor.Main.Editors
         FileInfo OpenedFile = null;
         public void Dispose()
         {
-            b.Dispose();
+            if (generated_image != null)
+                generated_image.Dispose();
         }
         string ObtainFileTitle()
         {
@@ -254,7 +255,7 @@ namespace SRI.Editor.Main.Editors
                         {
                             Save();
                             button.ForceClose();
-                            if(NonCancelCallback != null)NonCancelCallback();
+                            if (NonCancelCallback != null) NonCancelCallback();
                         }
                     }, new DialogButton()
                     {
@@ -270,7 +271,7 @@ namespace SRI.Editor.Main.Editors
 
                         LanguageID = "Dialog.Cancel",
                         Fallback = "Cancel",
-                        OnClick = () => { if(CancelCallback!=null)CancelCallback(); }
+                        OnClick = () => { if (CancelCallback != null) CancelCallback(); }
                     });
                 return false;
             }

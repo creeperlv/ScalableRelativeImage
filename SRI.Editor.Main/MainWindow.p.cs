@@ -89,7 +89,8 @@ namespace SRI.Editor.Main
                 b.Cancel = true;
                 await __Close();
             };
-            Tools_Options.Click += (_, _) => {
+            Tools_Options.Click += (_, _) =>
+            {
                 AddPage(new EditorConfigurationEditor());
             };
             Help_About.Click += (_, _) =>
@@ -204,6 +205,8 @@ namespace SRI.Editor.Main
                 if (EditorConfiguration.CurrentConfiguration.TransparentInsteadOfBlur)
                 {
                     TransparencyLevelHint = WindowTransparencyLevel.Transparent;
+                    Opacity = 1f;
+                    TransparencyBackgroundFallback = new SolidColorBrush(Colors.Transparent);
                 }
                 else
                 {
@@ -311,6 +314,18 @@ namespace SRI.Editor.Main
             DialogRoot.Children.Add(dialog);
             dialog.SetContent(title, hint);
             dialog.SetInputDialog(OnClosePrimaryDialog);
+            Main_Root.IsEnabled = false;
+            DialogRoot.IsVisible = true;
+        }
+
+        public void ShowInputDialog(string title, string hint, string preinput, Action<string> OnClosePrimaryDialog)
+        {
+            SRIDialog dialog = new SRIDialog();
+            OpenedDialogs.Add(dialog);
+            DialogRoot.Children.Add(dialog);
+            dialog.SetContent(title, hint);
+            dialog.SetInputDialog(OnClosePrimaryDialog);
+            dialog.SetPreinput(preinput);
             Main_Root.IsEnabled = false;
             DialogRoot.IsVisible = true;
         }

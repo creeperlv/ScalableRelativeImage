@@ -124,5 +124,10 @@ namespace SRI.Editor.Main.Dialogs
         {
             Globals.CurrentMainWindow.CloseDialog(this);
         }
+
+        public void SetPreinput(string Content)
+        {
+            InputBox.Text= Content;
+        }
     }
 }

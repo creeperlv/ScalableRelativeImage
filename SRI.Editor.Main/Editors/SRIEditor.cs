@@ -132,7 +132,7 @@ namespace SRI.Editor.Main.Editors
                 ImagePreview.Height = PreviewOriginHeight * PreviewScale;
             }
         }
-        Bitmap b = null;
+        Bitmap generated_image = null;
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             {
@@ -153,10 +153,10 @@ namespace SRI.Editor.Main.Editors
                         default:
                             break;
                     }
-                    if (OpenedFile!= null)
-                        {
-                            profile.WorkingDirectory = OpenedFile.DirectoryName;
-                        }
+                    if (OpenedFile != null)
+                    {
+                        profile.WorkingDirectory = OpenedFile.DirectoryName;
+                    }
                     float Scale = 1.0f;
                     try
                     {
@@ -194,16 +194,17 @@ namespace SRI.Editor.Main.Editors
                         MemoryStream memoryStream = new MemoryStream();
                         img.Save(memoryStream, UniversalImageFormat.PNG);
                         memoryStream.Position = 0;
-                        Bitmap Last = b;
-                        b = new Bitmap(memoryStream);
-                        ImagePreview.Source = b;
+                        Bitmap Last = generated_image;
+                        generated_image = new Bitmap(memoryStream);
+                        ImagePreview.Source = generated_image;
                         PreviewOriginWidth = profile.TargetWidth;
                         PreviewOriginHeight = profile.TargetHeight;
                         ImagePreview.Width = profile.TargetWidth;
                         ImagePreview.Height = profile.TargetHeight;
                         ApplyPreviewZoom();
                         memoryStream.Dispose();
-                        Last.Dispose();
+                        if (Last != null)
+                            Last.Dispose();
                         GC.Collect();
                     }
 

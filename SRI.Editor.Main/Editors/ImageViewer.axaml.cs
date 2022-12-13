@@ -62,6 +62,7 @@ namespace SRI.Editor.Main.Editors
         FileInfo __file=null;
         public void Dispose()
         {
+            if(B!=null)B.Dispose();
         }
 
         public string GetTitle()
@@ -75,10 +76,11 @@ namespace SRI.Editor.Main.Editors
         {
         }
         Size S;
+        Bitmap B=null;
         public void OpenFile(FileInfo file)
         {
             __file = file;
-            var B= new Bitmap(__file.FullName);
+            B= new Bitmap(__file.FullName);
             ImagePreview.Source = B;
             S = B.Size;
             button0.SetTitle(GetTitle());
