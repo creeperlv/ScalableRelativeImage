@@ -12,14 +12,7 @@ using System.Threading.Tasks;
 
 namespace SRI.Core.Backend.Magick
 {
-    public class MagickBackendFactory : BaseBackendFactory
-    {
-        public override IGraphicsBackend CreateBackend()
-        {
-            return new MagickGraphicsBackend();
-        }
-    }
-    
+
     public static class Extensions
     {
         static float B16B8Converter = 65535 / 255;

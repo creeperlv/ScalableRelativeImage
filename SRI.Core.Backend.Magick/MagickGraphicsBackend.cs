@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace SRI.Core.Backend.Magick
 {
+    /// <summary>
+    /// Implementation using Magick.NET
+    /// </summary>
     public class MagickGraphicsBackend : IGraphicsBackend
     {
         static bool isLibraryInited;
@@ -80,6 +83,7 @@ namespace SRI.Core.Backend.Magick
                         backend.image.Flop();
                     if (Scale_V == -1)
                         backend.image.Flip();
+                    backend.image.Crop(new MagickGeometry((int)Src.x, (int)Src.y, (int)Src.w, (int)Src.h));
                     //if (Scale_H != 1 || Scale_V != 1)
                     //    backend.image.Scale(Scale_H, Scale_V);
                     image.Composite(backend.image, (int)Dest.x, (int)Dest.y, CompositeOperator.Blend);
