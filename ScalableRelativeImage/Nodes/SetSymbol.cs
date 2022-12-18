@@ -3,6 +3,7 @@ using SRI.Core.Backend;
 using SRI.Core.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
@@ -31,7 +32,7 @@ namespace ScalableRelativeImage.Nodes
                     this.Value = Value;
                     break;
                 case "T":
-                case "TYPE":
+                case "Type":
                     this._Type = Value;
                     break;
                 default:
@@ -46,19 +47,28 @@ namespace ScalableRelativeImage.Nodes
                 case "FLOAT":
                 case "F":
                 case "SINGLE":
-                    profile.CurrentSymbols.Set(new Symbol { Name = Symbol, Value = IntermediateValue.GetFloat(Value, profile.CurrentSymbols).ToString() });
+                    {
+                        var v = IntermediateValue.GetFloat(Value, profile.CurrentSymbols).ToString();
+                        profile.CurrentSymbols.Set(Symbol, v.ToString());
+                    }
                     break;
                 case "DOUBLE":
                 case "D":
-                    profile.CurrentSymbols.Set(new Symbol { Name = Symbol, Value = IntermediateValue.GetDouble(Value, profile.CurrentSymbols).ToString() });
+                    {
+                        var v = IntermediateValue.GetDouble(Value, profile.CurrentSymbols).ToString();
+                        profile.CurrentSymbols.Set(Symbol, v.ToString());
+                    }
                     break;
                 case "INT":
                 case "I":
                 case "INTEGER":
-                    profile.CurrentSymbols.Set(new Symbol { Name = Symbol, Value = IntermediateValue.GetInt(Value, profile.CurrentSymbols).ToString() });
+                    {
+                        var v = IntermediateValue.GetInt(Value, profile.CurrentSymbols).ToString();
+                        profile.CurrentSymbols.Set(Symbol, v.ToString());
+                    }
                     break;
                 default:
-                    profile.CurrentSymbols.Set(new Symbol { Name = Symbol, Value = Value });
+                    profile.CurrentSymbols.Set(Symbol, Value.ToString());
                     break;
             }
         }

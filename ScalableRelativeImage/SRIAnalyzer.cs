@@ -54,7 +54,7 @@ namespace ScalableRelativeImage
             XmlNode ImageNodeRootNode = null;
             ImageNodeRoot ImageRoot;
             List<ImageReference> references = new List<ImageReference>();
-            SymbolHelper symbols=new SymbolHelper();
+            SymbolHelper symbols = new SymbolHelper();
             for (int i = 0; i < l.Count; i++)
             {
                 var item = l.Item(i);
@@ -81,7 +81,7 @@ namespace ScalableRelativeImage
                     //var NS= item.Attributes["Namespace"];
                     //reference.Namespace= NS.Value;
                 }
-                else if (item.Name == "Symbol"|| item.Name == "Define")
+                else if (item.Name == "Symbol" || item.Name == "Define")
                 {
                     Symbol symbol = new Symbol();
                     foreach (var attr in GetAttributes(item))
@@ -98,6 +98,7 @@ namespace ScalableRelativeImage
                     symbols.Set(symbol);
                 }
             }
+            references.Add(new ImageReference() { Namespace = "ScalableRelativeImage.Nodes.MathNodes" });
             references.Add(new ImageReference() { Namespace = "ScalableRelativeImage.Nodes" });
             foreach (var item in references)
             {
@@ -185,9 +186,11 @@ namespace ScalableRelativeImage
             {
                 foreach (var reference in references)
                 {
-                    var t =
-                    asm.GetType(reference.Namespace + "." + node.Name);
-                    if (t is null) break;
+                    var N = reference.Namespace + "." + node.Name;
+                    var t = asm.GetType(N);
+                    if (t is null) {
+                        continue;
+                    }
                     else
                     {
                         var inode = (INode)Activator.CreateInstance(t);
@@ -211,6 +214,10 @@ namespace ScalableRelativeImage
                     }
                 }
                 if (v is true) break;
+            }
+            if (v == false)
+            {
+                Trace.WriteLine("Fail to find node:" + node.Name);
             }
         }
         internal static List<XmlNode> GetNodes(XmlNode node)
