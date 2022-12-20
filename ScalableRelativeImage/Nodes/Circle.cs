@@ -5,14 +5,13 @@ using System.Collections.Generic;
 namespace ScalableRelativeImage.Nodes
 {
     /// <summary>
-    /// Draw a ellipse.
+    /// Draw a circle.
     /// </summary>
-    public class Ellipse : GraphicNode
+    public class Circle : GraphicNode
     {
         public IntermediateValue X = 0;
         public IntermediateValue Y = 0;
-        public IntermediateValue Width = 0;
-        public IntermediateValue Height = 0;
+        public IntermediateValue Radius = 0;
         public IntermediateValue Size = 0;
         public IntermediateValue Fill = false;
         public IntermediateValue Foreground = null;
@@ -22,8 +21,7 @@ namespace ScalableRelativeImage.Nodes
             {
                 { "X", X.ToString() },
                 { "Y", Y.ToString() },
-                { "Width", Width.ToString() },
-                { "Height", Height.ToString() },
+                { "Radius", Radius.ToString() },
                 { "Size", Size.ToString() },
                 { "Fill", Fill.ToString() }
             };
@@ -41,11 +39,8 @@ namespace ScalableRelativeImage.Nodes
                 case "Y":
                     Y.Value = Value;
                     break;
-                case "Width":
-                    Width.Value = Value;
-                    break;
-                case "Height":
-                    Height.Value = Value;
+                case "Radius":
+                    Radius.Value = Value;
                     break;
                 case "Size":
                     Size.Value = Value;
@@ -67,14 +62,18 @@ namespace ScalableRelativeImage.Nodes
         public override void Paint(ref DrawableImage TargetGraphics, RenderProfile profile)
         {
             float RealWidth = profile.FindAbsoluteSize(Size.GetFloat(profile.CurrentSymbols));
-            var LT = profile.FindTargetPoint(X.GetFloat(profile.CurrentSymbols), Y.GetFloat(profile.CurrentSymbols));
+            float _Radius=Radius.GetFloat(profile.CurrentSymbols);
+            float _X=X.GetFloat(profile.CurrentSymbols);
+            float _Y=Y.GetFloat(profile.CurrentSymbols);
+            var LT = profile.FindTargetPoint(_X-_Radius, _Y-_Radius);
             ColorF Color;
             if (Foreground != null) Color = Foreground.GetColor(profile.CurrentSymbols, "#" + profile.DefaultForeground.Value.ToString("X"));
             else Color = profile.DefaultForeground.Value;
             bool b = Fill.GetBool(profile.CurrentSymbols);
-            TargetGraphics.DrawEllipse(Color, LT.X, LT.Y, 
-                (Width.GetFloat(profile.CurrentSymbols) / profile.root.RelativeWidth * profile.TargetWidth),
-                (int)(Height.GetFloat(profile.CurrentSymbols) / profile.root.RelativeHeight * profile.TargetHeight), RealWidth, b);
+            TargetGraphics.DrawEllipse(Color, LT.X, LT.Y,
+                (_Radius * 2 / profile.root.RelativeWidth * profile.TargetWidth),
+                (_Radius * 2 / profile.root.RelativeHeight * profile.TargetHeight), 
+                RealWidth, b);
         }
     }
 }
