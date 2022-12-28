@@ -21,6 +21,13 @@ namespace ScalableRelativeImage.Core
     public static class Calculator
     {
         static string pattern = @"([^\w\.])|[\w\.]+";
+        /// <summary>
+        /// Resolve a input string to an object list.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        /// <exception cref="ExpressionSegmentNotResolvableException"></exception>
         public static List<object> Resolve(string input,SymbolHelper s)
         {
             var m = Regex.Matches(input, pattern);

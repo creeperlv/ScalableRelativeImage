@@ -12,6 +12,9 @@ using System.IO;
 
 namespace SRI.Editor.Main.Controls
 {
+    /// <summary>
+    /// It is the tree it self, just add it to any container.
+    /// </summary>
     public partial class FileTreeNode : UserControl, ILocalizable
     {
         FileSystemInfo controlledItem;
@@ -45,7 +48,6 @@ namespace SRI.Editor.Main.Controls
             {
                 this.FindControl<MenuItem>("Menu_New_Item").Click += (a, b) =>
                 {
-                    //MainWindow.CurrentWindow.ShowNewItemDialog(item.FullName);
                     Globals.CurrentMainWindow.ShowInputDialog("New Item", "Input File Name", (___fileName) =>
                     {
                         if (___fileName != null)
@@ -295,13 +297,6 @@ namespace SRI.Editor.Main.Controls
             if (SubNodes.Children.Count == 0)
             {
                 BuildChildren();
-                //foreach (var item in directoryInfo.EnumerateFileSystemInfos())
-                //{
-                //    var node = new FileTreeNode();
-                //    node.SetFileSystemInfo(item);
-                //    SubNodes.Children.Add(node);
-                //    node.CheckBox.IsVisible = CheckBox.IsVisible;
-                //}
             }
             else
             {

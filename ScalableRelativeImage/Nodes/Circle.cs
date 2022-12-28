@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ScalableRelativeImage.Nodes
 {
     /// <summary>
-    /// Draw a circle.
+    /// Draw a circle defined by pivot point and radius.
     /// </summary>
     public class Circle : GraphicNode
     {

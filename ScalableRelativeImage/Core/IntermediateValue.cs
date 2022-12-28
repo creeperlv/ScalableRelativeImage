@@ -127,6 +127,14 @@ namespace ScalableRelativeImage.Core
             }
             return Fallback;
         }
+        /// <summary>
+        /// Try to get float value.
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="s"></param>
+        /// <param name="result"></param>
+        /// <param name="Fallback"></param>
+        /// <returns>If the result is the fallback value</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryGetFloat(string Value, SymbolHelper s, out float result, float Fallback = 0)
         {
@@ -190,6 +198,14 @@ namespace ScalableRelativeImage.Core
         {
             return GetFloat(Value, s, Fallback);
         }
+        /// <summary>
+        /// Try to get double value.
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="s"></param>
+        /// <param name="result"></param>
+        /// <param name="Fallback"></param>
+        /// <returns>If the reture value is the fallback value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryGetDouble(string Value, SymbolHelper s, out double result, double Fallback = 0)
         {
