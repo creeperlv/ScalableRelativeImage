@@ -24,6 +24,12 @@ namespace SRI.Core.Backend
         /// <param name="Points"></param>
         void DrawCurve(ColorF color, float Size, UniversalVector2[] Points);
         /// <summary>
+        /// Draw like: Target=Blend(Base, Source*Alpha)
+        /// </summary>
+        /// <param name="Src"></param>
+        /// <param name="Mask"></param>
+        void Mask(IGraphicsBackend Src, IGraphicsBackend Mask);
+        /// <summary>
         /// Draw ellipse
         /// </summary>
         /// <param name="color"></param>

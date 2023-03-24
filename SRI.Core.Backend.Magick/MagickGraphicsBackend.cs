@@ -85,7 +85,7 @@ namespace SRI.Core.Backend.Magick
                         backend.image.Flip();
                     backend.image.Crop(new MagickGeometry((int)Src.x, (int)Src.y, (int)Src.w, (int)Src.h));
                     //if (Scale_H != 1 || Scale_V != 1)
-                    //    backend.image.Scale(Scale_H, Scale_V);
+                    //    backend.image.Scale(Scale_H, Scale_V);.
                     image.Composite(backend.image, (int)Dest.x, (int)Dest.y, CompositeOperator.Blend);
                     //var d = new Drawables().Composite((new MagickGeometryFactory()).Create(x, y, Width, Height), CompositeOperator.Alpha, backend.image);
                     //d.Draw(image);
@@ -248,6 +248,32 @@ namespace SRI.Core.Backend.Magick
             d = d.StrokeWidth(Size);
             d = d.Path(paths);
             d.Draw(image);
+        }
+
+        public void Mask(IGraphicsBackend Src, IGraphicsBackend Mask)
+        {
+            if (Src is MagickGraphicsBackend srcbk)
+                if (Mask is MagickGraphicsBackend maskbk)
+                {
+                    //var p=srcbk.image.GetPixels();
+                    //var m=maskbk.image.GetPixels();
+                    //for (int x = 0; x < image.Width; x++)
+                    //{
+                    //    for (int y = 0; y < image.Height; y++)
+                    //    {
+                    //        var _p=p.GetPixel(x, y);
+                    //        var _m=p.GetPixel(x, y);
+                    //        _p.SetChannel(Channels.All)
+                    //        var pc=_p.ToColor();
+                    //        var mc=_m.ToColor();
+                    //        pc.A = pc.A * mc.A;
+                    //        p.SetPixel(x, y, new ReadOnlySpan<float>(pc.));
+                    //            //p.setp
+                    //    }
+                    //}
+                    //ImageMagick.Pixel 
+                }
+            throw new NotImplementedException();
         }
     }
 }

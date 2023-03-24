@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRI.Core.Utilities;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -9,6 +10,7 @@ namespace SRI.Core.Backend.SystemDrawing
     /// <summary>
     /// Backend using System.Drawing.
     /// </summary>
+
     public class SystemGraphicsBackend : IGraphicsBackend
     {
         Graphics graphics;
@@ -78,13 +80,13 @@ namespace SRI.Core.Backend.SystemDrawing
             graphics.DrawLine(new Pen(ColorF.ToColor(), Size), X1, Y1, X2, Y2);
         }
 
-        public void DrawImage(IGraphicsBackend OtherImage, UniversalRectangle Dest,UniversalRectangle Src)
+        public void DrawImage(IGraphicsBackend OtherImage, UniversalRectangle Dest, UniversalRectangle Src)
         {
             if (OtherImage is DrawableImage di)
             {
                 if (di.Backend is SystemGraphicsBackend backend)
                 {
-                    graphics.DrawImage(backend.image, Dest.ToRectangle(),Src.ToRectangle(), GraphicsUnit.Pixel);
+                    graphics.DrawImage(backend.image, Dest.ToRectangle(), Src.ToRectangle(), GraphicsUnit.Pixel);
                     //var d = new Drawables().Composite((new MagickGeometryFactory()).Create(x, y, Width, Height), CompositeOperator.Alpha, backend.image);
                     //d.Draw(image);
                     return;
@@ -187,6 +189,28 @@ namespace SRI.Core.Backend.SystemDrawing
             }
             else
                 graphics.DrawClosedCurve(new Pen(ColorF.ToColor(), Size), Points.ToPointFArray());
+        }
+
+        public void Mask(IGraphicsBackend Src, IGraphicsBackend Mask)
+        {
+            if (Src is SystemGraphicsBackend srcbk)
+                if (Mask is SystemGraphicsBackend maskbk)
+                {
+                    for (int x = 0; x < maskbk.Width; x++)
+                    {
+                        for (int y = 0; y < maskbk.Height; y++)
+                        {
+                            var p=srcbk.image.GetPixel(x,y);
+                            var m=maskbk.image.GetPixel(x,y);
+                            var r = Color.FromArgb((byte)(p.A * ((float)m.A/255f)),p.R,p.G,p.B);
+                            srcbk.image.SetPixel(x, y, r);
+                        }
+                    }
+                    graphics.DrawImage(srcbk.image,new Rectangle(0,0,image.Width,image.Height), 
+                        new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+
+                }
+
         }
     }
 }

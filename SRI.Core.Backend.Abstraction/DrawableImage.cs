@@ -45,7 +45,10 @@ namespace SRI.Core.Backend
         {
             backend.DrawImage(OtherImage, Dest,Src);
         }
-
+        public void Mask(IGraphicsBackend Src,IGraphicsBackend Mask)
+        {
+            backend.Mask(Src, Mask);
+        }
         public void DrawLine(ColorF color, UniversalVector2 StartPoint, UniversalVector2 EndPoint, float Size)
         {
             backend.DrawLine(color, StartPoint.X, StartPoint.Y, EndPoint.X, EndPoint.Y, Size);
